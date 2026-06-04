@@ -1,0 +1,3596 @@
+openapi: 3.0.3
+info:
+  title: UCalgary Space Remote Sensing API
+  description: API providing data and tools for UCalgary Space Remote Sensing
+  version: 1.56.0
+paths:
+  /api/v1/data_distribution/datasets:
+    get:
+      tags:
+      - Data Distribution
+      summary: Retrieve available datasets
+      description: "Retrieve information about available datasets. Filter based on parameters supplied.\n\
+        \nNotes:\n  - filtering is case insensitive\n  - data level description: https://www.earthdata.nasa.gov/engage/open-data-services-and-software/data-information-policy/data-levels"
+      operationId: retrieve_datasets_api_v1_data_distribution_datasets_get
+      parameters:
+      - name: name
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Name
+      - name: level
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - L0
+          - L1
+          - L1A
+          - L2
+          - L3
+          title: Level
+      responses:
+        '200':
+          description: Dataset information
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/Dataset'
+                  - $ref: '#/components/schemas/DatasetLegacy1'
+                  - $ref: '#/components/schemas/DatasetLegacy2'
+                title: Response Retrieve Datasets Api V1 Data Distribution Datasets Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/data_distribution/urls:
+    get:
+      tags:
+      - Data Distribution
+      summary: Retrieve list of URLs for a given dataset
+      description: "Retrieve list of URLs for a given dataset and timeframe.\n\nNotes:\n  - start and\
+        \ end times are inclusive\n  - start and end time format is YYYY-mm-ddTHH:MM:SS. Excluding values\
+        \ from the right to \n    the left result in default values being used (eg. YYYY-mm-ddTHH results\
+        \ in YYYY-mm-ddTHH:00:00)\n  - dataset matching is case insensitive\n  - site_uid is expected\
+        \ to be the 4-letter site code, and is case insensitive\n  - device_uid is expected to be the\
+        \ instrument identifier such as \"themis02\", \"rego-657\", or \"rgb-07\",\n    and is case insensitive"
+      operationId: retrieve_urls_api_v1_data_distribution_urls_get
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Name
+      - name: start
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Start
+      - name: end
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: End
+      - name: site_uid
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Site Uid
+      - name: device_uid
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Device Uid
+      - name: include_total_bytes
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Total Bytes
+      responses:
+        '200':
+          description: URLs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileListingResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Dataset not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Data retrieval error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/data_distribution/observatories:
+    get:
+      tags:
+      - Data Distribution
+      summary: Retrieve information about observatories
+      description: "Retrieve information about observatories. Filter based on parameters supplied.\n\n\
+        Notes:\n  - filtering for \"uid\" is case insensitive"
+      operationId: retrieve_observatories_api_v1_data_distribution_observatories_get
+      parameters:
+      - name: instrument_array
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - norstar_riometer
+          - rego
+          - smile_asi
+          - swan_hsr
+          - themis_asi
+          - trex_blue
+          - trex_nir
+          - trex_rgb
+          - trex_spectrograph
+          title: Instrument Array
+      - name: uid
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Uid
+      responses:
+        '200':
+          description: Observatory information
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Observatory'
+                title: Response Retrieve Observatories Api V1 Data Distribution Observatories Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/data_distribution/imaging_timeframes:
+    post:
+      tags:
+      - Data Distribution
+      summary: Retrieve imaging start and end times for a set of locations
+      description: "Retrieve imaging start and end times for a set of locations. This is specific to the\
+        \ optical \ninstrumentation we provide data for.\n\nThe timestamp is expected to be UTC time.\n\
+        \nEach location in the 'locations' array can be specified either by a 4-letter site UID, or by\n\
+        providing geodetic latitude and longitude. If the site_uid is provided, it is resolved to\ncoordinates\
+        \ using the known observatory list.\n\nNotes:\n  - The threshold parameter is the solar zenith\
+        \ angle (in degrees) above which imaging occurs. \n    The default value of 102.0 corresponds\
+        \ to nautical twilight, and what all UCalgary optical\n    instruments use.\n  - The `site_uid`\
+        \ parameter matching is case insensitive"
+      operationId: retrieve_imaging_timeframes_api_v1_data_distribution_imaging_timeframes_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImagingTimeframesRequest'
+        required: true
+      responses:
+        '200':
+          description: Imaging times
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ImagingTimeframeResponse'
+                type: array
+                title: Response Retrieve Imaging Timeframes Api V1 Data Distribution Imaging Timeframes
+                  Post
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Site not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/atm/forward:
+    post:
+      tags:
+      - Auroral Transport Model (ATM)
+      summary: Perform forward ATM calculation
+      description: "Perform a forward calculation using **VERSION 1** of the TREx Auroral Transport Model\
+        \ and the supplied \ninput parameters.\n\nInput notes:\n  - timestamp\n    - timestamp is expected\
+        \ to be in UTC, and is valid for any value up to the end of the previous day\n    - the 'Z' character\
+        \ at the end of the timestamp is optional, and will be ignored if it is supplied\n  - latitude\
+        \ and longitude are to be in geodetic coordinates (-90 to 90 lat, -180 to 180 lon)\n  - maxwellian_characteristic_energy\
+        \ must be specified if the maxwellian_energy_flux is not 0\n  - gaussian_peak_energy must be specified\
+        \ if the gaussian_energy_flux is not 0\n  - gaussian_spectral_width must be specified if the gaussian_energy_flux\
+        \ is not 0\n  - valid values for nrlmsis_model_version are '00' and '2.0'\n  - The ATM model is\
+        \ 1D and time-independent. However, the optional parameters timescale_auroral and \n    timescale_transport\
+        \ provide limited support for time-dependent and transport process.\n      - timescale_auroral\
+        \ (T0) is the duration of the precipitation; default value is 600 sec\n      - timescale_transport\
+        \ is defined by L/v0, in which L is the dimension of the auroral structure, \n        and v0 is\
+        \ the cross-structure drift speed. Default value is 600 sec.\n      - the model quasi-analytically\
+        \ solves the continuity equation under a square input (with time \n        duration T0 and spatial\
+        \ width L) input of precipitation. The initial/boundary conditions are \n        given by IRI.\
+        \ The output yields the mean density/VER over [0-L] at time T0.\n  - units\n    - timescale parameters:\
+        \ seconds\n    - maxwellian energy flux: erg/cm2/s\n    - maxwellian characteristic energy: eV\n\
+        \    - gaussian energy flux: erg/cm2/s\n    - gaussian peak energy: eV\n    - gaussian spectral\
+        \ width: eV\n  - custom spectrum\n    - energy in eV, flux in 1/cm2/s/eV\n    - energy and flux\
+        \ arrays must be the same length\n  - by default requests are cached; use the 'no_cache' parameter\
+        \ to disable this functionality\n\nOutput notes:\n  - output parameter of the request are toggles\
+        \ the enable/disable each field's inclusion in the response\n  - all output parameters are false\
+        \ by default\n  - altitude is in kilometers\n  - emission data: 1-D array -- volume emission rate\
+        \ (1/cm^3/s)\n  - plasma electron density: 1-D array -- density (cm^-3)\n  - plasma O2+ density:\
+        \ 1-D array -- density (cm^-3)\n  - plasma NO+ density: 1-D array -- density (cm^-3)\n  - plasma\
+        \ O+ density: 1-D array -- density (cm^-3)\n  - plasma ionisation rate: 1-D array -- ionisation\
+        \ rate (1/cm^3/s)\n  - plasma electron temperature: 1-D array -- temperature (K)\n  - plasma ion\
+        \ temperature: 1-D array -- temperature (K)\n  - plasma peterson conductivity: 1-D array -- conductivity\
+        \ (S/m)\n  - plasma hall conductivity: 1-D array -- conductivity (S/m)\n  - neutral O2 density:\
+        \ 1-D array -- density (cm^-3)\n  - neutral O density: 1-D array -- density (cm^-3)\n  - neutral\
+        \ N2 density: 1-D array -- density (cm^-3)\n  - neutral N density: 1-D array -- density (cm^-3)\n\
+        \  - neutral temperature: 1-D array -- temperature (K)"
+      operationId: atm_forward_api_v1_atm_forward_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/src__atm__v1__schemas_forward__ATMForwardRequest'
+            examples:
+              base:
+                summary: Default request object
+                description: Default field values, adjust accordingly
+                value:
+                  atm_model_version: '1.0'
+                  timestamp: '2024-01-01T06:00:00'
+                  geodetic_latitude: 0
+                  geodetic_longitude: 0
+                  maxwellian_energy_flux: 10
+                  gaussian_energy_flux: 0
+                  maxwellian_characteristic_energy: 5000
+                  gaussian_peak_energy: 1000
+                  gaussian_spectral_width: 100
+                  nrlmsis_model_version: '2.0'
+                  oxygen_correction_factor: 1
+                  timescale_auroral: 600
+                  timescale_transport: 600
+                  custom_spectrum:
+                    energy: []
+                    flux: []
+                  output:
+                    height_integrated_rayleighs_4278: false
+                    height_integrated_rayleighs_5577: false
+                    height_integrated_rayleighs_6300: false
+                    height_integrated_rayleighs_8446: false
+                    height_integrated_rayleighs_lbh: false
+                    height_integrated_rayleighs_1304: false
+                    height_integrated_rayleighs_1356: false
+                    altitudes: false
+                    emission_4278: false
+                    emission_5577: false
+                    emission_6300: false
+                    emission_8446: false
+                    emission_lbh: false
+                    emission_1304: false
+                    emission_1356: false
+                    plasma_electron_density: false
+                    plasma_o2plus_density: false
+                    plasma_oplus_density: false
+                    plasma_noplus_density: false
+                    plasma_ionisation_rate: false
+                    plasma_electron_temperature: false
+                    plasma_ion_temperature: false
+                    plasma_pederson_conductivity: false
+                    plasma_hall_conductivity: false
+                    neutral_o2_density: false
+                    neutral_o_density: false
+                    neutral_n2_density: false
+                    neutral_n_density: false
+                    neutral_temperature: false
+                  no_cache: false
+              example0:
+                summary: A simple example
+                description: A simple example
+                value:
+                  timestamp: '2024-01-01T06:00:00'
+                  geodetic_latitude: 51.04
+                  geodetic_longitude: -114.5
+                  output:
+                    height_integrated_rayleighs_4278: true
+                    height_integrated_rayleighs_5577: true
+                    height_integrated_rayleighs_6300: true
+                    height_integrated_rayleighs_8446: true
+                    height_integrated_rayleighs_lbh: true
+                    height_integrated_rayleighs_1304: true
+                    height_integrated_rayleighs_1356: true
+                    altitudes: true
+              example1:
+                summary: A simple example with all output parameters
+                description: A simple example with all output parameters
+                value:
+                  timestamp: '2024-01-01T06:00:00'
+                  geodetic_latitude: 51.04
+                  geodetic_longitude: -114.5
+                  output:
+                    height_integrated_rayleighs_4278: true
+                    height_integrated_rayleighs_5577: true
+                    height_integrated_rayleighs_6300: true
+                    height_integrated_rayleighs_8446: true
+                    height_integrated_rayleighs_lbh: true
+                    height_integrated_rayleighs_1304: true
+                    height_integrated_rayleighs_1356: true
+                    altitudes: true
+                    emission_4278: true
+                    emission_5577: true
+                    emission_6300: true
+                    emission_8446: true
+                    emission_lbh: true
+                    emission_1304: true
+                    emission_1356: true
+                    plasma_electron_density: true
+                    plasma_o2plus_density: true
+                    plasma_oplus_density: true
+                    plasma_noplus_density: true
+                    plasma_ionisation_rate: true
+                    plasma_electron_temperature: true
+                    plasma_ion_temperature: true
+                    plasma_pederson_conductivity: true
+                    plasma_hall_conductivity: true
+                    neutral_o2_density: true
+                    neutral_o_density: true
+                    neutral_n2_density: true
+                    neutral_n_density: true
+                    neutral_temperature: true
+                  no_cache: false
+              example2:
+                summary: A simple example without using the cache
+                description: A simple example without using the cache
+                value:
+                  timestamp: '2024-01-01T06:00:00'
+                  geodetic_latitude: 51.04
+                  geodetic_longitude: -114.5
+                  output:
+                    height_integrated_rayleighs_4278: true
+                    height_integrated_rayleighs_5577: true
+                    height_integrated_rayleighs_6300: true
+                    height_integrated_rayleighs_8446: true
+                    height_integrated_rayleighs_lbh: true
+                    height_integrated_rayleighs_1304: true
+                    height_integrated_rayleighs_1356: true
+                    altitudes: true
+                  no_cache: true
+        required: true
+      responses:
+        '200':
+          description: Calculated outputs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/src__atm__v1__schemas_forward__ATMForwardResponse'
+        '400':
+          description: Problematic request made
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Data generation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/atm/inverse:
+    post:
+      tags:
+      - Auroral Transport Model (ATM)
+      summary: Perform inverse ATM calculation
+      description: "Perform an inverse calculation using **VERSION 1** of the TREx Auroral Transport Model\
+        \ and the supplied \ninput parameters.\n\nInput notes:\n  - timestamp\n    - timestamp is expected\
+        \ to be in UTC\n    - only specific dates are valid at this time. A 400 error will be returned\
+        \ if an unsupported date is\n      requested. If you want to get a date that we have not enabled\
+        \ support for yet, please contact us.\n    - the 'Z' character at the end of the timestamp is\
+        \ optional, and will be ignored if it is supplied\n  - latitude and longitude\n    - are to be\
+        \ in geodetic coordinates\n    - latitude is currently limited to >=50.0 and <61.5 degrees\n \
+        \   - longitude is currently limited >=-110 and <-70 and degrees\n  - valid values for nrlmsis_model_version\
+        \ are '00' and '2.0'\n  - valid values for precipitation_flux_spectral_type are 'gaussian' and\
+        \ 'maxwellian'\n  - intensity parameters are expected to be height-integrated values, and in Rayleighs\n\
+        \  - by default requests are cached; use the 'no_cache' parameter to disable this functionality\n\
+        \nOutput notes:\n  - output parameter of the request are toggles the enable/disable each field's\
+        \ inclusion in the response\n  - all output parameters are false by default\n  - altitude is in\
+        \ kilometers\n  - energy flux: erg/cm2/s\n  - characteristic energy: eV\n  - emission data: 1-D\
+        \ array -- volume emission rate (1/cm^3/s)\n  - plasma electron density: 1-D array -- density\
+        \ (cm^-3)\n  - plasma O2+ density: 1-D array -- density (cm^-3)\n  - plasma NO+ density: 1-D array\
+        \ -- density (cm^-3)\n  - plasma O+ density: 1-D array -- density (cm^-3)\n  - plasma ionisation\
+        \ rate: 1-D array -- ionisation rate (1/cm^3/s)\n  - plasma electron temperature: 1-D array --\
+        \ temperature (K)\n  - plasma ion temperature: 1-D array -- temperature (K)\n  - plasma peterson\
+        \ conductivity: 1-D array -- conductivity (S/m)\n  - plasma hall conductivity: 1-D array -- conductivity\
+        \ (S/m)\n  - neutral O2 density: 1-D array -- density (cm^-3)\n  - neutral O density: 1-D array\
+        \ -- density (cm^-3)\n  - neutral N2 density: 1-D array -- density (cm^-3)\n  - neutral N density:\
+        \ 1-D array -- density (cm^-3)\n  - neutral temperature: 1-D array -- temperature (K)"
+      operationId: atm_inverse_api_v1_atm_inverse_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/src__atm__v1__schemas_inverse__ATMInverseRequest'
+            examples:
+              base:
+                summary: Default request object
+                description: Default field values, adjust accordingly
+                value:
+                  atm_model_version: '1.0'
+                  timestamp: '2024-10-01T06:00:00'
+                  geodetic_latitude: 0
+                  geodetic_longitude: 0
+                  intensity_4278: 1000
+                  intensity_5577: 6000
+                  intensity_6300: 600
+                  intensity_8446: 400
+                  precipitation_flux_spectral_type: gaussian
+                  nrlmsis_model_version: '2.0'
+                  atmospheric_attenuation_correction: false
+                  output:
+                    altitudes: false
+                    energy_flux: false
+                    characteristic_energy: false
+                    oxygen_correction_factor: false
+                    height_integrated_rayleighs_4278: false
+                    height_integrated_rayleighs_5577: false
+                    height_integrated_rayleighs_6300: false
+                    height_integrated_rayleighs_8446: false
+                    emission_4278: false
+                    emission_5577: false
+                    emission_6300: false
+                    emission_8446: false
+                    plasma_electron_density: false
+                    plasma_o2plus_density: false
+                    plasma_oplus_density: false
+                    plasma_noplus_density: false
+                    plasma_ionisation_rate: false
+                    plasma_electron_temperature: false
+                    plasma_ion_temperature: false
+                    plasma_pederson_conductivity: false
+                    plasma_hall_conductivity: false
+                    neutral_o2_density: false
+                    neutral_o_density: false
+                    neutral_n2_density: false
+                    neutral_n_density: false
+                    neutral_temperature: false
+                  no_cache: false
+              example0:
+                summary: A simple example
+                description: A simple example
+                value:
+                  timestamp: '2024-01-01T06:00:00'
+                  geodetic_latitude: 58.28
+                  geodetic_longitude: -103.68
+                  intensity_4278: 2300
+                  intensity_5577: 11400
+                  intensity_6300: 530
+                  intensity_8446: 427
+                  output:
+                    altitudes: true
+                    energy_flux: true
+                    characteristic_energy: true
+                    oxygen_correction_factor: true
+              example1:
+                summary: A simple example with all output parameters
+                description: A simple example with all output parameters
+                value:
+                  timestamp: '2024-01-01T06:00:00'
+                  geodetic_latitude: 58.28
+                  geodetic_longitude: -103.68
+                  intensity_4278: 2300
+                  intensity_5577: 11400
+                  intensity_6300: 530
+                  intensity_8446: 427
+                  output:
+                    altitudes: true
+                    energy_flux: true
+                    characteristic_energy: true
+                    oxygen_correction_factor: true
+                    height_integrated_rayleighs_4278: true
+                    height_integrated_rayleighs_5577: true
+                    height_integrated_rayleighs_6300: true
+                    height_integrated_rayleighs_8446: true
+                    emission_4278: true
+                    emission_5577: true
+                    emission_6300: true
+                    emission_8446: true
+                    plasma_electron_density: true
+                    plasma_o2plus_density: true
+                    plasma_oplus_density: true
+                    plasma_noplus_density: true
+                    plasma_ionisation_rate: true
+                    plasma_electron_temperature: true
+                    plasma_ion_temperature: true
+                    plasma_pederson_conductivity: true
+                    plasma_hall_conductivity: true
+                    neutral_o2_density: true
+                    neutral_o_density: true
+                    neutral_n2_density: true
+                    neutral_n_density: true
+                    neutral_temperature: true
+              example2:
+                summary: A simple example without using the cache
+                description: A simple example without using the cache
+                value:
+                  timestamp: '2024-01-01T06:00:00'
+                  geodetic_latitude: 58.28
+                  geodetic_longitude: -103.68
+                  intensity_4278: 2300
+                  intensity_5577: 11400
+                  intensity_6300: 530
+                  intensity_8446: 427
+                  output:
+                    altitudes: true
+                    energy_flux: true
+                    characteristic_energy: true
+                    oxygen_correction_factor: true
+                  no_cache: true
+        required: true
+      responses:
+        '200':
+          description: Calculated outputs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/src__atm__v1__schemas_inverse__ATMInverseResponse'
+        '400':
+          description: Problematic request made
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Data generation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v2/atm/forward:
+    post:
+      tags:
+      - Auroral Transport Model (ATM)
+      summary: Perform forward ATM calculation
+      description: "Perform a forward calculation using **VERSION 2** of the TREx Auroral Transport Model\
+        \ and the supplied \ninput parameters.\n\n**NOTE**: As of API version 1.41.0 (released 2026-01-30),\
+        \ the `height_integrated_rayleighs_lbh` and \n`emission_lbh` output flags have been renamed to\
+        \ `height_integrated_rayleighs_smile_uvi_lbh` and \n`emission_smile_uvi_lbh`. Further, the `plasma_pederson_conductivity`\
+        \ output flag has been renamed to \n`plasma_pedersen_conductivity`. The original names will be\
+        \ removed in a later release to be determined.\n\nInput notes:\n  - By default requests are cached.\
+        \ Use the 'no_cache' parameter to disable this functionality\n  - Latitude and longitude are to\
+        \ be in geodetic coordinates (-90 to 90 lat, -180 to 180 lon)\n  - Timestamp\n    - timestamp\
+        \ is expected to be in UTC, and is valid for any value up to the end of the previous day\n   \
+        \ - the 'Z' character at the end of the timestamp is optional, and will be ignored if it is supplied\n\
+        \  - Spectral shapes\n    - If the maxwellian_energy_flux is not 0, then maxwellian_characteristic_energy\
+        \ will be used. If\n      maxwellian_characteristic_energy is not specified, then the default\
+        \ will be used.\n    - If the gaussian_energy_flux is not 0, then gaussian_peak_energy and gaussian_spectral_width\
+        \ will be\n      used. If these two values are not specified, then the defaults will be used.\
+        \ \n    - If kappa_energy_flux is not 0, then kappa_mean_energy and kappa_k_index will be used.\
+        \ If these two \n      values are not specified, then the defaults will be used.\n    - If exponential_energy_flux\
+        \ is not 0, then exponential_characteristic_energy and exponential_starting_energy\n      will\
+        \ be used. If these two values are not specified, then the defaults will be used.\n    - **IMPORTANT**:\
+        \ All the above spectral shapes are super-imposable except exponential. The exponential spectrum\
+        \ \n      should be only be used for high-energy tail and, starting from E0 (proton_starting_energy),\
+        \ will override any \n      other spectral specification.\n  - If proton_energy_flux is not 0,\
+        \ then proton_characteristic_energy will be used. If the \n    proton_characteristic_energy is\
+        \ not specified, then the default will be used.\n  - The ATM model is 1D and time-independent.\
+        \ However, the optional parameters timescale_auroral and \n    timescale_transport provide limited\
+        \ support for time-dependent and transport process.\n      - timescale_auroral (T0) is the duration\
+        \ of the precipitation; default value is 600 sec\n      - timescale_transport is defined by L/v0,\
+        \ in which L is the dimension of the auroral structure, \n        and v0 is the cross-structure\
+        \ drift speed. Default value is 600 sec.\n      - the model quasi-analytically solves the continuity\
+        \ equation under a square input (with time \n        duration T0 and spatial width L) input of\
+        \ precipitation. The initial/boundary conditions are \n        given by IRI. The output yields\
+        \ the mean density/VER over [0-L] at time T0.\n  - **NOTE**: proton precipitation is presently\
+        \ only for ionization rate and density calculations. Proton auroras are \n    not nominal TREx\
+        \ characteristics and currently not computed in this version of the model.\n  - Units and defaults\n\
+        \    - maxwellian total energy flux: erg/cm2/s, default is 10 \n    - maxwellian characteristic\
+        \ energy: eV, default is 5000 \n    - gaussian total energy flux: erg/cm2/s, default is 0 (indicating\
+        \ all gaussian parameters are disabled) \n    - gaussian peak energy: eV, default is 1000\n  \
+        \  - gaussian spectral width: eV, default is 100\n    - kappa total energy flux: erg/cm2/s, default\
+        \ is 0 (indicating all kappa parameters are disabled) \n    - kappa mean energy: eV, default is\
+        \ 30000\n    - kappa k-index: no unit, default is 5\n    - exponential total energy flux: erg/cm2/s,\
+        \ default is 0 (indicating all exponential parameters are disabled) \n    - exponential characteristic\
+        \ energy: eV, default is 50000\n    - exponential starting energy: eV, default is 50000\n    -\
+        \ proton total energy flux: erg/cm2/s, default is 0 (indicating all proton parameters are disabled)\
+        \ \n    - proton characteristic energy: eV, default is 10000\n    - d-region flag: defaults to\
+        \ false\n    - custom spectrum (precipitation) \n      - energy in eV, flux in 1/cm2/s/eV \n \
+        \     - energy and flux arrays must be the same length \n      - users are responsible for fully\
+        \ covering the energy range of interest in the provided spectrum. The model \n        only performs\
+        \ interpolation, not extrapolation.\n    - custom neutral profile \n      - altitude in km, density\
+        \ in cm^-3, temperature in K. \n      - users are responsible for fully covering the altitude\
+        \ range of interest in the provided profile (80-800 km \n        if d_region_flag=0, or 50-500\
+        \ km if d_region_flag=1). The model only performs interpolation, not extrapolation.\n    - nrlmsis_model_version:\
+        \ valid values are \"00\" and \"2.0\", default is \"2.0\"\n    - oxygen_correction_factor: default\
+        \ is 1.0\n    - timescale_auroral: seconds, default is 600 \n    - timescale_transport: seconds,\
+        \ default is 600\n\nOutput notes:\n  - output parameter of the request are toggles the enable/disable\
+        \ each field's inclusion in the response\n  - all output parameters are false by default\n  -\
+        \ altitude: kilometers\n  - emission data: 1-D arrays -- volume emission rate, 1/cm^3/s\n  - plasma\
+        \ electron density: 1-D array, cm^-3\n  - plasma O2+ density: 1-D array, cm^-3\n  - plasma NO+\
+        \ density: 1-D array, cm^-3\n  - plasma O+ density: 1-D array, cm^-3\n  - plasma ionisation rate:\
+        \ 1-D array, 1/cm^3/s\n  - plasma electron temperature: 1-D array, K\n  - plasma ion temperature:\
+        \ 1-D array, K\n  - plasma pedersen conductivity: 1-D array, S/m\n  - plasma hall conductivity:\
+        \ 1-D array, S/m\n  - neutral O2 density: 1-D array, cm^-3\n  - neutral O density: 1-D array,\
+        \ cm^-3\n  - neutral N2 density: 1-D array, cm^-3\n  - neutral N density: 1-D array, cm^-3\n \
+        \ - neutral temperature: 1-D array, K\n  - production_rate_o2plus: 1-D array, 1/cm^3/s\n  - production_rate_oplus:\
+        \ 1-D array, 1/cm^3/s\n  - production_rate_oneg: 1-D array, 1/cm^3/s\n  - production_rate_o: 1-D\
+        \ array, 1/cm^3/s\n  - production_rate_nplus: 1-D array, 1/cm^3/s\n  - production_rate_n2plus:\
+        \ 1-D array, 1/cm^3/s\n  - production_rate_n: 1-D array, 1/cm^3/s\n  - production_rate_n2d: 1-D\
+        \ array, 1/cm^3/s"
+      operationId: atm_forward_api_v2_atm_forward_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/src__atm__v2__schemas_forward__ATMForwardRequest'
+            examples:
+              base:
+                summary: Default request object
+                description: Default field values, adjust accordingly
+                value:
+                  timestamp: '2024-01-01T06:00:00'
+                  geodetic_latitude: 0
+                  geodetic_longitude: 0
+                  maxwellian_energy_flux: 10.0
+                  maxwellian_characteristic_energy: 5000.0
+                  gaussian_energy_flux: 0.0
+                  gaussian_peak_energy: 1000.0
+                  gaussian_spectral_width: 100.0
+                  kappa_energy_flux: 0.0
+                  kappa_mean_energy: 30000.0
+                  kappa_k_index: 5.0
+                  exponential_energy_flux: 0.0
+                  exponential_characteristic_energy: 50000.0
+                  exponential_starting_energy: 50000.0
+                  proton_energy_flux: 0.0
+                  proton_characteristic_energy: 10000.0
+                  d_region: false
+                  nrlmsis_model_version: '2.0'
+                  oxygen_correction_factor: 1.0
+                  timescale_auroral: 600
+                  timescale_transport: 600
+                  custom_spectrum:
+                    energy: []
+                    flux: []
+                  custom_neutral_profile:
+                    altitude: []
+                    o_density: []
+                    o2_density: []
+                    n2_density: []
+                    n_density: []
+                    no_density: []
+                    temperature: []
+                  output:
+                    height_integrated_rayleighs_4278: false
+                    height_integrated_rayleighs_5577: false
+                    height_integrated_rayleighs_6300: false
+                    height_integrated_rayleighs_8446: false
+                    height_integrated_rayleighs_1304: false
+                    height_integrated_rayleighs_1356: false
+                    height_integrated_rayleighs_smile_uvi_lbh: false
+                    altitudes: false
+                    emission_4278: false
+                    emission_5577: false
+                    emission_6300: false
+                    emission_8446: false
+                    emission_1304: false
+                    emission_1356: false
+                    emission_smile_uvi_lbh: false
+                    plasma_electron_density: false
+                    plasma_o2plus_density: false
+                    plasma_oplus_density: false
+                    plasma_noplus_density: false
+                    plasma_ionisation_rate: false
+                    plasma_electron_temperature: false
+                    plasma_ion_temperature: false
+                    plasma_pedersen_conductivity: false
+                    plasma_hall_conductivity: false
+                    neutral_o2_density: false
+                    neutral_o_density: false
+                    neutral_n2_density: false
+                    neutral_n_density: false
+                    neutral_temperature: false
+                    production_rate_o2plus: false
+                    production_rate_oplus: false
+                    production_rate_oneg: false
+                    production_rate_o: false
+                    production_rate_nplus: false
+                    production_rate_n2plus: false
+                    production_rate_n: false
+                    production_rate_n2d: false
+                  no_cache: false
+              example0:
+                summary: A simple example
+                description: A simple example
+                value:
+                  timestamp: '2024-01-01T06:00:00'
+                  geodetic_latitude: 51.04
+                  geodetic_longitude: -114.5
+                  output:
+                    height_integrated_rayleighs_4278: true
+                    height_integrated_rayleighs_5577: true
+                    height_integrated_rayleighs_6300: true
+                    height_integrated_rayleighs_8446: true
+                    height_integrated_rayleighs_1304: true
+                    height_integrated_rayleighs_1356: true
+                    height_integrated_rayleighs_smile_uvi_lbh: true
+                    altitudes: true
+              example1:
+                summary: A simple example with all output parameters
+                description: A simple example with all output parameters
+                value:
+                  timestamp: '2024-01-01T06:00:00'
+                  geodetic_latitude: 51.04
+                  geodetic_longitude: -114.5
+                  output:
+                    height_integrated_rayleighs_4278: true
+                    height_integrated_rayleighs_5577: true
+                    height_integrated_rayleighs_6300: true
+                    height_integrated_rayleighs_8446: true
+                    height_integrated_rayleighs_1304: true
+                    height_integrated_rayleighs_1356: true
+                    height_integrated_rayleighs_smile_uvi_lbh: true
+                    altitudes: true
+                    emission_4278: true
+                    emission_5577: true
+                    emission_6300: true
+                    emission_8446: true
+                    emission_1304: true
+                    emission_1356: true
+                    emission_smile_uvi_lbh: true
+                    plasma_electron_density: true
+                    plasma_o2plus_density: true
+                    plasma_oplus_density: true
+                    plasma_noplus_density: true
+                    plasma_ionisation_rate: true
+                    plasma_electron_temperature: true
+                    plasma_ion_temperature: true
+                    plasma_pedersen_conductivity: true
+                    plasma_hall_conductivity: true
+                    neutral_o2_density: true
+                    neutral_o_density: true
+                    neutral_n2_density: true
+                    neutral_n_density: true
+                    neutral_temperature: true
+                  no_cache: false
+              example2:
+                summary: A simple example without using the cache
+                description: A simple example without using the cache
+                value:
+                  timestamp: '2024-01-01T06:00:00'
+                  geodetic_latitude: 51.04
+                  geodetic_longitude: -114.5
+                  output:
+                    height_integrated_rayleighs_4278: true
+                    height_integrated_rayleighs_5577: true
+                    height_integrated_rayleighs_6300: true
+                    height_integrated_rayleighs_8446: true
+                    height_integrated_rayleighs_1304: true
+                    height_integrated_rayleighs_1356: true
+                    height_integrated_rayleighs_smile_uvi_lbh: true
+                    altitudes: true
+                  no_cache: true
+        required: true
+      responses:
+        '200':
+          description: Calculated outputs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/src__atm__v2__schemas_forward__ATMForwardResponse'
+        '400':
+          description: Problematic request made
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Data generation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v2/atm/inverse:
+    post:
+      tags:
+      - Auroral Transport Model (ATM)
+      summary: Perform inverse ATM calculation
+      description: "Perform an inverse calculation using **VERSION 2** of the TREx Auroral Transport Model\
+        \ and the supplied \ninput parameters.\n\n**NOTE**: This version of the model no longer provides\
+        \ extended outputs which are derived when doing a \nsubsequent forward request after the inversion\
+        \ determines the energy flux. Instead, we leave this up\nto the user to perform the forward request\
+        \ using the parameters of their choosing. This was done to \nallow further customization of the\
+        \ forward requests which use inversion-derived inputs.\n\n**NOTE**: As of API version 1.38.0 (released\
+        \ 2025-09-10), the `characteristic_energy` output flag has been\ndeprecated. Please use `mean_energy`\
+        \ instead. The characteristic_energy flag will be removed in a later release\nto be determined.\n\
+        \nInput notes:\n  - By default requests are cached. Use the 'no_cache' parameter to disable this\
+        \ functionality\n  - Timestamp\n    - Timestamp is expected to be in UTC\n    - Only specific\
+        \ dates are valid at this time. A 400 error will be returned if an unsupported date is\n     \
+        \ requested. If you want to get a date that we have not enabled support for yet, please contact\
+        \ us.\n    - the 'Z' character at the end of the timestamp is optional, and will be ignored if\
+        \ it is supplied\n  - Latitude and longitude\n    - Expected to be in geodetic coordinates\n \
+        \   - latitude is currently limited to >=50.0 and <71.5 degrees\n    - longitude is currently\
+        \ limited >=-160 and <-75 and degrees\n  - Units and defaults\n    - intensity_4278: Rayleighs,\
+        \ default is 1000.0\n    - intensity_5577: Rayleighs, default is 6000.0\n    - intensity_6300:\
+        \ Rayleighs, default is 600.0\n    - intensity_8446: Rayleighs, default is 400.0\n    - precipitation_flux_spectral_type:\
+        \ valid values are \"gaussian\" or \"maxwellian\", default is \"gaussian\"\n    - nrlmsis_model_version:\
+        \ valid values are \"00\" and \"2.0\", default is \"2.0\"\n  - Special logic keyword\n    - If\
+        \ you would like special logic to be used, the special_logic_keyword parameter can be set with\
+        \ \n      a unique keyword provided by UCalgary staff. This is meant as a way to enable support\
+        \ for certain \n      special use-cases.\n\nOutput notes:\n  - output parameter of the request\
+        \ are toggles the enable/disable each field's inclusion in the response\n  - all output parameters\
+        \ are false by default\n  - altitude is in kilometers\n  - energy flux: erg/cm2/s\n  - mean energy:\
+        \ eV"
+      operationId: atm_inverse_api_v2_atm_inverse_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/src__atm__v2__schemas_inverse__ATMInverseRequest'
+            examples:
+              base:
+                summary: Default request object
+                description: Default field values, adjust accordingly
+                value:
+                  atm_model_version: '1.0'
+                  timestamp: '2024-10-01T06:00:00'
+                  geodetic_latitude: 0
+                  geodetic_longitude: 0
+                  intensity_4278: 1000
+                  intensity_5577: 6000
+                  intensity_6300: 600
+                  intensity_8446: 400
+                  precipitation_flux_spectral_type: gaussian
+                  nrlmsis_model_version: '2.0'
+                  special_logic_keyword: not_applicable
+                  output:
+                    altitudes: false
+                    energy_flux: false
+                    mean_energy: false
+                    oxygen_correction_factor: false
+                  no_cache: false
+              example0:
+                summary: A simple example
+                description: A simple example
+                value:
+                  timestamp: '2024-01-01T06:00:00'
+                  geodetic_latitude: 58.28
+                  geodetic_longitude: -103.68
+                  intensity_4278: 2300
+                  intensity_5577: 11400
+                  intensity_6300: 530
+                  intensity_8446: 427
+                  output:
+                    altitudes: true
+                    energy_flux: true
+                    mean_energy: true
+                    oxygen_correction_factor: true
+              example1:
+                summary: A simple example with all output parameters
+                description: A simple example with all output parameters
+                value:
+                  timestamp: '2024-01-01T06:00:00'
+                  geodetic_latitude: 58.28
+                  geodetic_longitude: -103.68
+                  intensity_4278: 2300
+                  intensity_5577: 11400
+                  intensity_6300: 530
+                  intensity_8446: 427
+                  output:
+                    altitudes: true
+                    energy_flux: true
+                    mean_energy: true
+                    oxygen_correction_factor: true
+              example2:
+                summary: A simple example without using the cache
+                description: A simple example without using the cache
+                value:
+                  timestamp: '2024-01-01T06:00:00'
+                  geodetic_latitude: 58.28
+                  geodetic_longitude: -103.68
+                  intensity_4278: 2300
+                  intensity_5577: 11400
+                  intensity_6300: 530
+                  intensity_8446: 427
+                  output:
+                    altitudes: true
+                    energy_flux: true
+                    mean_energy: true
+                    oxygen_correction_factor: true
+                  no_cache: true
+        required: true
+      responses:
+        '200':
+          description: Calculated outputs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/src__atm__v2__schemas_inverse__ATMInverseResponse'
+        '400':
+          description: Problematic request made
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Data generation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/utils/terminator:
+    get:
+      tags:
+      - Utilities
+      summary: Retrieve terminator coordinates
+      description: "Retrieve coordinates for the terminator. \n\nThe timestamp parameter should be supplied\
+        \ in the format \"YYYY-MM-DDTHH:mm:ss\". \nUTC is the expected timezone.\n\nThe angle parameter\
+        \ is used for retrieving the terminator for civil, nautical, \nor astronomical twilight. Use the\
+        \ values -6.0, -12.0, or -18.0 for each of these \nterminators, respectively.\n\nNotes:\n  - The\
+        \ algorithm does not account for altitude at this time\n  - By default requests are cached. Use\
+        \ the 'no_cache' parameter to disable this functionality."
+      operationId: get_terminator_api_v1_utils_terminator_get
+      parameters:
+      - name: timestamp
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Timestamp
+      - name: angle
+        in: query
+        required: false
+        schema:
+          type: number
+          default: -12.0
+          title: Angle
+      - name: no_cache
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: No Cache
+      responses:
+        '200':
+          description: Terminator coordinates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Terminator'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/utils/magnetic_grid:
+    get:
+      tags:
+      - Utilities
+      summary: Retrieve geomagnetic coordinate grid
+      description: "Retrieve a geomagnetic coordinate grid for a given timestamp.\n\nThe timestamp parameter\
+        \ should be supplied in the format \"YYYY-MM-DDTHH:mm:ss\". \nUTC is the expected timezone.\n\n\
+        The grid consists of meridian lines (constant magnetic longitude, \"vertical\") and parallel lines\n\
+        (constant magnetic latitude, \"horizontal\") for both northern and southern hemispheres.\n\nNotes\n\
+        \  - The resolution_lon and resolution_lat parameters control the spacing (in degrees) between\n\
+        magnetic longitude and latitude lines, respectively. Lower values produce a denser grid.\n  -\
+        \ By default requests are cached. Use the 'no_cache' parameter to disable this functionality."
+      operationId: get_magnetic_grid_api_v1_utils_magnetic_grid_get
+      parameters:
+      - name: timestamp
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Timestamp
+      - name: resolution_lon
+        in: query
+        required: false
+        schema:
+          type: number
+          default: 10.0
+          title: Resolution Lon
+      - name: resolution_lat
+        in: query
+        required: false
+        schema:
+          type: number
+          default: 5.0
+          title: Resolution Lat
+      - name: min_latitude
+        in: query
+        required: false
+        schema:
+          type: number
+          default: 50.0
+          title: Min Latitude
+      - name: altitude_km
+        in: query
+        required: false
+        schema:
+          type: number
+          default: 0.0
+          title: Altitude Km
+      - name: no_cache
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: No Cache
+      responses:
+        '200':
+          description: Geomagnetic grid in geographic coordinates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MagneticGrid'
+        '400':
+          description: Problematic request made
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ops/sitl/arctics/data_products:
+    get:
+      tags:
+      - Operations - SITL
+      summary: Retrieve ARCTICS SITL data products
+      operationId: get_data_products_api_v1_ops_sitl_arctics_data_products_get
+      security:
+      - HTTPBearer: []
+      - APIKeyHeader: []
+      parameters:
+      - name: date
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+          title: Date
+      - name: site_uid
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Site Uid
+      - name: device_uid
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Device Uid
+      responses:
+        '200':
+          description: ARCTICS SITL data products for a given day
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ARCTICSDataProductsResponse'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: The supplied credentials do not permit access to this endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ops/sitl/arctics/keep_times:
+    get:
+      tags:
+      - Operations - SITL
+      summary: Retrieve timeframes to keep ARCTICS data for
+      operationId: get_keep_times_api_v1_ops_sitl_arctics_keep_times_get
+      security:
+      - HTTPBearer: []
+      - APIKeyHeader: []
+      parameters:
+      - name: start
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Start
+      - name: end
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: End
+      - name: site_uid
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Site Uid
+      - name: device_uid
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Device Uid
+      - name: instrument_uid
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Instrument Uid
+      responses:
+        '200':
+          description: ARCTICS saved timeframes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ARCTICSKeepTimeframe'
+                title: Response Get Keep Times Api V1 Ops Sitl Arctics Keep Times Get
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: The supplied credentials do not permit access to this endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Operations - SITL
+      summary: Upload a timeframe to keep ARCTICS data for
+      description: Upload a timeframe to keep ARCTICS data for.
+      operationId: upload_timeframe_api_v1_ops_sitl_arctics_keep_times_post
+      security:
+      - HTTPBearer: []
+      - APIKeyHeader: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ARCTICSUploadTimeframeRequest'
+      responses:
+        '201':
+          description: Timeframe successfully ingested
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: The supplied credentials do not permit access to this endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Timeframe upload error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Operations - SITL
+      summary: Delete a timeframe to keep ARCTICS data for
+      description: Delete a timeframe to keep ARCTICS data for.
+      operationId: delete_timeframe_api_v1_ops_sitl_arctics_keep_times_delete
+      security:
+      - HTTPBearer: []
+      - APIKeyHeader: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ARCTICSDeleteTimeframeRequest'
+      responses:
+        '200':
+          description: Timeframe successfully deleted
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: The supplied credentials do not permit access to this endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Timeframe to delete was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Timeframe deletion error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ops/sitl/logging:
+    post:
+      tags:
+      - Operations - SITL
+      summary: Upload a SITL log event
+      description: "Upload a SITL log message.\n\nNotes:\n  - Possible values for category: arctics, trex_rgb_burst\n\
+        \  - Possible values for level: debug, info, warning, error"
+      operationId: upload_log_messages_api_v1_ops_sitl_logging_post
+      security:
+      - HTTPBearer: []
+      - APIKeyHeader: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/SITLLogMessage'
+              title: Request Obj
+      responses:
+        '201':
+          description: Log message successfully ingested
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: The supplied credentials do not permit access to this endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Log message upload error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Operations - SITL
+      summary: Retrieve SITL log events
+      description: "Retrieve SITL log messages.\n\nNotes:\n  - ordering key is 'timestamp'\n  - if level\
+        \ parameter is not supplied, it will return log messages from all levels"
+      operationId: get_log_messages_api_v1_ops_sitl_logging_get
+      security:
+      - HTTPBearer: []
+      - APIKeyHeader: []
+      parameters:
+      - name: start
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Start
+      - name: end
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: End
+      - name: category
+        in: query
+        required: true
+        schema:
+          enum:
+          - arctics
+          - trex_rgb_burst
+          type: string
+          title: Category
+      - name: level
+        in: query
+        required: false
+        schema:
+          nullable: true
+          enum:
+          - debug
+          - info
+          - warning
+          - error
+          type: string
+          title: Level
+      - name: order
+        in: query
+        required: false
+        schema:
+          enum:
+          - ascending
+          - descending
+          type: string
+          default: ascending
+          title: Order
+      responses:
+        '200':
+          description: SITL log events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SITLLogMessage'
+                title: Response Get Log Messages Api V1 Ops Sitl Logging Get
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: The supplied credentials do not permit access to this endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Log message retrieval error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/rt:
+    get:
+      tags:
+      - Real-Time Data
+      summary: List available real-time data streams
+      description: 'Retrieve a list of all available real-time data streams.
+
+
+        Optional query parameters can be used to filter results. All filters
+
+        use case-insensitive partial matching.'
+      operationId: get_rt_streams_api_v1_rt_get
+      parameters:
+      - name: network
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Network
+      - name: site_uid
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Site Uid
+      - name: id
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Id
+      responses:
+        '200':
+          description: List of available real-time data streams
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RTStreamListing'
+        '500':
+          description: Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/rt/ws/info:
+    get:
+      tags:
+      - Real-Time Data
+      summary: WebSocket endpoint connection information
+      description: 'Retrieve connection details and protocol documentation for the real-time
+
+        data WebSocket endpoint.
+
+
+        The WebSocket endpoint itself is at `/api/v1/rt/ws` and is not shown in
+
+        the OpenAPI schema because WebSocket routes are not part of the OpenAPI
+
+        specification. This endpoint provides the protocol documentation instead.'
+      operationId: get_rt_websocket_info_api_v1_rt_ws_info_get
+      responses:
+        '200':
+          description: WebSocket protocol documentation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RTWebSocketInfo'
+        '500':
+          description: Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /api/v1/rt/{id}/latest:
+    get:
+      tags:
+      - Real-Time Data
+      summary: Retrieve latest data for a real-time stream
+      description: "Retrieve the latest data for a given real-time data stream.\n\nNotes:\n  - The `id`\
+        \ can be determined by using the stream listing endpoint.\n  - The response content type depends\
+        \ on the stream's mimetype (e.g., image/jpeg).\n  - Data is sourced from the database, populated\
+        \ by the RT ingester services.\n  - The response includes an `x-rt-stream-last-updated-utc` header\
+        \ with the ISO 8601 UTC timestamp of when the stream data was last updated."
+      operationId: get_rt_stream_latest_api_v1_rt__id__latest_get
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Id
+      - name: countdown_clock
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Show countdown clock when not imaging
+          default: false
+          title: Countdown Clock
+        description: Show countdown clock when not imaging
+      responses:
+        '200':
+          description: Latest stream data
+        '404':
+          description: Stream ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: No data available or failed to retrieve from data source
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ARCTICSDataProductsResponse:
+      properties:
+        date:
+          type: string
+          format: date
+          title: Date
+        site_uid:
+          type: string
+          title: Site Uid
+        device_uid:
+          type: string
+          title: Device Uid
+        dp_daily_keogram:
+          nullable: true
+          $ref: '#/components/schemas/ARCTICSKeogramRecord'
+        dp_hourly_keograms:
+          items:
+            $ref: '#/components/schemas/ARCTICSKeogramRecord'
+          type: array
+          title: Dp Hourly Keograms
+          default: []
+        dp_daily_montage:
+          nullable: true
+          $ref: '#/components/schemas/ARCTICSMontageRecord'
+        dp_hourly_montages:
+          items:
+            $ref: '#/components/schemas/ARCTICSMontageRecord'
+          type: array
+          title: Dp Hourly Montages
+          default: []
+        dp_daily_movie_lowres:
+          nullable: true
+          $ref: '#/components/schemas/ARCTICSMovieRecord'
+      type: object
+      required:
+      - date
+      - site_uid
+      - device_uid
+      title: ARCTICSDataProductsResponse
+    ARCTICSDeleteTimeframeRequest:
+      properties:
+        start:
+          type: string
+          format: date-time
+          title: Start
+        end:
+          type: string
+          format: date-time
+          title: End
+        instrument_uid:
+          type: string
+          enum:
+          - smile
+          title: Instrument Uid
+        site_uid:
+          type: string
+          title: Site Uid
+        device_uid:
+          type: string
+          title: Device Uid
+      type: object
+      required:
+      - start
+      - end
+      - instrument_uid
+      - site_uid
+      - device_uid
+      title: ARCTICSDeleteTimeframeRequest
+    ARCTICSKeepTimeframe:
+      properties:
+        start:
+          type: string
+          format: date-time
+          title: Start
+        end:
+          type: string
+          format: date-time
+          title: End
+        site_uid:
+          type: string
+          title: Site Uid
+        device_uid:
+          type: string
+          title: Device Uid
+        instrument_uid:
+          type: string
+          enum:
+          - smile
+          title: Instrument Uid
+        last_updated_user:
+          type: string
+          title: Last Updated User
+        last_updated_ts:
+          type: string
+          format: date-time
+          title: Last Updated Ts
+      type: object
+      required:
+      - start
+      - end
+      - site_uid
+      - device_uid
+      - instrument_uid
+      - last_updated_user
+      - last_updated_ts
+      title: ARCTICSKeepTimeframe
+    ARCTICSKeogramRecord:
+      properties:
+        url:
+          type: string
+          title: Url
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        modified_time:
+          type: string
+          format: date-time
+          title: Modified Time
+        filesize_bytes:
+          type: integer
+          title: Filesize Bytes
+        filesize_str:
+          type: string
+          title: Filesize Str
+      type: object
+      required:
+      - url
+      - timestamp
+      - modified_time
+      - filesize_bytes
+      - filesize_str
+      title: ARCTICSKeogramRecord
+    ARCTICSMontageRecord:
+      properties:
+        url:
+          type: string
+          title: Url
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        modified_time:
+          type: string
+          format: date-time
+          title: Modified Time
+        filesize_bytes:
+          type: integer
+          title: Filesize Bytes
+        filesize_str:
+          type: string
+          title: Filesize Str
+      type: object
+      required:
+      - url
+      - timestamp
+      - modified_time
+      - filesize_bytes
+      - filesize_str
+      title: ARCTICSMontageRecord
+    ARCTICSMovieRecord:
+      properties:
+        url:
+          type: string
+          title: Url
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        modified_time:
+          type: string
+          format: date-time
+          title: Modified Time
+        filesize_bytes:
+          type: integer
+          title: Filesize Bytes
+        filesize_str:
+          type: string
+          title: Filesize Str
+        duration_seconds:
+          type: number
+          title: Duration Seconds
+        duration_str:
+          type: string
+          title: Duration Str
+      type: object
+      required:
+      - url
+      - timestamp
+      - modified_time
+      - filesize_bytes
+      - filesize_str
+      - duration_seconds
+      - duration_str
+      title: ARCTICSMovieRecord
+    ARCTICSUploadTimeframeRequest:
+      properties:
+        start:
+          type: string
+          format: date-time
+          title: Start
+        end:
+          type: string
+          format: date-time
+          title: End
+        instrument_uid:
+          type: string
+          enum:
+          - smile
+          title: Instrument Uid
+        site_uid:
+          type: string
+          title: Site Uid
+        device_uid:
+          type: string
+          title: Device Uid
+        username:
+          type: string
+          title: Username
+      type: object
+      required:
+      - start
+      - end
+      - instrument_uid
+      - site_uid
+      - device_uid
+      - username
+      title: ARCTICSUploadTimeframeRequest
+    ATMForwardCustomNeutralProfile:
+      properties:
+        altitude:
+          items:
+            anyOf:
+            - type: number
+            - type: integer
+          type: array
+          title: Altitude
+        o_density:
+          items:
+            type: number
+          type: array
+          title: O Density
+        o2_density:
+          items:
+            type: number
+          type: array
+          title: O2 Density
+        n2_density:
+          items:
+            type: number
+          type: array
+          title: N2 Density
+        n_density:
+          items:
+            type: number
+          type: array
+          title: N Density
+        no_density:
+          items:
+            type: number
+          type: array
+          title: No Density
+        temperature:
+          items:
+            anyOf:
+            - type: number
+            - type: integer
+          type: array
+          title: Temperature
+      type: object
+      required:
+      - altitude
+      - o_density
+      - o2_density
+      - n2_density
+      - n_density
+      - no_density
+      - temperature
+      title: ATMForwardCustomNeutralProfile
+    ATMForwardCustomSpectrum:
+      properties:
+        energy:
+          items:
+            type: number
+          type: array
+          title: Energy
+        flux:
+          items:
+            type: number
+          type: array
+          title: Flux
+      type: object
+      required:
+      - energy
+      - flux
+      title: ATMForwardCustomSpectrum
+    ATMInverseForwardRequest:
+      properties:
+        maxwellian_energy_flux:
+          type: number
+          title: Maxwellian Energy Flux
+        gaussian_energy_flux:
+          type: number
+          title: Gaussian Energy Flux
+        maxwellian_characteristic_energy:
+          type: number
+          title: Maxwellian Characteristic Energy
+        gaussian_peak_energy:
+          type: number
+          title: Gaussian Peak Energy
+        gaussian_spectral_width:
+          type: number
+          title: Gaussian Spectral Width
+        nrlmsis_model_version:
+          type: string
+          enum:
+          - '00'
+          - '2.0'
+          title: Nrlmsis Model Version
+        oxygen_correction_factor:
+          type: number
+          title: Oxygen Correction Factor
+        timescale_auroral:
+          type: integer
+          title: Timescale Auroral
+        timescale_transport:
+          type: integer
+          title: Timescale Transport
+      type: object
+      required:
+      - maxwellian_energy_flux
+      - gaussian_energy_flux
+      - maxwellian_characteristic_energy
+      - gaussian_peak_energy
+      - gaussian_spectral_width
+      - nrlmsis_model_version
+      - oxygen_correction_factor
+      - timescale_auroral
+      - timescale_transport
+      title: ATMInverseForwardRequest
+    Dataset:
+      properties:
+        name:
+          type: string
+          title: Name
+        short_description:
+          type: string
+          title: Short Description
+        long_description:
+          type: string
+          title: Long Description
+        data_tree_url:
+          type: string
+          title: Data Tree Url
+        file_listing_supported:
+          type: boolean
+          title: File Listing Supported
+        level:
+          type: string
+          title: Level
+        doi:
+          nullable: true
+          type: string
+          title: Doi
+        doi_details:
+          nullable: true
+          type: string
+          title: Doi Details
+        citation:
+          nullable: true
+          type: string
+          title: Citation
+        supported_libraries:
+          items:
+            type: string
+            enum:
+            - pyaurorax
+            - pyucrio
+            - idl-aurorax
+            - idl-ucrio
+            - pyucalgarysrs
+          type: array
+          title: Supported Libraries
+          default: []
+        file_time_resolution:
+          type: string
+          enum:
+          - 1min
+          - 1hr
+          - 1day
+          - not_applicable
+          title: File Time Resolution
+      type: object
+      required:
+      - name
+      - short_description
+      - long_description
+      - data_tree_url
+      - file_listing_supported
+      - level
+      - file_time_resolution
+      title: Dataset
+    DatasetLegacy1:
+      properties:
+        name:
+          type: string
+          title: Name
+        short_description:
+          type: string
+          title: Short Description
+        long_description:
+          type: string
+          title: Long Description
+        data_tree_url:
+          type: string
+          title: Data Tree Url
+        file_listing_supported:
+          type: boolean
+          title: File Listing Supported
+        level:
+          type: string
+          title: Level
+        doi:
+          nullable: true
+          type: string
+          title: Doi
+        doi_details:
+          nullable: true
+          type: string
+          title: Doi Details
+        citation:
+          nullable: true
+          type: string
+          title: Citation
+      type: object
+      required:
+      - name
+      - short_description
+      - long_description
+      - data_tree_url
+      - file_listing_supported
+      - level
+      title: DatasetLegacy1
+      description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
+    DatasetLegacy2:
+      properties:
+        name:
+          type: string
+          title: Name
+        short_description:
+          type: string
+          title: Short Description
+        long_description:
+          type: string
+          title: Long Description
+        data_tree_url:
+          type: string
+          title: Data Tree Url
+        file_listing_supported:
+          type: boolean
+          title: File Listing Supported
+        level:
+          type: string
+          title: Level
+        doi:
+          nullable: true
+          type: string
+          title: Doi
+        doi_details:
+          nullable: true
+          type: string
+          title: Doi Details
+        citation:
+          nullable: true
+          type: string
+          title: Citation
+        supported_libraries:
+          items:
+            type: string
+            enum:
+            - pyaurorax
+            - pyucrio
+            - idl-aurorax
+            - idl-ucrio
+            - pyucalgarysrs
+          type: array
+          title: Supported Libraries
+          default: []
+      type: object
+      required:
+      - name
+      - short_description
+      - long_description
+      - data_tree_url
+      - file_listing_supported
+      - level
+      title: DatasetLegacy2
+      description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
+    ErrorMessage:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: ErrorMessage
+    FileListingResponse:
+      properties:
+        urls:
+          items:
+            type: string
+          type: array
+          title: Urls
+        path_prefix:
+          type: string
+          title: Path Prefix
+        count:
+          type: integer
+          title: Count
+        total_bytes:
+          nullable: true
+          type: integer
+          title: Total Bytes
+        dataset:
+          anyOf:
+          - $ref: '#/components/schemas/Dataset'
+          - $ref: '#/components/schemas/DatasetLegacy1'
+          - $ref: '#/components/schemas/DatasetLegacy2'
+          title: Dataset
+      type: object
+      required:
+      - urls
+      - path_prefix
+      - count
+      - total_bytes
+      - dataset
+      title: FileListingResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ImagingTimeframeLocation:
+      properties:
+        site_uid:
+          nullable: true
+          type: string
+          title: Site Uid
+        geodetic_latitude:
+          nullable: true
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          nullable: true
+          type: number
+          title: Geodetic Longitude
+      type: object
+      title: ImagingTimeframeLocation
+    ImagingTimeframeResponse:
+      properties:
+        timestamp:
+          type: string
+          title: Timestamp
+        site_uid:
+          nullable: true
+          type: string
+          title: Site Uid
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+        imaging_start:
+          nullable: true
+          type: string
+          format: date-time
+          title: Imaging Start
+        imaging_end:
+          nullable: true
+          type: string
+          format: date-time
+          title: Imaging End
+      type: object
+      required:
+      - timestamp
+      - geodetic_latitude
+      - geodetic_longitude
+      title: ImagingTimeframeResponse
+    ImagingTimeframesRequest:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        locations:
+          items:
+            $ref: '#/components/schemas/ImagingTimeframeLocation'
+          type: array
+          title: Locations
+        threshold:
+          type: number
+          title: Threshold
+          default: 102.0
+      type: object
+      required:
+      - timestamp
+      - locations
+      title: ImagingTimeframesRequest
+    MagneticGrid:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        north:
+          $ref: '#/components/schemas/MagneticGridHemisphere'
+        south:
+          $ref: '#/components/schemas/MagneticGridHemisphere'
+      type: object
+      required:
+      - timestamp
+      - north
+      - south
+      title: MagneticGrid
+    MagneticGridHemisphere:
+      properties:
+        vertical:
+          items:
+            items:
+              items:
+                type: number
+              type: array
+            type: array
+          type: array
+          title: Vertical
+        horizontal:
+          items:
+            items:
+              items:
+                type: number
+              type: array
+            type: array
+          type: array
+          title: Horizontal
+      type: object
+      required:
+      - vertical
+      - horizontal
+      title: MagneticGridHemisphere
+    Observatory:
+      properties:
+        uid:
+          type: string
+          title: Uid
+        full_name:
+          type: string
+          title: Full Name
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+      type: object
+      required:
+      - uid
+      - full_name
+      - geodetic_latitude
+      - geodetic_longitude
+      title: Observatory
+    RTStreamListItem:
+      properties:
+        name:
+          type: string
+          title: Name
+        id:
+          type: string
+          title: Id
+        description:
+          type: string
+          title: Description
+        site_uid:
+          type: string
+          title: Site Uid
+        network:
+          type: string
+          title: Network
+        mimetype:
+          type: string
+          title: Mimetype
+      type: object
+      required:
+      - name
+      - id
+      - description
+      - site_uid
+      - network
+      - mimetype
+      title: RTStreamListItem
+    RTStreamListing:
+      properties:
+        streams:
+          items:
+            $ref: '#/components/schemas/RTStreamListItem'
+          type: array
+          title: Streams
+      type: object
+      required:
+      - streams
+      title: RTStreamListing
+    RTWebSocketInfo:
+      properties:
+        url:
+          type: string
+          title: Url
+        protocol:
+          type: string
+          title: Protocol
+        description:
+          type: string
+          title: Description
+        subscribe_message:
+          additionalProperties: true
+          type: object
+          title: Subscribe Message
+        unsubscribe_message:
+          additionalProperties: true
+          type: object
+          title: Unsubscribe Message
+        binary_format:
+          type: string
+          title: Binary Format
+        json_format:
+          additionalProperties: true
+          type: object
+          title: Json Format
+      type: object
+      required:
+      - url
+      - protocol
+      - description
+      - subscribe_message
+      - unsubscribe_message
+      - binary_format
+      - json_format
+      title: RTWebSocketInfo
+    SITLLogMessage:
+      properties:
+        category:
+          type: string
+          enum:
+          - arctics
+          - trex_rgb_burst
+          title: Category
+        level:
+          type: string
+          enum:
+          - debug
+          - info
+          - warning
+          - error
+          title: Level
+        timestamp:
+          nullable: true
+          type: string
+          format: date-time
+          title: Timestamp
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - category
+      - level
+      - message
+      title: SITLLogMessage
+    Terminator:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        coords:
+          items: {}
+          type: array
+          title: Coords
+      type: object
+      required:
+      - timestamp
+      - coords
+      title: Terminator
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    src__atm__v1__schemas_forward__ATMForwardRequest:
+      properties:
+        atm_model_version:
+          type: string
+          enum:
+          - '1.0'
+          title: Atm Model Version
+          default: '1.0'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+        maxwellian_energy_flux:
+          type: number
+          title: Maxwellian Energy Flux
+          default: 10.0
+        gaussian_energy_flux:
+          type: number
+          title: Gaussian Energy Flux
+          default: 0.0
+        maxwellian_characteristic_energy:
+          type: number
+          title: Maxwellian Characteristic Energy
+          default: 5000.0
+        gaussian_peak_energy:
+          type: number
+          title: Gaussian Peak Energy
+          default: 1000.0
+        gaussian_spectral_width:
+          type: number
+          title: Gaussian Spectral Width
+          default: 100.0
+        nrlmsis_model_version:
+          type: string
+          enum:
+          - '00'
+          - '2.0'
+          title: Nrlmsis Model Version
+          default: '2.0'
+        oxygen_correction_factor:
+          type: number
+          title: Oxygen Correction Factor
+          default: 1.0
+        timescale_auroral:
+          type: integer
+          title: Timescale Auroral
+          default: 600
+        timescale_transport:
+          type: integer
+          title: Timescale Transport
+          default: 600
+        custom_spectrum:
+          $ref: '#/components/schemas/ATMForwardCustomSpectrum'
+        output:
+          $ref: '#/components/schemas/src__atm__v1__schemas_forward__ATMForwardRequestOutputFlags'
+        no_cache:
+          type: boolean
+          title: No Cache
+          default: false
+      type: object
+      required:
+      - timestamp
+      - geodetic_latitude
+      - geodetic_longitude
+      title: ATMForwardRequest
+    src__atm__v1__schemas_forward__ATMForwardRequestOutputFlags:
+      properties:
+        height_integrated_rayleighs_4278:
+          type: boolean
+          title: Height Integrated Rayleighs 4278
+          default: false
+        height_integrated_rayleighs_5577:
+          type: boolean
+          title: Height Integrated Rayleighs 5577
+          default: false
+        height_integrated_rayleighs_6300:
+          type: boolean
+          title: Height Integrated Rayleighs 6300
+          default: false
+        height_integrated_rayleighs_8446:
+          type: boolean
+          title: Height Integrated Rayleighs 8446
+          default: false
+        height_integrated_rayleighs_lbh:
+          type: boolean
+          title: Height Integrated Rayleighs Lbh
+          default: false
+        height_integrated_rayleighs_1304:
+          type: boolean
+          title: Height Integrated Rayleighs 1304
+          default: false
+        height_integrated_rayleighs_1356:
+          type: boolean
+          title: Height Integrated Rayleighs 1356
+          default: false
+        altitudes:
+          type: boolean
+          title: Altitudes
+          default: false
+        emission_4278:
+          type: boolean
+          title: Emission 4278
+          default: false
+        emission_5577:
+          type: boolean
+          title: Emission 5577
+          default: false
+        emission_6300:
+          type: boolean
+          title: Emission 6300
+          default: false
+        emission_8446:
+          type: boolean
+          title: Emission 8446
+          default: false
+        emission_lbh:
+          type: boolean
+          title: Emission Lbh
+          default: false
+        emission_1304:
+          type: boolean
+          title: Emission 1304
+          default: false
+        emission_1356:
+          type: boolean
+          title: Emission 1356
+          default: false
+        plasma_electron_density:
+          type: boolean
+          title: Plasma Electron Density
+          default: false
+        plasma_o2plus_density:
+          type: boolean
+          title: Plasma O2Plus Density
+          default: false
+        plasma_oplus_density:
+          type: boolean
+          title: Plasma Oplus Density
+          default: false
+        plasma_noplus_density:
+          type: boolean
+          title: Plasma Noplus Density
+          default: false
+        plasma_ionisation_rate:
+          type: boolean
+          title: Plasma Ionisation Rate
+          default: false
+        plasma_electron_temperature:
+          type: boolean
+          title: Plasma Electron Temperature
+          default: false
+        plasma_ion_temperature:
+          type: boolean
+          title: Plasma Ion Temperature
+          default: false
+        plasma_pederson_conductivity:
+          type: boolean
+          title: Plasma Pederson Conductivity
+          default: false
+        plasma_hall_conductivity:
+          type: boolean
+          title: Plasma Hall Conductivity
+          default: false
+        neutral_o2_density:
+          type: boolean
+          title: Neutral O2 Density
+          default: false
+        neutral_o_density:
+          type: boolean
+          title: Neutral O Density
+          default: false
+        neutral_n2_density:
+          type: boolean
+          title: Neutral N2 Density
+          default: false
+        neutral_n_density:
+          type: boolean
+          title: Neutral N Density
+          default: false
+        neutral_temperature:
+          type: boolean
+          title: Neutral Temperature
+          default: false
+      type: object
+      title: ATMForwardRequestOutputFlags
+    src__atm__v1__schemas_forward__ATMForwardResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/src__atm__v1__schemas_forward__ATMForwardResponseData'
+        request:
+          $ref: '#/components/schemas/src__atm__v1__schemas_forward__ATMForwardRequest'
+        calculation_duration_ms:
+          type: number
+          title: Calculation Duration Ms
+      type: object
+      required:
+      - data
+      - request
+      - calculation_duration_ms
+      title: ATMForwardResponse
+    src__atm__v1__schemas_forward__ATMForwardResponseData:
+      properties:
+        height_integrated_rayleighs_4278:
+          type: number
+          title: Height Integrated Rayleighs 4278
+        height_integrated_rayleighs_5577:
+          type: number
+          title: Height Integrated Rayleighs 5577
+        height_integrated_rayleighs_6300:
+          type: number
+          title: Height Integrated Rayleighs 6300
+        height_integrated_rayleighs_8446:
+          type: number
+          title: Height Integrated Rayleighs 8446
+        height_integrated_rayleighs_lbh:
+          type: number
+          title: Height Integrated Rayleighs Lbh
+        height_integrated_rayleighs_1304:
+          type: number
+          title: Height Integrated Rayleighs 1304
+        height_integrated_rayleighs_1356:
+          type: number
+          title: Height Integrated Rayleighs 1356
+        altitudes:
+          items: {}
+          type: array
+          title: Altitudes
+        emission_4278:
+          items: {}
+          type: array
+          title: Emission 4278
+        emission_5577:
+          items: {}
+          type: array
+          title: Emission 5577
+        emission_6300:
+          items: {}
+          type: array
+          title: Emission 6300
+        emission_8446:
+          items: {}
+          type: array
+          title: Emission 8446
+        emission_lbh:
+          items: {}
+          type: array
+          title: Emission Lbh
+        emission_1304:
+          items: {}
+          type: array
+          title: Emission 1304
+        emission_1356:
+          items: {}
+          type: array
+          title: Emission 1356
+        plasma_electron_density:
+          items: {}
+          type: array
+          title: Plasma Electron Density
+        plasma_o2plus_density:
+          items: {}
+          type: array
+          title: Plasma O2Plus Density
+        plasma_noplus_density:
+          items: {}
+          type: array
+          title: Plasma Noplus Density
+        plasma_oplus_density:
+          items: {}
+          type: array
+          title: Plasma Oplus Density
+        plasma_ionisation_rate:
+          items: {}
+          type: array
+          title: Plasma Ionisation Rate
+        plasma_electron_temperature:
+          items: {}
+          type: array
+          title: Plasma Electron Temperature
+        plasma_ion_temperature:
+          items: {}
+          type: array
+          title: Plasma Ion Temperature
+        plasma_pederson_conductivity:
+          items: {}
+          type: array
+          title: Plasma Pederson Conductivity
+        plasma_hall_conductivity:
+          items: {}
+          type: array
+          title: Plasma Hall Conductivity
+        neutral_o2_density:
+          items: {}
+          type: array
+          title: Neutral O2 Density
+        neutral_o_density:
+          items: {}
+          type: array
+          title: Neutral O Density
+        neutral_n2_density:
+          items: {}
+          type: array
+          title: Neutral N2 Density
+        neutral_n_density:
+          items: {}
+          type: array
+          title: Neutral N Density
+        neutral_temperature:
+          items: {}
+          type: array
+          title: Neutral Temperature
+      type: object
+      title: ATMForwardResponseData
+    src__atm__v1__schemas_inverse__ATMInverseRequest:
+      properties:
+        atm_model_version:
+          type: string
+          enum:
+          - '1.0'
+          title: Atm Model Version
+          default: '1.0'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+        intensity_4278:
+          type: number
+          title: Intensity 4278
+          default: 1000.0
+        intensity_5577:
+          type: number
+          title: Intensity 5577
+          default: 6000.0
+        intensity_6300:
+          type: number
+          title: Intensity 6300
+          default: 600.0
+        intensity_8446:
+          type: number
+          title: Intensity 8446
+          default: 400.0
+        precipitation_flux_spectral_type:
+          type: string
+          enum:
+          - gaussian
+          - maxwellian
+          title: Precipitation Flux Spectral Type
+          default: gaussian
+        nrlmsis_model_version:
+          type: string
+          enum:
+          - '00'
+          - '2.0'
+          title: Nrlmsis Model Version
+          default: '2.0'
+        atmospheric_attenuation_correction:
+          type: boolean
+          title: Atmospheric Attenuation Correction
+          default: false
+        output:
+          $ref: '#/components/schemas/src__atm__v1__schemas_inverse__ATMInverseRequestOutputFlags'
+        no_cache:
+          type: boolean
+          title: No Cache
+          default: false
+      type: object
+      required:
+      - timestamp
+      - geodetic_latitude
+      - geodetic_longitude
+      title: ATMInverseRequest
+    src__atm__v1__schemas_inverse__ATMInverseRequestOutputFlags:
+      properties:
+        altitudes:
+          type: boolean
+          title: Altitudes
+          default: false
+        energy_flux:
+          type: boolean
+          title: Energy Flux
+          default: false
+        characteristic_energy:
+          type: boolean
+          title: Characteristic Energy
+          default: false
+        oxygen_correction_factor:
+          type: boolean
+          title: Oxygen Correction Factor
+          default: false
+        height_integrated_rayleighs_4278:
+          type: boolean
+          title: Height Integrated Rayleighs 4278
+          default: false
+        height_integrated_rayleighs_5577:
+          type: boolean
+          title: Height Integrated Rayleighs 5577
+          default: false
+        height_integrated_rayleighs_6300:
+          type: boolean
+          title: Height Integrated Rayleighs 6300
+          default: false
+        height_integrated_rayleighs_8446:
+          type: boolean
+          title: Height Integrated Rayleighs 8446
+          default: false
+        emission_4278:
+          type: boolean
+          title: Emission 4278
+          default: false
+        emission_5577:
+          type: boolean
+          title: Emission 5577
+          default: false
+        emission_6300:
+          type: boolean
+          title: Emission 6300
+          default: false
+        emission_8446:
+          type: boolean
+          title: Emission 8446
+          default: false
+        plasma_electron_density:
+          type: boolean
+          title: Plasma Electron Density
+          default: false
+        plasma_o2plus_density:
+          type: boolean
+          title: Plasma O2Plus Density
+          default: false
+        plasma_oplus_density:
+          type: boolean
+          title: Plasma Oplus Density
+          default: false
+        plasma_noplus_density:
+          type: boolean
+          title: Plasma Noplus Density
+          default: false
+        plasma_ionisation_rate:
+          type: boolean
+          title: Plasma Ionisation Rate
+          default: false
+        plasma_electron_temperature:
+          type: boolean
+          title: Plasma Electron Temperature
+          default: false
+        plasma_ion_temperature:
+          type: boolean
+          title: Plasma Ion Temperature
+          default: false
+        plasma_pederson_conductivity:
+          type: boolean
+          title: Plasma Pederson Conductivity
+          default: false
+        plasma_hall_conductivity:
+          type: boolean
+          title: Plasma Hall Conductivity
+          default: false
+        neutral_o2_density:
+          type: boolean
+          title: Neutral O2 Density
+          default: false
+        neutral_o_density:
+          type: boolean
+          title: Neutral O Density
+          default: false
+        neutral_n2_density:
+          type: boolean
+          title: Neutral N2 Density
+          default: false
+        neutral_n_density:
+          type: boolean
+          title: Neutral N Density
+          default: false
+        neutral_temperature:
+          type: boolean
+          title: Neutral Temperature
+          default: false
+      type: object
+      title: ATMInverseRequestOutputFlags
+    src__atm__v1__schemas_inverse__ATMInverseResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/src__atm__v1__schemas_inverse__ATMInverseResponseData'
+        request:
+          $ref: '#/components/schemas/src__atm__v1__schemas_inverse__ATMInverseRequest'
+        forward_params:
+          nullable: true
+          $ref: '#/components/schemas/ATMInverseForwardRequest'
+        calculation_duration_ms:
+          type: number
+          title: Calculation Duration Ms
+      type: object
+      required:
+      - data
+      - request
+      - calculation_duration_ms
+      title: ATMInverseResponse
+    src__atm__v1__schemas_inverse__ATMInverseResponseData:
+      properties:
+        altitudes:
+          items: {}
+          type: array
+          title: Altitudes
+        energy_flux:
+          type: number
+          title: Energy Flux
+        characteristic_energy:
+          type: number
+          title: Characteristic Energy
+        oxygen_correction_factor:
+          type: number
+          title: Oxygen Correction Factor
+        height_integrated_rayleighs_4278:
+          type: number
+          title: Height Integrated Rayleighs 4278
+        height_integrated_rayleighs_5577:
+          type: number
+          title: Height Integrated Rayleighs 5577
+        height_integrated_rayleighs_6300:
+          type: number
+          title: Height Integrated Rayleighs 6300
+        height_integrated_rayleighs_8446:
+          type: number
+          title: Height Integrated Rayleighs 8446
+        emission_4278:
+          items: {}
+          type: array
+          title: Emission 4278
+        emission_5577:
+          items: {}
+          type: array
+          title: Emission 5577
+        emission_6300:
+          items: {}
+          type: array
+          title: Emission 6300
+        emission_8446:
+          items: {}
+          type: array
+          title: Emission 8446
+        plasma_electron_density:
+          items: {}
+          type: array
+          title: Plasma Electron Density
+        plasma_o2plus_density:
+          items: {}
+          type: array
+          title: Plasma O2Plus Density
+        plasma_noplus_density:
+          items: {}
+          type: array
+          title: Plasma Noplus Density
+        plasma_oplus_density:
+          items: {}
+          type: array
+          title: Plasma Oplus Density
+        plasma_ionisation_rate:
+          items: {}
+          type: array
+          title: Plasma Ionisation Rate
+        plasma_electron_temperature:
+          items: {}
+          type: array
+          title: Plasma Electron Temperature
+        plasma_ion_temperature:
+          items: {}
+          type: array
+          title: Plasma Ion Temperature
+        plasma_pederson_conductivity:
+          items: {}
+          type: array
+          title: Plasma Pederson Conductivity
+        plasma_hall_conductivity:
+          items: {}
+          type: array
+          title: Plasma Hall Conductivity
+        neutral_o2_density:
+          items: {}
+          type: array
+          title: Neutral O2 Density
+        neutral_o_density:
+          items: {}
+          type: array
+          title: Neutral O Density
+        neutral_n2_density:
+          items: {}
+          type: array
+          title: Neutral N2 Density
+        neutral_n_density:
+          items: {}
+          type: array
+          title: Neutral N Density
+        neutral_temperature:
+          items: {}
+          type: array
+          title: Neutral Temperature
+      type: object
+      title: ATMInverseResponseData
+    src__atm__v2__schemas_forward__ATMForwardRequest:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+        maxwellian_energy_flux:
+          type: number
+          title: Maxwellian Energy Flux
+          default: 10.0
+        maxwellian_characteristic_energy:
+          type: number
+          title: Maxwellian Characteristic Energy
+          default: 5000.0
+        gaussian_energy_flux:
+          type: number
+          title: Gaussian Energy Flux
+          default: 0.0
+        gaussian_peak_energy:
+          type: number
+          title: Gaussian Peak Energy
+          default: 1000.0
+        gaussian_spectral_width:
+          type: number
+          title: Gaussian Spectral Width
+          default: 100.0
+        kappa_energy_flux:
+          type: number
+          title: Kappa Energy Flux
+          default: 0.0
+        kappa_mean_energy:
+          type: number
+          title: Kappa Mean Energy
+          default: 30000.0
+        kappa_k_index:
+          type: number
+          title: Kappa K Index
+          default: 5.0
+        exponential_energy_flux:
+          type: number
+          title: Exponential Energy Flux
+          default: 0.0
+        exponential_characteristic_energy:
+          type: number
+          title: Exponential Characteristic Energy
+          default: 50000.0
+        exponential_starting_energy:
+          type: number
+          title: Exponential Starting Energy
+          default: 50000.0
+        proton_energy_flux:
+          type: number
+          title: Proton Energy Flux
+          default: 0.0
+        proton_characteristic_energy:
+          type: number
+          title: Proton Characteristic Energy
+          default: 10000.0
+        d_region:
+          type: boolean
+          title: D Region
+          default: false
+        nrlmsis_model_version:
+          type: string
+          enum:
+          - '00'
+          - '2.0'
+          title: Nrlmsis Model Version
+          default: '2.0'
+        oxygen_correction_factor:
+          type: number
+          title: Oxygen Correction Factor
+          default: 1.0
+        timescale_auroral:
+          type: integer
+          title: Timescale Auroral
+          default: 600
+        timescale_transport:
+          type: integer
+          title: Timescale Transport
+          default: 600
+        custom_spectrum:
+          $ref: '#/components/schemas/ATMForwardCustomSpectrum'
+        custom_neutral_profile:
+          $ref: '#/components/schemas/ATMForwardCustomNeutralProfile'
+        output:
+          $ref: '#/components/schemas/src__atm__v2__schemas_forward__ATMForwardRequestOutputFlags'
+        no_cache:
+          type: boolean
+          title: No Cache
+          default: false
+      type: object
+      required:
+      - timestamp
+      - geodetic_latitude
+      - geodetic_longitude
+      title: ATMForwardRequest
+    src__atm__v2__schemas_forward__ATMForwardRequestOutputFlags:
+      properties:
+        height_integrated_rayleighs_4278:
+          type: boolean
+          title: Height Integrated Rayleighs 4278
+          default: false
+        height_integrated_rayleighs_5577:
+          type: boolean
+          title: Height Integrated Rayleighs 5577
+          default: false
+        height_integrated_rayleighs_6300:
+          type: boolean
+          title: Height Integrated Rayleighs 6300
+          default: false
+        height_integrated_rayleighs_8446:
+          type: boolean
+          title: Height Integrated Rayleighs 8446
+          default: false
+        height_integrated_rayleighs_1304:
+          type: boolean
+          title: Height Integrated Rayleighs 1304
+          default: false
+        height_integrated_rayleighs_1356:
+          type: boolean
+          title: Height Integrated Rayleighs 1356
+          default: false
+        height_integrated_rayleighs_smile_uvi_lbh:
+          type: boolean
+          title: Height Integrated Rayleighs Smile Uvi Lbh
+          default: false
+        height_integrated_rayleighs_lbh:
+          type: boolean
+          title: Height Integrated Rayleighs Lbh
+          default: false
+        altitudes:
+          type: boolean
+          title: Altitudes
+          default: false
+        emission_4278:
+          type: boolean
+          title: Emission 4278
+          default: false
+        emission_5577:
+          type: boolean
+          title: Emission 5577
+          default: false
+        emission_6300:
+          type: boolean
+          title: Emission 6300
+          default: false
+        emission_8446:
+          type: boolean
+          title: Emission 8446
+          default: false
+        emission_1304:
+          type: boolean
+          title: Emission 1304
+          default: false
+        emission_1356:
+          type: boolean
+          title: Emission 1356
+          default: false
+        emission_smile_uvi_lbh:
+          type: boolean
+          title: Emission Smile Uvi Lbh
+          default: false
+        emission_lbh:
+          type: boolean
+          title: Emission Lbh
+          default: false
+        plasma_electron_density:
+          type: boolean
+          title: Plasma Electron Density
+          default: false
+        plasma_o2plus_density:
+          type: boolean
+          title: Plasma O2Plus Density
+          default: false
+        plasma_oplus_density:
+          type: boolean
+          title: Plasma Oplus Density
+          default: false
+        plasma_noplus_density:
+          type: boolean
+          title: Plasma Noplus Density
+          default: false
+        plasma_ionisation_rate:
+          type: boolean
+          title: Plasma Ionisation Rate
+          default: false
+        plasma_electron_temperature:
+          type: boolean
+          title: Plasma Electron Temperature
+          default: false
+        plasma_ion_temperature:
+          type: boolean
+          title: Plasma Ion Temperature
+          default: false
+        plasma_pedersen_conductivity:
+          type: boolean
+          title: Plasma Pedersen Conductivity
+          default: false
+        plasma_pederson_conductivity:
+          type: boolean
+          title: Plasma Pederson Conductivity
+          default: false
+        plasma_hall_conductivity:
+          type: boolean
+          title: Plasma Hall Conductivity
+          default: false
+        neutral_o2_density:
+          type: boolean
+          title: Neutral O2 Density
+          default: false
+        neutral_o_density:
+          type: boolean
+          title: Neutral O Density
+          default: false
+        neutral_n2_density:
+          type: boolean
+          title: Neutral N2 Density
+          default: false
+        neutral_n_density:
+          type: boolean
+          title: Neutral N Density
+          default: false
+        neutral_temperature:
+          type: boolean
+          title: Neutral Temperature
+          default: false
+        production_rate_o2plus:
+          type: boolean
+          title: Production Rate O2Plus
+          default: false
+        production_rate_oplus:
+          type: boolean
+          title: Production Rate Oplus
+          default: false
+        production_rate_oneg:
+          type: boolean
+          title: Production Rate Oneg
+          default: false
+        production_rate_o:
+          type: boolean
+          title: Production Rate O
+          default: false
+        production_rate_nplus:
+          type: boolean
+          title: Production Rate Nplus
+          default: false
+        production_rate_n2plus:
+          type: boolean
+          title: Production Rate N2Plus
+          default: false
+        production_rate_n:
+          type: boolean
+          title: Production Rate N
+          default: false
+        production_rate_n2d:
+          type: boolean
+          title: Production Rate N2D
+          default: false
+      type: object
+      title: ATMForwardRequestOutputFlags
+    src__atm__v2__schemas_forward__ATMForwardResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/src__atm__v2__schemas_forward__ATMForwardResponseData'
+        request:
+          $ref: '#/components/schemas/src__atm__v2__schemas_forward__ATMForwardRequest'
+        calculation_duration_ms:
+          type: number
+          title: Calculation Duration Ms
+      type: object
+      required:
+      - data
+      - request
+      - calculation_duration_ms
+      title: ATMForwardResponse
+    src__atm__v2__schemas_forward__ATMForwardResponseData:
+      properties:
+        height_integrated_rayleighs_4278:
+          type: number
+          title: Height Integrated Rayleighs 4278
+        height_integrated_rayleighs_5577:
+          type: number
+          title: Height Integrated Rayleighs 5577
+        height_integrated_rayleighs_6300:
+          type: number
+          title: Height Integrated Rayleighs 6300
+        height_integrated_rayleighs_8446:
+          type: number
+          title: Height Integrated Rayleighs 8446
+        height_integrated_rayleighs_1304:
+          type: number
+          title: Height Integrated Rayleighs 1304
+        height_integrated_rayleighs_1356:
+          type: number
+          title: Height Integrated Rayleighs 1356
+        height_integrated_rayleighs_smile_uvi_lbh:
+          type: number
+          title: Height Integrated Rayleighs Smile Uvi Lbh
+        height_integrated_rayleighs_lbh:
+          type: number
+          title: Height Integrated Rayleighs Lbh
+        altitudes:
+          items: {}
+          type: array
+          title: Altitudes
+        emission_4278:
+          items: {}
+          type: array
+          title: Emission 4278
+        emission_5577:
+          items: {}
+          type: array
+          title: Emission 5577
+        emission_6300:
+          items: {}
+          type: array
+          title: Emission 6300
+        emission_8446:
+          items: {}
+          type: array
+          title: Emission 8446
+        emission_1304:
+          items: {}
+          type: array
+          title: Emission 1304
+        emission_1356:
+          items: {}
+          type: array
+          title: Emission 1356
+        emission_smile_uvi_lbh:
+          items: {}
+          type: array
+          title: Emission Smile Uvi Lbh
+        emission_lbh:
+          items: {}
+          type: array
+          title: Emission Lbh
+        plasma_electron_density:
+          items: {}
+          type: array
+          title: Plasma Electron Density
+        plasma_o2plus_density:
+          items: {}
+          type: array
+          title: Plasma O2Plus Density
+        plasma_noplus_density:
+          items: {}
+          type: array
+          title: Plasma Noplus Density
+        plasma_oplus_density:
+          items: {}
+          type: array
+          title: Plasma Oplus Density
+        plasma_ionisation_rate:
+          items: {}
+          type: array
+          title: Plasma Ionisation Rate
+        plasma_electron_temperature:
+          items: {}
+          type: array
+          title: Plasma Electron Temperature
+        plasma_ion_temperature:
+          items: {}
+          type: array
+          title: Plasma Ion Temperature
+        plasma_pedersen_conductivity:
+          items: {}
+          type: array
+          title: Plasma Pedersen Conductivity
+        plasma_pederson_conductivity:
+          items: {}
+          type: array
+          title: Plasma Pederson Conductivity
+        plasma_hall_conductivity:
+          items: {}
+          type: array
+          title: Plasma Hall Conductivity
+        neutral_o2_density:
+          items: {}
+          type: array
+          title: Neutral O2 Density
+        neutral_o_density:
+          items: {}
+          type: array
+          title: Neutral O Density
+        neutral_n2_density:
+          items: {}
+          type: array
+          title: Neutral N2 Density
+        neutral_n_density:
+          items: {}
+          type: array
+          title: Neutral N Density
+        neutral_temperature:
+          items: {}
+          type: array
+          title: Neutral Temperature
+        production_rate_o2plus:
+          items: {}
+          type: array
+          title: Production Rate O2Plus
+        production_rate_oplus:
+          items: {}
+          type: array
+          title: Production Rate Oplus
+        production_rate_oneg:
+          items: {}
+          type: array
+          title: Production Rate Oneg
+        production_rate_o:
+          items: {}
+          type: array
+          title: Production Rate O
+        production_rate_nplus:
+          items: {}
+          type: array
+          title: Production Rate Nplus
+        production_rate_n2plus:
+          items: {}
+          type: array
+          title: Production Rate N2Plus
+        production_rate_n:
+          items: {}
+          type: array
+          title: Production Rate N
+        production_rate_n2d:
+          items: {}
+          type: array
+          title: Production Rate N2D
+      type: object
+      title: ATMForwardResponseData
+    src__atm__v2__schemas_inverse__ATMInverseRequest:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+        intensity_4278:
+          type: number
+          title: Intensity 4278
+          default: 1000.0
+        intensity_5577:
+          type: number
+          title: Intensity 5577
+          default: 6000.0
+        intensity_6300:
+          type: number
+          title: Intensity 6300
+          default: 600.0
+        intensity_8446:
+          type: number
+          title: Intensity 8446
+          default: 400.0
+        precipitation_flux_spectral_type:
+          type: string
+          enum:
+          - gaussian
+          - maxwellian
+          title: Precipitation Flux Spectral Type
+          default: gaussian
+        nrlmsis_model_version:
+          type: string
+          enum:
+          - '00'
+          - '2.0'
+          title: Nrlmsis Model Version
+          default: '2.0'
+        special_logic_keyword:
+          type: string
+          title: Special Logic Keyword
+          default: not_applicable
+        output:
+          $ref: '#/components/schemas/src__atm__v2__schemas_inverse__ATMInverseRequestOutputFlags'
+        no_cache:
+          type: boolean
+          title: No Cache
+          default: false
+      type: object
+      required:
+      - timestamp
+      - geodetic_latitude
+      - geodetic_longitude
+      title: ATMInverseRequest
+    src__atm__v2__schemas_inverse__ATMInverseRequestOutputFlags:
+      properties:
+        energy_flux:
+          type: boolean
+          title: Energy Flux
+          default: false
+        mean_energy:
+          type: boolean
+          title: Mean Energy
+          default: false
+        characteristic_energy:
+          type: boolean
+          title: Characteristic Energy
+          default: false
+        oxygen_correction_factor:
+          type: boolean
+          title: Oxygen Correction Factor
+          default: false
+      type: object
+      title: ATMInverseRequestOutputFlags
+    src__atm__v2__schemas_inverse__ATMInverseResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/src__atm__v2__schemas_inverse__ATMInverseResponseData'
+        request:
+          $ref: '#/components/schemas/src__atm__v2__schemas_inverse__ATMInverseRequest'
+        calculation_duration_ms:
+          type: number
+          title: Calculation Duration Ms
+      type: object
+      required:
+      - data
+      - request
+      - calculation_duration_ms
+      title: ATMInverseResponse
+    src__atm__v2__schemas_inverse__ATMInverseResponseData:
+      properties:
+        energy_flux:
+          type: number
+          title: Energy Flux
+        mean_energy:
+          type: number
+          title: Mean Energy
+        characteristic_energy:
+          type: number
+          title: Characteristic Energy
+        oxygen_correction_factor:
+          type: number
+          title: Oxygen Correction Factor
+      type: object
+      title: ATMInverseResponseData
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: x-srs-api-key
+tags:
+- name: Auroral Transport Model (ATM)
+  description: Endpoints to utilize the Auroral Transport Model
+- name: Data Distribution
+  description: Endpoints supporting data distribution
+- name: Real-Time Data
+  description: Endpoints providing real-time data streams
+- name: Operations - SITL
+  description: Endpoints for Scientist In The Loop (SITL) operations
+- name: Utilities
+  description: Various helper endpoints
+servers:
+- url: https://api.phys.ucalgary.ca
+  description: UCalgary Space Remote Sensing API

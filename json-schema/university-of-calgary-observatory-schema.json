@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/university-of-calgary/main/json-schema/university-of-calgary-observatory-schema.json",
+  "title": "Observatory",
+  "description": "A ground-based observatory site hosting SRS instruments.",
+  "type": "object",
+  "properties": {
+    "uid": {
+      "type": "string",
+      "description": "Short observatory site code."
+    },
+    "full_name": {
+      "type": "string"
+    },
+    "geodetic_latitude": {
+      "type": "number"
+    },
+    "geodetic_longitude": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "uid",
+    "full_name",
+    "geodetic_latitude",
+    "geodetic_longitude"
+  ]
+}

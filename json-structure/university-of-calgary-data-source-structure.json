@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/university-of-calgary/main/json-structure/university-of-calgary-data-source-structure.json",
+  "name": "DataSource",
+  "description": "JSON Structure for an AuroraX data source object.",
+  "type": "object",
+  "properties": {
+    "identifier": {
+      "type": "int32"
+    },
+    "program": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string"
+    },
+    "instrument_type": {
+      "type": "string"
+    },
+    "source_type": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    }
+  }
+}

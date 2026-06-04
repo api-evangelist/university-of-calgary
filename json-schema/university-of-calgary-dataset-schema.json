@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/university-of-calgary/main/json-schema/university-of-calgary-dataset-schema.json",
+  "title": "Dataset",
+  "description": "A UCalgary Space Remote Sensing data distribution dataset.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Unique dataset name/identifier."
+    },
+    "short_description": {
+      "type": "string"
+    },
+    "long_description": {
+      "type": "string"
+    },
+    "data_tree_url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "file_listing_supported": {
+      "type": "boolean"
+    },
+    "level": {
+      "type": "string",
+      "description": "Processing level (e.g. L0, L1)."
+    },
+    "doi": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    },
+    "doi_details": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "citation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "supported_libraries": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "pyaurorax",
+          "pyucrio",
+          "idl-aurorax",
+          "idl-ucrio",
+          "pyucalgarysrs"
+        ]
+      }
+    },
+    "file_time_resolution": {
+      "type": "string",
+      "enum": [
+        "1min",
+        "1hr",
+        "1day",
+        "not_applicable"
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "short_description",
+    "long_description",
+    "data_tree_url",
+    "file_listing_supported",
+    "level",
+    "file_time_resolution"
+  ]
+}

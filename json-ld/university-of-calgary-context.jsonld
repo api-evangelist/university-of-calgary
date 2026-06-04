@@ -1,0 +1,38 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "ucalgary": "https://api-evangelist.github.io/university-of-calgary/vocab#",
+    "name": "schema:name",
+    "url": "schema:url",
+    "description": "schema:description",
+    "Organization": "schema:CollegeOrUniversity",
+    "Dataset": "schema:Dataset",
+    "Observatory": "ucalgary:Observatory",
+    "DataSource": "ucalgary:DataSource",
+
+    "short_description": "schema:abstract",
+    "long_description": "schema:description",
+    "data_tree_url": { "@id": "schema:contentUrl", "@type": "@id" },
+    "doi": { "@id": "schema:identifier", "@type": "@id" },
+    "citation": "schema:citation",
+    "level": "ucalgary:processingLevel",
+    "file_time_resolution": "ucalgary:fileTimeResolution",
+    "supported_libraries": "ucalgary:supportedLibrary",
+
+    "uid": "schema:identifier",
+    "full_name": "schema:name",
+    "geodetic_latitude": "schema:latitude",
+    "geodetic_longitude": "schema:longitude",
+
+    "identifier": "schema:identifier",
+    "program": "ucalgary:program",
+    "platform": "ucalgary:platform",
+    "instrument_type": "ucalgary:instrumentType",
+    "source_type": "ucalgary:sourceType",
+    "display_name": "schema:name"
+  },
+  "@type": "Organization",
+  "name": "University of Calgary",
+  "url": "https://www.ucalgary.ca/"
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/university-of-calgary/main/json-structure/university-of-calgary-dataset-structure.json",
+  "name": "Dataset",
+  "description": "JSON Structure for a UCalgary SRS dataset object.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "short_description": {
+      "type": "string"
+    },
+    "long_description": {
+      "type": "string"
+    },
+    "data_tree_url": {
+      "type": "string"
+    },
+    "file_listing_supported": {
+      "type": "boolean"
+    },
+    "level": {
+      "type": "string"
+    },
+    "doi": {
+      "type": "string"
+    },
+    "citation": {
+      "type": "string"
+    },
+    "supported_libraries": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "file_time_resolution": {
+      "type": "string"
+    }
+  }
+}

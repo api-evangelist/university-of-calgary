@@ -1,0 +1,17 @@
+{
+  "name": "NORSTAR_RIOMETER_K0_TXT",
+  "short_description": "NORSTAR Single Frequency Riometers K0 raw data, in ASCII format",
+  "long_description": "NORSTAR Single Frequency Single Beam Riometer array. More information can be found at https://data.phys.ucalgary.ca",
+  "data_tree_url": "https://data.phys.ucalgary.ca/sort_by_project/GO-Canada/GO-Rio/txt",
+  "file_listing_supported": true,
+  "level": "L0",
+  "doi": "https://doi.org/10.11575/AFYX-M516",
+  "doi_details": "https://commons.datacite.org/doi.org/10.11575/afyx-m516",
+  "citation": "Spanswick, E., Wallis, D., Donovan, E., & Jackel, B. NORSTAR Single Frequency Single Beam Riometers Dataset [Data set]. University of Calgary. https://doi.org/10.11575/AFYX-M516",
+  "supported_libraries": [
+    "idl-ucrio",
+    "pyucalgarysrs",
+    "pyucrio"
+  ],
+  "file_time_resolution": "1day"
+}

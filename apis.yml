@@ -47,6 +47,8 @@ apis:
         url: https://api.phys.ucalgary.ca/
       - type: Documentation
         url: https://data.phys.ucalgary.ca/working_with_data/
+      - type: OpenAPI
+        url: openapi/university-of-calgary-srs-api.yaml
   - aid: university-of-calgary:aurorax-api
     name: AuroraX API
     description: >-
@@ -65,6 +67,8 @@ apis:
         url: https://api.aurorax.space/
       - type: GitHub
         url: https://github.com/aurorax-space
+      - type: OpenAPI
+        url: openapi/university-of-calgary-aurorax-api.yaml
   - aid: university-of-calgary:prism-dspace
     name: PRISM Institutional Repository (DSpace)
     description: >-
@@ -112,6 +116,12 @@ common:
     url: finops/university-of-calgary-finops.yml
   - type: Review
     url: review.yml
+  - type: Vocabulary
+    url: vocabulary/university-of-calgary-vocabulary.yml
+  - type: Rules
+    url: rules/university-of-calgary-rules.yml
+  - type: JSONLD
+    url: json-ld/university-of-calgary-context.jsonld
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

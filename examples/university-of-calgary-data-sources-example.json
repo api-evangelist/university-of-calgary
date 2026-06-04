@@ -1,0 +1,10 @@
+[
+  {
+    "identifier": 3,
+    "program": "swarm",
+    "platform": "swarma",
+    "instrument_type": "footprint",
+    "source_type": "leo",
+    "display_name": "Swarm A"
+  }
+]

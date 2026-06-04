@@ -1,0 +1,53 @@
+extends: []
+formats:
+  - oas3
+documentationUrl: https://api.phys.ucalgary.ca/docs
+rules:
+  ucalgary-info-title:
+    description: API must declare a title.
+    severity: error
+    given: $.info
+    then:
+      field: title
+      function: truthy
+  ucalgary-info-version:
+    description: API must declare a version.
+    severity: error
+    given: $.info
+    then:
+      field: version
+      function: truthy
+  ucalgary-versioned-paths:
+    description: >-
+      UCalgary research APIs version their paths under /api/v{N}/ (observed in
+      both the SRS and AuroraX specifications).
+    severity: warn
+    given: $.paths[*]~
+    then:
+      function: pattern
+      functionOptions:
+        match: "^/api(/application\\.wadl.*)?(/v[0-9]+/.*)?$"
+  ucalgary-operation-summary:
+    description: Every operation should carry a human-readable summary.
+    severity: warn
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: summary
+      function: truthy
+  ucalgary-operation-tags:
+    description: Operations should be grouped with at least one tag.
+    severity: warn
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: tags
+      function: truthy
+  ucalgary-snake-case-properties:
+    description: >-
+      Response/request object properties use snake_case (e.g. data_tree_url,
+      file_time_resolution, instrument_type, display_name).
+    severity: info
+    given: $.components.schemas[*].properties[*]~
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z0-9]+(_[a-z0-9]+)*$"
