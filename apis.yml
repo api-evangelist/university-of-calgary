@@ -1,0 +1,117 @@
+---
+aid: university-of-calgary
+name: University of Calgary
+description: >-
+  The University of Calgary is a public research university in Calgary, Alberta,
+  Canada, ranked #198 in the QS World University Rankings 2025. Its public,
+  documented developer footprint centers on research and scholarly
+  infrastructure rather than a single central developer portal: the Space Remote
+  Sensing (SRS) group operates a documented RESTful API at api.phys.ucalgary.ca
+  and the related AuroraX auroral-science API at api.aurorax.space, with Python
+  and IDL client libraries. The institutional repository PRISM runs on DSpace 8.3
+  (REST API plus OAI-PMH) and the PRISM research-data repository is hosted on the
+  Borealis Dataverse platform, which exposes a public Dataverse REST API. The
+  university also maintains a GitHub organization and a library guide cataloging
+  third-party scholarly APIs.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/university-of-calgary/refs/heads/main/apis.yml
+tags:
+  - Education
+  - Higher Education
+  - University
+  - Research
+  - Open Data
+  - Repository
+  - Space Physics
+  - Canada
+created: '2026-06-03'
+modified: '2026-06-03'
+specificationVersion: '0.19'
+apis:
+  - aid: university-of-calgary:srs-api
+    name: UCalgary Space Remote Sensing API
+    description: >-
+      RESTful API from the University of Calgary Space Remote Sensing group for
+      accessing space physics and remote-sensing data (all-sky imagers,
+      riometers, and related instruments). Usable directly over HTTP or via the
+      pyucalgarysrs / pyucrio Python and IDL client libraries. Interactive
+      Swagger documentation is served at the API root.
+    humanURL: https://api.phys.ucalgary.ca/
+    baseURL: https://api.phys.ucalgary.ca/
+    tags: [ Space Physics, Remote Sensing, Open Data, Research, REST ]
+    properties:
+      - type: Documentation
+        url: https://api.phys.ucalgary.ca/
+      - type: Documentation
+        url: https://data.phys.ucalgary.ca/working_with_data/
+  - aid: university-of-calgary:aurorax-api
+    name: AuroraX API
+    description: >-
+      Public RESTful API for the AuroraX auroral-science data platform,
+      developed and operated with the University of Calgary. Provides search and
+      access to auroral metadata, ephemeris, and imagery data. An API key is only
+      required for write operations; read access is open. Python (PyAuroraX) and
+      IDL client libraries are available.
+    humanURL: https://docs.aurorax.space/
+    baseURL: https://api.aurorax.space/
+    tags: [ Space Physics, Aurora, Open Data, Research, REST ]
+    properties:
+      - type: Documentation
+        url: https://docs.aurorax.space/
+      - type: Documentation
+        url: https://api.aurorax.space/
+      - type: GitHub
+        url: https://github.com/aurorax-space
+  - aid: university-of-calgary:prism-dspace
+    name: PRISM Institutional Repository (DSpace)
+    description: >-
+      PRISM is the University of Calgary's institutional repository, running on
+      DSpace 8.3 (now served from ucalgary.scholaris.ca). It exposes the standard
+      DSpace REST API for programmatic access to communities, collections, and
+      items, plus an OAI-PMH endpoint for metadata harvesting.
+    humanURL: https://prism.ucalgary.ca/
+    baseURL: https://prism.ucalgary.ca/server/api
+    tags: [ Repository, Scholarly, Open Access, OAI-PMH, DSpace ]
+    properties:
+      - type: Documentation
+        url: https://prism.ucalgary.ca/server/api
+      - type: Documentation
+        url: https://prism.ucalgary.ca/server/oai/request?verb=Identify
+  - aid: university-of-calgary:prism-dataverse
+    name: PRISM Research Data Repository (Borealis Dataverse)
+    description: >-
+      The University of Calgary's PRISM research-data repository is a Dataverse
+      collection hosted on the Borealis (Canadian Dataverse) platform, exposing
+      the public Dataverse REST API (Borealis runs Dataverse v6.8.1) for
+      searching and retrieving dataset and file metadata.
+    humanURL: https://borealisdata.ca/dataverse/calgary
+    baseURL: https://borealisdata.ca/api
+    tags: [ Research Data, Repository, Open Data, Dataverse, REST ]
+    properties:
+      - type: Documentation
+        url: https://borealisdata.ca/dataverse/calgary
+      - type: Documentation
+        url: https://guides.dataverse.org/en/latest/api/
+common:
+  - type: Website
+    url: https://www.ucalgary.ca/
+  - type: GitHub
+    url: https://github.com/ucalgary
+  - type: LinkedIn
+    url: https://ca.linkedin.com/school/ucalgary/
+  - type: DeveloperPortal
+    url: https://libguides.ucalgary.ca/apis
+  - type: Plans
+    url: plans/university-of-calgary-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/university-of-calgary-rate-limits.yml
+  - type: FinOps
+    url: finops/university-of-calgary-finops.yml
+  - type: Review
+    url: review.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,57 @@
+---
+name: University of Calgary
+description: University of Calgary public developer/API footprint review for APIs.json cataloging.
+url: https://raw.githubusercontent.com/api-evangelist/university-of-calgary/refs/heads/main/review.yml
+created: '2026-06-03'
+modified: '2026-06-03'
+reviews:
+  - date: '2026-06-03'
+    rating: 3
+    summary: >-
+      The University of Calgary has no single central developer portal, but
+      several real, public, documented APIs were verified live: the Space Remote
+      Sensing API (api.phys.ucalgary.ca, Swagger docs) and the related AuroraX
+      API (api.aurorax.space), the PRISM institutional repository on DSpace 8.3
+      (REST API plus OAI-PMH, now served from ucalgary.scholaris.ca), and the
+      PRISM research-data collection on the Borealis Dataverse platform (public
+      Dataverse REST API). The library APIs guide catalogs third-party scholarly
+      APIs rather than first-party endpoints. The ucalgary GitHub org exists
+      (43 public repos). No endpoints were fabricated; rating reflects modest but
+      genuine, research-driven public API maturity.
+    endpoints:
+      - url: https://api.phys.ucalgary.ca/
+        status: 200
+        note: SRS RESTful API root with interactive Swagger documentation.
+      - url: https://data.phys.ucalgary.ca/
+        status: 200
+        note: SRS Open Science Platform data portal and usage docs.
+      - url: https://api.aurorax.space/
+        status: 200
+        note: AuroraX API root (Swagger UI); read access open, key for writes.
+      - url: https://docs.aurorax.space/
+        status: 200
+        note: AuroraX documentation (API, PyAuroraX, IDL libraries).
+      - url: https://prism.ucalgary.ca/server/api
+        status: 200
+        note: PRISM DSpace 8.3 REST API root; redirects host to ucalgary.scholaris.ca.
+      - url: https://prism.ucalgary.ca/server/oai/request?verb=Identify
+        status: 200
+        note: PRISM OAI-PMH endpoint responds (note bare /oai/request path returns 404).
+      - url: https://borealisdata.ca/dataverse/calgary
+        status: 200
+        note: PRISM research-data Dataverse collection on Borealis.
+      - url: https://borealisdata.ca/api/info/version
+        status: 200
+        note: Borealis Dataverse REST API; reports version v6.8.1-SP.
+      - url: https://github.com/ucalgary
+        status: 200
+        note: Official GitHub org, 43 public repos.
+      - url: https://libguides.ucalgary.ca/apis
+        status: 200
+        note: Library guide cataloging third-party scholarly APIs (not first-party).
+      - url: https://www.ucalgary.ca/
+        status: 200
+        note: Official institutional website.
+      - url: https://ca.linkedin.com/school/ucalgary/
+        status: 200
+        note: Official LinkedIn school page.
