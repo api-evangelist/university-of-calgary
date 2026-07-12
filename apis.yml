@@ -100,6 +100,12 @@ apis:
       - type: Documentation
         url: https://guides.dataverse.org/en/latest/api/
 common:
+  - type: VulnerabilityDisclosure
+    url: security/university-of-calgary-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/university-of-calgary-domain-security.yml
+  - type: Authentication
+    url: authentication/university-of-calgary-authentication.yml
   - type: Website
     url: https://www.ucalgary.ca/
   - type: GitHub
@@ -122,6 +128,8 @@ common:
     url: rules/university-of-calgary-rules.yml
   - type: JSONLD
     url: json-ld/university-of-calgary-context.jsonld
+  - url: https://www.ucalgary.ca/news/rss.xml
+    type: Blog
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
