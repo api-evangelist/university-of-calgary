@@ -100,6 +100,8 @@ apis:
       - type: Documentation
         url: https://guides.dataverse.org/en/latest/api/
 common:
+  - type: AgenticAccess
+    url: agentic-access/university-of-calgary-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/university-of-calgary-vulnerability-disclosure.yml
   - type: DomainSecurity
