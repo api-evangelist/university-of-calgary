@@ -1,0 +1,384 @@
+openapi: 3.0.1
+info:
+  title: AuroraX Application.wadl Availability API
+  description: "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n"
+  version: stable
+servers:
+- url: https://api.aurorax.space
+  description: AuroraX production server
+  variables: {}
+- url: https://api.staging.aurorax.space
+  description: AuroraX staging server
+  variables: {}
+- url: http://localhost:8080/
+  description: Local Development and Debugging
+  variables: {}
+tags:
+- name: Availability
+  description: Retrieve information about data in the database
+paths:
+  /api/v1/availability/data_products:
+    get:
+      tags:
+      - Availability
+      summary: Get the data_product availability for all Data Sources
+      description: Returns a count of data by day for each data source. Provide query parameters to filter the results to just the sources you wish, in the time frames you wish
+      operationId: getDataProductAvailability
+      parameters:
+      - name: start
+        in: query
+        description: Start date (default to Jan 1 of this year
+        schema:
+          type: string
+          format: date
+      - name: end
+        in: query
+        description: End date (default to start + 12 months or today + 1 month if start not provided)
+        schema:
+          type: string
+          format: date
+      - name: program
+        in: query
+        description: Filter by Program
+        schema:
+          type: string
+      - name: platform
+        in: query
+        description: Filter by Platform
+        schema:
+          type: string
+      - name: instrument_type
+        in: query
+        description: Filter by Instrument Type
+        schema:
+          type: string
+      - name: source_type
+        in: query
+        description: Filter by Source Type
+        schema:
+          type: string
+          enum:
+          - ground
+          - heo
+          - leo
+          - lunar
+          - event_list
+          - not_applicable
+      - name: data_product_type
+        in: query
+        description: Filter by Data Product Type
+        schema:
+          type: string
+          enum:
+          - keogram
+          - montage
+          - movie
+          - summary_plot
+          - data_availability
+      - name: owner
+        in: query
+        description: Filter by Owner
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the Data Source returned. Default is basic_info.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      - name: slow
+        in: query
+        description: Query the data directly (slower) for more accurate results. Default is false.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: List of data_product availability.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataProduct Availability'
+        '400':
+          description: Not foundThis can occur if start or end is not in the ISO format YYYY-MM-DD.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. Slow mode is currently not available.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/availability/ephemeris:
+    get:
+      tags:
+      - Availability
+      summary: Get the ephemeris availability for all Data Sources
+      description: Returns a count of data by day for each data source. Provide query parameters to filter the results to just the sources you wish, in the time frames you wish
+      operationId: getEphemerisAvailability
+      parameters:
+      - name: start
+        in: query
+        description: Start date (default to Jan 1 of this year
+        schema:
+          type: string
+          format: date
+      - name: end
+        in: query
+        description: End date (default to start + 12 months or today + 1 month if start not provided)
+        schema:
+          type: string
+          format: date
+      - name: program
+        in: query
+        description: Filter by Program
+        schema:
+          type: string
+      - name: platform
+        in: query
+        description: Filter by Platform
+        schema:
+          type: string
+      - name: instrument_type
+        in: query
+        description: Filter by Instrument Type
+        schema:
+          type: string
+      - name: source_type
+        in: query
+        description: Filter by Source Type
+        schema:
+          type: string
+          enum:
+          - ground
+          - heo
+          - leo
+          - lunar
+          - event_list
+          - not_applicable
+      - name: owner
+        in: query
+        description: Filter by Owner
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the Data Source returned. Default is basic_info.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      - name: slow
+        in: query
+        description: Query the data directly (slower) for more accurate results. Default is false.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: List of ephemeris availability.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ephemeris Availability'
+        '400':
+          description: Not foundThis can occur if start or end is not in the ISO format YYYY-MM-DD.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. Slow mode is currently not available.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+components:
+  schemas:
+    Ephemeris Availability:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/Data Source'
+        available_ephemeris:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+      description: Ephemeris data availability by Data Source by day.
+    JsonNode:
+      type: object
+    MetadataSchema:
+      type: object
+      properties:
+        field_name:
+          type: string
+          description: The name of the field found in the ephemeris metadata
+        description:
+          type: string
+          description: A brief description of what the metadata field represents
+        data_type:
+          type: string
+          description: An indicator to let you know what filter operations are available. Strings allow for =, !=, and in. Decimals allow for =, !=, <, >, <=, >=, and in.
+        allowed_values:
+          type: array
+          description: An optional list of possible values available in the metadata.
+          items:
+            type: string
+            description: An optional list of possible values available in the metadata.
+        additional_description:
+          type: string
+          description: More details about what this metadata field is about
+        searchable:
+          type: boolean
+          description: Used by UI's to include it in metadata fields exposed as searchable through the conjunction interface. The API allows for all fields to be searchable but some applications may chose to hide any fields marked searchable=false
+      description: Describes the metadata fields found on Ephemeris data.
+    DataSourceStats:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/Data Source'
+        earliest_ephemeris_loaded:
+          type: string
+          format: date-time
+        latest_ephemeris_loaded:
+          type: string
+          format: date-time
+        ephemeris_count:
+          type: integer
+          format: int32
+        earliest_data_product_loaded:
+          type: string
+          format: date-time
+        latest_data_product_loaded:
+          type: string
+          format: date-time
+        data_product_count:
+          type: integer
+          format: int32
+      description: Some basic stats about this data_source, like number of ephemeris records. Read only.
+    DataProduct Availability:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/Data Source'
+        available_data_products:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+      description: DataProduct data availability by Data Source by Data_Product_Type by day.
+    Data Source:
+      required:
+      - display_name
+      - instrument_type
+      - platform
+      - program
+      - source_type
+      type: object
+      properties:
+        identifier:
+          type: integer
+          description: Uniquely identifies this record. Optional when adding a new source record; system generated, unless this is a replacement (e.g., delete old, create new with same identifier as old).
+          format: int32
+        program:
+          type: string
+          description: 'Examples: themis, themis-asi, rbsp'
+        platform:
+          type: string
+          description: 'Examples: themisa, gill, rbspb'
+        instrument_type:
+          type: string
+          description: 'Examples: pancromatic-asi'
+        source_type:
+          type: string
+          description: g = Ground, h = Highly Eliptical Orbit, l = Low Earth Orbit
+          enum:
+          - ground
+          - heo
+          - leo
+          - lunar
+          - event_list
+          - not_applicable
+        display_name:
+          type: string
+          description: A friendly display name for web applications
+        ephemeris_metadata_schema:
+          type: array
+          description: The ephemeris metadata schema and descriptions
+          items:
+            $ref: '#/components/schemas/MetadataSchema'
+        data_product_metadata_schema:
+          type: array
+          description: The data_product metadata schema and descriptions
+          items:
+            $ref: '#/components/schemas/MetadataSchema'
+        owner:
+          type: string
+          description: The Owner of this Data Source record. Defaults to the currently logged in user.
+        maintainers:
+          type: array
+          description: The list of Maintainers
+          items:
+            type: string
+            description: The list of Maintainers
+        stats:
+          $ref: '#/components/schemas/DataSourceStats'
+        metadata:
+          $ref: '#/components/schemas/JsonNode'
+      description: Things that produce data, like satellites, ground stations/instruments, platforms
+    ErrorDocument:
+      type: object
+      properties:
+        error_message:
+          type: string
+          description: If an error code exists, this will have contextual information for debugging
+        error_code:
+          type: string
+          description: The error code
+          enum:
+          - Nil
+          - Ok
+          - NotPermitted
+          - NotAuthorized
+          - Duplicate
+          - AssertionError
+          - NotFound
+          - ApplicationError
+          - NotImplemented
+          - ToManyRequests
+          - Other
+          - Conflict
+          - NotAuthenticated
+          - Unavailable
+      description: This model provides additional details about error conditions that can be used for debugging.
+  securitySchemes:
+    AccessToken:
+      type: http
+      description: Send the Authorization header found in the response of a successful /authentication request on all  secure endpoints. Copy it verbatim to the request header. It is fine to send this header on all requests  to the API. The value in Swagger UI should only include the access token part (leave out 'Bearer').
+      name: Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: Generated by server
+    ApiKeyAuth:
+      type: apiKey
+      description: API keys are intended to be used by non-interactive software interfacing with the REST API. These can  be used instead of an Access Token approach.
+      name: x-aurorax-api-key
+      in: header

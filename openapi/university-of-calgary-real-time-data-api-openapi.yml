@@ -1,0 +1,280 @@
+openapi: 3.0.1
+info:
+  title: AuroraX Application.wadl Real-Time Data API
+  description: "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n"
+  version: stable
+servers:
+- url: https://api.aurorax.space
+  description: AuroraX production server
+  variables: {}
+- url: https://api.staging.aurorax.space
+  description: AuroraX staging server
+  variables: {}
+- url: http://localhost:8080/
+  description: Local Development and Debugging
+  variables: {}
+tags:
+- name: Real-Time Data
+  description: Endpoints providing real-time data streams
+paths:
+  /api/v1/rt:
+    get:
+      tags:
+      - Real-Time Data
+      summary: List available real-time data streams
+      description: 'Retrieve a list of all available real-time data streams.
+
+
+        Optional query parameters can be used to filter results. All filters
+
+        use case-insensitive partial matching.'
+      operationId: get_rt_streams_api_v1_rt_get
+      parameters:
+      - name: network
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Network
+      - name: site_uid
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Site Uid
+      - name: id
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Id
+      responses:
+        '200':
+          description: List of available real-time data streams
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RTStreamListing'
+        '500':
+          description: Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/rt/ws/info:
+    get:
+      tags:
+      - Real-Time Data
+      summary: WebSocket endpoint connection information
+      description: 'Retrieve connection details and protocol documentation for the real-time
+
+        data WebSocket endpoint.
+
+
+        The WebSocket endpoint itself is at `/api/v1/rt/ws` and is not shown in
+
+        the OpenAPI schema because WebSocket routes are not part of the OpenAPI
+
+        specification. This endpoint provides the protocol documentation instead.'
+      operationId: get_rt_websocket_info_api_v1_rt_ws_info_get
+      responses:
+        '200':
+          description: WebSocket protocol documentation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RTWebSocketInfo'
+        '500':
+          description: Unexpected server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /api/v1/rt/{id}/latest:
+    get:
+      tags:
+      - Real-Time Data
+      summary: Retrieve latest data for a real-time stream
+      description: "Retrieve the latest data for a given real-time data stream.\n\nNotes:\n  - The `id` can be determined by using the stream listing endpoint.\n  - The response content type depends on the stream's mimetype (e.g., image/jpeg).\n  - Data is sourced from the database, populated by the RT ingester services.\n  - The response includes an `x-rt-stream-last-updated-utc` header with the ISO 8601 UTC timestamp of when the stream data was last updated."
+      operationId: get_rt_stream_latest_api_v1_rt__id__latest_get
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Id
+      - name: countdown_clock
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Show countdown clock when not imaging
+          default: false
+          title: Countdown Clock
+        description: Show countdown clock when not imaging
+      responses:
+        '200':
+          description: Latest stream data
+        '404':
+          description: Stream ID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: No data available or failed to retrieve from data source
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    RTStreamListItem:
+      properties:
+        name:
+          type: string
+          title: Name
+        id:
+          type: string
+          title: Id
+        description:
+          type: string
+          title: Description
+        site_uid:
+          type: string
+          title: Site Uid
+        network:
+          type: string
+          title: Network
+        mimetype:
+          type: string
+          title: Mimetype
+      type: object
+      required:
+      - name
+      - id
+      - description
+      - site_uid
+      - network
+      - mimetype
+      title: RTStreamListItem
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ErrorMessage:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: ErrorMessage
+    RTWebSocketInfo:
+      properties:
+        url:
+          type: string
+          title: Url
+        protocol:
+          type: string
+          title: Protocol
+        description:
+          type: string
+          title: Description
+        subscribe_message:
+          additionalProperties: true
+          type: object
+          title: Subscribe Message
+        unsubscribe_message:
+          additionalProperties: true
+          type: object
+          title: Unsubscribe Message
+        binary_format:
+          type: string
+          title: Binary Format
+        json_format:
+          additionalProperties: true
+          type: object
+          title: Json Format
+      type: object
+      required:
+      - url
+      - protocol
+      - description
+      - subscribe_message
+      - unsubscribe_message
+      - binary_format
+      - json_format
+      title: RTWebSocketInfo
+    RTStreamListing:
+      properties:
+        streams:
+          items:
+            $ref: '#/components/schemas/RTStreamListItem'
+          type: array
+          title: Streams
+      type: object
+      required:
+      - streams
+      title: RTStreamListing
+  securitySchemes:
+    AccessToken:
+      type: http
+      description: Send the Authorization header found in the response of a successful /authentication request on all  secure endpoints. Copy it verbatim to the request header. It is fine to send this header on all requests  to the API. The value in Swagger UI should only include the access token part (leave out 'Bearer').
+      name: Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: Generated by server
+    ApiKeyAuth:
+      type: apiKey
+      description: API keys are intended to be used by non-interactive software interfacing with the REST API. These can  be used instead of an Access Token approach.
+      name: x-aurorax-api-key
+      in: header

@@ -1,0 +1,688 @@
+openapi: 3.0.1
+info:
+  title: AuroraX Application.wadl Operations - SITL API
+  description: "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n"
+  version: stable
+servers:
+- url: https://api.aurorax.space
+  description: AuroraX production server
+  variables: {}
+- url: https://api.staging.aurorax.space
+  description: AuroraX staging server
+  variables: {}
+- url: http://localhost:8080/
+  description: Local Development and Debugging
+  variables: {}
+tags:
+- name: Operations - SITL
+  description: Endpoints for Scientist In The Loop (SITL) operations
+paths:
+  /api/v1/ops/sitl/arctics/data_products:
+    get:
+      tags:
+      - Operations - SITL
+      summary: Retrieve ARCTICS SITL data products
+      operationId: get_data_products_api_v1_ops_sitl_arctics_data_products_get
+      security:
+      - HTTPBearer: []
+      - APIKeyHeader: []
+      parameters:
+      - name: date
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+          title: Date
+      - name: site_uid
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Site Uid
+      - name: device_uid
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Device Uid
+      responses:
+        '200':
+          description: ARCTICS SITL data products for a given day
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ARCTICSDataProductsResponse'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: The supplied credentials do not permit access to this endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ops/sitl/arctics/keep_times:
+    get:
+      tags:
+      - Operations - SITL
+      summary: Retrieve timeframes to keep ARCTICS data for
+      operationId: get_keep_times_api_v1_ops_sitl_arctics_keep_times_get
+      security:
+      - HTTPBearer: []
+      - APIKeyHeader: []
+      parameters:
+      - name: start
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Start
+      - name: end
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: End
+      - name: site_uid
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Site Uid
+      - name: device_uid
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Device Uid
+      - name: instrument_uid
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Instrument Uid
+      responses:
+        '200':
+          description: ARCTICS saved timeframes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ARCTICSKeepTimeframe'
+                title: Response Get Keep Times Api V1 Ops Sitl Arctics Keep Times Get
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: The supplied credentials do not permit access to this endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Operations - SITL
+      summary: Upload a timeframe to keep ARCTICS data for
+      description: Upload a timeframe to keep ARCTICS data for.
+      operationId: upload_timeframe_api_v1_ops_sitl_arctics_keep_times_post
+      security:
+      - HTTPBearer: []
+      - APIKeyHeader: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ARCTICSUploadTimeframeRequest'
+      responses:
+        '201':
+          description: Timeframe successfully ingested
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: The supplied credentials do not permit access to this endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Timeframe upload error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Operations - SITL
+      summary: Delete a timeframe to keep ARCTICS data for
+      description: Delete a timeframe to keep ARCTICS data for.
+      operationId: delete_timeframe_api_v1_ops_sitl_arctics_keep_times_delete
+      security:
+      - HTTPBearer: []
+      - APIKeyHeader: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ARCTICSDeleteTimeframeRequest'
+      responses:
+        '200':
+          description: Timeframe successfully deleted
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: The supplied credentials do not permit access to this endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Timeframe to delete was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Timeframe deletion error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ops/sitl/logging:
+    post:
+      tags:
+      - Operations - SITL
+      summary: Upload a SITL log event
+      description: "Upload a SITL log message.\n\nNotes:\n  - Possible values for category: arctics, trex_rgb_burst\n  - Possible values for level: debug, info, warning, error"
+      operationId: upload_log_messages_api_v1_ops_sitl_logging_post
+      security:
+      - HTTPBearer: []
+      - APIKeyHeader: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/SITLLogMessage'
+              title: Request Obj
+      responses:
+        '201':
+          description: Log message successfully ingested
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: The supplied credentials do not permit access to this endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Log message upload error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Operations - SITL
+      summary: Retrieve SITL log events
+      description: "Retrieve SITL log messages.\n\nNotes:\n  - ordering key is 'timestamp'\n  - if level parameter is not supplied, it will return log messages from all levels"
+      operationId: get_log_messages_api_v1_ops_sitl_logging_get
+      security:
+      - HTTPBearer: []
+      - APIKeyHeader: []
+      parameters:
+      - name: start
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Start
+      - name: end
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: End
+      - name: category
+        in: query
+        required: true
+        schema:
+          enum:
+          - arctics
+          - trex_rgb_burst
+          type: string
+          title: Category
+      - name: level
+        in: query
+        required: false
+        schema:
+          nullable: true
+          enum:
+          - debug
+          - info
+          - warning
+          - error
+          type: string
+          title: Level
+      - name: order
+        in: query
+        required: false
+        schema:
+          enum:
+          - ascending
+          - descending
+          type: string
+          default: ascending
+          title: Order
+      responses:
+        '200':
+          description: SITL log events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SITLLogMessage'
+                title: Response Get Log Messages Api V1 Ops Sitl Logging Get
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: The supplied credentials do not permit access to this endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Log message retrieval error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ARCTICSKeogramRecord:
+      properties:
+        url:
+          type: string
+          title: Url
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        modified_time:
+          type: string
+          format: date-time
+          title: Modified Time
+        filesize_bytes:
+          type: integer
+          title: Filesize Bytes
+        filesize_str:
+          type: string
+          title: Filesize Str
+      type: object
+      required:
+      - url
+      - timestamp
+      - modified_time
+      - filesize_bytes
+      - filesize_str
+      title: ARCTICSKeogramRecord
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SITLLogMessage:
+      properties:
+        category:
+          type: string
+          enum:
+          - arctics
+          - trex_rgb_burst
+          title: Category
+        level:
+          type: string
+          enum:
+          - debug
+          - info
+          - warning
+          - error
+          title: Level
+        timestamp:
+          nullable: true
+          type: string
+          format: date-time
+          title: Timestamp
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - category
+      - level
+      - message
+      title: SITLLogMessage
+    ARCTICSKeepTimeframe:
+      properties:
+        start:
+          type: string
+          format: date-time
+          title: Start
+        end:
+          type: string
+          format: date-time
+          title: End
+        site_uid:
+          type: string
+          title: Site Uid
+        device_uid:
+          type: string
+          title: Device Uid
+        instrument_uid:
+          type: string
+          enum:
+          - smile
+          title: Instrument Uid
+        last_updated_user:
+          type: string
+          title: Last Updated User
+        last_updated_ts:
+          type: string
+          format: date-time
+          title: Last Updated Ts
+      type: object
+      required:
+      - start
+      - end
+      - site_uid
+      - device_uid
+      - instrument_uid
+      - last_updated_user
+      - last_updated_ts
+      title: ARCTICSKeepTimeframe
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ARCTICSDeleteTimeframeRequest:
+      properties:
+        start:
+          type: string
+          format: date-time
+          title: Start
+        end:
+          type: string
+          format: date-time
+          title: End
+        instrument_uid:
+          type: string
+          enum:
+          - smile
+          title: Instrument Uid
+        site_uid:
+          type: string
+          title: Site Uid
+        device_uid:
+          type: string
+          title: Device Uid
+      type: object
+      required:
+      - start
+      - end
+      - instrument_uid
+      - site_uid
+      - device_uid
+      title: ARCTICSDeleteTimeframeRequest
+    ARCTICSMontageRecord:
+      properties:
+        url:
+          type: string
+          title: Url
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        modified_time:
+          type: string
+          format: date-time
+          title: Modified Time
+        filesize_bytes:
+          type: integer
+          title: Filesize Bytes
+        filesize_str:
+          type: string
+          title: Filesize Str
+      type: object
+      required:
+      - url
+      - timestamp
+      - modified_time
+      - filesize_bytes
+      - filesize_str
+      title: ARCTICSMontageRecord
+    ARCTICSDataProductsResponse:
+      properties:
+        date:
+          type: string
+          format: date
+          title: Date
+        site_uid:
+          type: string
+          title: Site Uid
+        device_uid:
+          type: string
+          title: Device Uid
+        dp_daily_keogram:
+          nullable: true
+          $ref: '#/components/schemas/ARCTICSKeogramRecord'
+        dp_hourly_keograms:
+          items:
+            $ref: '#/components/schemas/ARCTICSKeogramRecord'
+          type: array
+          title: Dp Hourly Keograms
+          default: []
+        dp_daily_montage:
+          nullable: true
+          $ref: '#/components/schemas/ARCTICSMontageRecord'
+        dp_hourly_montages:
+          items:
+            $ref: '#/components/schemas/ARCTICSMontageRecord'
+          type: array
+          title: Dp Hourly Montages
+          default: []
+        dp_daily_movie_lowres:
+          nullable: true
+          $ref: '#/components/schemas/ARCTICSMovieRecord'
+      type: object
+      required:
+      - date
+      - site_uid
+      - device_uid
+      title: ARCTICSDataProductsResponse
+    ErrorMessage:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: ErrorMessage
+    ARCTICSMovieRecord:
+      properties:
+        url:
+          type: string
+          title: Url
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        modified_time:
+          type: string
+          format: date-time
+          title: Modified Time
+        filesize_bytes:
+          type: integer
+          title: Filesize Bytes
+        filesize_str:
+          type: string
+          title: Filesize Str
+        duration_seconds:
+          type: number
+          title: Duration Seconds
+        duration_str:
+          type: string
+          title: Duration Str
+      type: object
+      required:
+      - url
+      - timestamp
+      - modified_time
+      - filesize_bytes
+      - filesize_str
+      - duration_seconds
+      - duration_str
+      title: ARCTICSMovieRecord
+    ARCTICSUploadTimeframeRequest:
+      properties:
+        start:
+          type: string
+          format: date-time
+          title: Start
+        end:
+          type: string
+          format: date-time
+          title: End
+        instrument_uid:
+          type: string
+          enum:
+          - smile
+          title: Instrument Uid
+        site_uid:
+          type: string
+          title: Site Uid
+        device_uid:
+          type: string
+          title: Device Uid
+        username:
+          type: string
+          title: Username
+      type: object
+      required:
+      - start
+      - end
+      - instrument_uid
+      - site_uid
+      - device_uid
+      - username
+      title: ARCTICSUploadTimeframeRequest
+  securitySchemes:
+    AccessToken:
+      type: http
+      description: Send the Authorization header found in the response of a successful /authentication request on all  secure endpoints. Copy it verbatim to the request header. It is fine to send this header on all requests  to the API. The value in Swagger UI should only include the access token part (leave out 'Bearer').
+      name: Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: Generated by server
+    ApiKeyAuth:
+      type: apiKey
+      description: API keys are intended to be used by non-interactive software interfacing with the REST API. These can  be used instead of an Access Token approach.
+      name: x-aurorax-api-key
+      in: header

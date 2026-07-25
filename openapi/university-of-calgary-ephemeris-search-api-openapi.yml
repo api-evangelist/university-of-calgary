@@ -1,0 +1,671 @@
+openapi: 3.0.1
+info:
+  title: AuroraX Application.wadl Ephemeris Search API
+  description: "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n"
+  version: stable
+servers:
+- url: https://api.aurorax.space
+  description: AuroraX production server
+  variables: {}
+- url: https://api.staging.aurorax.space
+  description: AuroraX staging server
+  variables: {}
+- url: http://localhost:8080/
+  description: Local Development and Debugging
+  variables: {}
+tags:
+- name: Ephemeris Search
+  description: Search ephemeris records
+paths:
+  /api/v1/ephemeris/requests/{request_id}:
+    get:
+      tags:
+      - Ephemeris Search
+      summary: Get the ephemeris search request details
+      description: This endpoint is anonymous. The request ID can be shared with anyone.
+      operationId: getSearchRequestDetails_2
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchQueryResponse'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+    delete:
+      tags:
+      - Ephemeris Search
+      summary: Cancel the ephemeris search request
+      description: Attempts to cancel the search request. The system will log an error against the request noting the cancellation.
+      operationId: cancelRequest_2
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchQueryResponse'
+        '400':
+          description: Request did not contain a request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/ephemeris/requests/{request_id}/data:
+    get:
+      tags:
+      - Ephemeris Search
+      summary: Get the ephemeris search result data
+      description: Get the data returned by the given search request. If the data has expired, then 404 will be returned.
+      operationId: getSearchResultData_2
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      - name: data_source_record_format
+        in: query
+        description: Control which epehermis source data is returned. Default is basic.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      responses:
+        '200':
+          description: Get the search result data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ephemeris'
+        '400':
+          description: Bad request. Please fix the request and try again.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+    post:
+      tags:
+      - Ephemeris Search
+      summary: Get the ephemeris search result data
+      description: Get the data returned by the given search request. If the data has expired, then 404 will be returned.
+      operationId: getSearchResultDataWithAdvancedFormatting_1
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EphemerisFormat'
+        required: true
+      responses:
+        '200':
+          description: Get the search result data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ephemeris'
+        '400':
+          description: There is an error in the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+    delete:
+      tags:
+      - Ephemeris Search
+      summary: Delete a search result data file.
+      description: Deletes the data file containing the search results. If this search is run in the future, the query will re-create the data file.
+      operationId: deleteDataFile_2
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchQueryResponse'
+        '400':
+          description: Request did not contain a request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: No request found with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/ephemeris/search:
+    post:
+      tags:
+      - Ephemeris Search
+      summary: Search for ephemeris
+      description: "Anonymous unless logged in. Just like a conjunction search, but contains one side of the query. Used to search  for particular ephemeris data of one or more Data Sources. Maximum time span returned is 1 month. Must provide at least one filter parameter. \n ** If you are logged in, your search will be private to only you, otherwise it is public **\n"
+      operationId: search_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EphemerisQuery'
+        required: true
+      responses:
+        '202':
+          description: The search request was accepted. See the location header for the status of the search request.
+        '400':
+          description: 'Missing or invalid parameters.
+
+
+            Please refer to the documentation for correctness of this operation.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/ephemeris/search_synchronous:
+    post:
+      tags:
+      - Ephemeris Search
+      summary: Synchronously search for ephemeris
+      description: Anonymous unless logged in. The same search functionality as asynchronous search, except it is synchronous. Because of the synchronous nature, the maximum time frame is significantly reduced to a maximum of two days. These requests are not saved, even if you are logged in.
+      operationId: searchSynchronous_1
+      parameters:
+      - name: data_source_record_format
+        in: query
+        description: Control how the epehermis data source is returned. Default is basic. This option will be used if the advanced format is not present in the request body.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EphemerisQueryWithResponseFormat'
+        required: true
+      responses:
+        '200':
+          description: List of ephemeris
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ephemeris'
+        '400':
+          description: 'Missing or invalid parameters.
+
+
+            Please refer to the documentation for correctness of this operation.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '500':
+          description: There was an application error. Please contact support.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+components:
+  schemas:
+    DataSourceCriteriaForEphemeris:
+      type: object
+      properties:
+        programs:
+          type: array
+          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
+          items:
+            type: string
+            description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
+        platforms:
+          type: array
+          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
+          items:
+            type: string
+            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
+        instrument_types:
+          type: array
+          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
+          items:
+            type: string
+            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
+        ephemeris_metadata_filters:
+          $ref: '#/components/schemas/MetadataExpressionGroup'
+      description: Find Ephemeris data for these Data Sources. This could be a single platform (e.g., gillam;  or swarma), or an entire program containing a group of platforms (e.g., all locations in the themis-asi program;  or all satellites in the themis program).
+    DataSourceFormat:
+      type: object
+      properties:
+        identifier:
+          type: boolean
+        program:
+          type: boolean
+        platform:
+          type: boolean
+        instrument_type:
+          type: boolean
+        source_type:
+          type: boolean
+        display_name:
+          type: boolean
+        ephemeris_metadata_schema:
+          $ref: '#/components/schemas/MetadataSchemaFormat'
+        data_product_metadata_schema:
+          $ref: '#/components/schemas/MetadataSchemaFormat'
+        owner:
+          type: boolean
+        maintainers:
+          type: boolean
+        metadata:
+          type: boolean
+    MetadataSchema:
+      type: object
+      properties:
+        field_name:
+          type: string
+          description: The name of the field found in the ephemeris metadata
+        description:
+          type: string
+          description: A brief description of what the metadata field represents
+        data_type:
+          type: string
+          description: An indicator to let you know what filter operations are available. Strings allow for =, !=, and in. Decimals allow for =, !=, <, >, <=, >=, and in.
+        allowed_values:
+          type: array
+          description: An optional list of possible values available in the metadata.
+          items:
+            type: string
+            description: An optional list of possible values available in the metadata.
+        additional_description:
+          type: string
+          description: More details about what this metadata field is about
+        searchable:
+          type: boolean
+          description: Used by UI's to include it in metadata fields exposed as searchable through the conjunction interface. The API allows for all fields to be searchable but some applications may chose to hide any fields marked searchable=false
+      description: Describes the metadata fields found on Ephemeris data.
+    MetadataExpressionGroup:
+      type: object
+      properties:
+        logical_operator:
+          type: string
+          description: Specifies if these filters should be OR'd or AND'd. If omitted, the default is to AND the expressions together
+          enum:
+          - AND
+          - OR
+        expressions:
+          type: array
+          description: The list of filter expressions
+          items:
+            $ref: '#/components/schemas/MetadataExpression'
+      description: An expression group to allow for OR'd or AND'd expression filters
+    Location:
+      type: object
+      properties:
+        lat:
+          maximum: 90
+          minimum: -90
+          type: number
+        lon:
+          maximum: 180
+          minimum: -180
+          type: number
+      description: A list of latitude and longitude locations of your choice
+    SearchResult:
+      type: object
+      properties:
+        data_uri:
+          type: string
+        result_count:
+          type: integer
+          format: int32
+        result_file_deleted_timestamp:
+          type: string
+          format: date-time
+        file_size:
+          type: integer
+          format: int64
+        completed_timestamp:
+          type: string
+          format: date-time
+        query_duration:
+          type: integer
+          format: int64
+        error_condition:
+          type: boolean
+      description: Search result
+    MetadataSchemaFormat:
+      type: object
+      properties:
+        field_name:
+          type: boolean
+        description:
+          type: boolean
+        data_type:
+          type: boolean
+        allowed_values:
+          type: boolean
+        additional_description:
+          type: boolean
+    SearchQueryResponse:
+      type: object
+      properties:
+        search_request:
+          $ref: '#/components/schemas/SearchRequest'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchRequestLog'
+        search_result:
+          $ref: '#/components/schemas/SearchResult'
+      description: Search query response details
+    Data Source:
+      required:
+      - display_name
+      - instrument_type
+      - platform
+      - program
+      - source_type
+      type: object
+      properties:
+        identifier:
+          type: integer
+          description: Uniquely identifies this record. Optional when adding a new source record; system generated, unless this is a replacement (e.g., delete old, create new with same identifier as old).
+          format: int32
+        program:
+          type: string
+          description: 'Examples: themis, themis-asi, rbsp'
+        platform:
+          type: string
+          description: 'Examples: themisa, gill, rbspb'
+        instrument_type:
+          type: string
+          description: 'Examples: pancromatic-asi'
+        source_type:
+          type: string
+          description: g = Ground, h = Highly Eliptical Orbit, l = Low Earth Orbit
+          enum:
+          - ground
+          - heo
+          - leo
+          - lunar
+          - event_list
+          - not_applicable
+        display_name:
+          type: string
+          description: A friendly display name for web applications
+        ephemeris_metadata_schema:
+          type: array
+          description: The ephemeris metadata schema and descriptions
+          items:
+            $ref: '#/components/schemas/MetadataSchema'
+        data_product_metadata_schema:
+          type: array
+          description: The data_product metadata schema and descriptions
+          items:
+            $ref: '#/components/schemas/MetadataSchema'
+        owner:
+          type: string
+          description: The Owner of this Data Source record. Defaults to the currently logged in user.
+        maintainers:
+          type: array
+          description: The list of Maintainers
+          items:
+            type: string
+            description: The list of Maintainers
+        stats:
+          $ref: '#/components/schemas/DataSourceStats'
+        metadata:
+          $ref: '#/components/schemas/JsonNode'
+      description: Things that produce data, like satellites, ground stations/instruments, platforms
+    ErrorDocument:
+      type: object
+      properties:
+        error_message:
+          type: string
+          description: If an error code exists, this will have contextual information for debugging
+        error_code:
+          type: string
+          description: The error code
+          enum:
+          - Nil
+          - Ok
+          - NotPermitted
+          - NotAuthorized
+          - Duplicate
+          - AssertionError
+          - NotFound
+          - ApplicationError
+          - NotImplemented
+          - ToManyRequests
+          - Other
+          - Conflict
+          - NotAuthenticated
+          - Unavailable
+      description: This model provides additional details about error conditions that can be used for debugging.
+    EphemerisQuery:
+      required:
+      - data_sources
+      type: object
+      properties:
+        request_id:
+          type: string
+          description: An optional request_id to be used for this query. Ommit to have the API generate one for you. If you are using websockets, this id can be used establish a websocket before sending the search request to avoid a race condition of the query finishing before websocket is established. This technique is used by the AuroraX website
+        data_sources:
+          $ref: '#/components/schemas/DataSourceCriteriaForEphemeris'
+        start:
+          type: string
+          description: Return ephemeris data that occured after this timestamp.  Optional. Large time windows may take a long time for results to return.
+          format: date-time
+        end:
+          type: string
+          description: Return ephemeris data that occured before this timestamp.  Optional. Large time windows may take a long time for results to return.
+          format: date-time
+    DataSourceStats:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/Data Source'
+        earliest_ephemeris_loaded:
+          type: string
+          format: date-time
+        latest_ephemeris_loaded:
+          type: string
+          format: date-time
+        ephemeris_count:
+          type: integer
+          format: int32
+        earliest_data_product_loaded:
+          type: string
+          format: date-time
+        latest_data_product_loaded:
+          type: string
+          format: date-time
+        data_product_count:
+          type: integer
+          format: int32
+      description: Some basic stats about this data_source, like number of ephemeris records. Read only.
+    EphemerisFormat:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/DataSourceFormat'
+        epoch:
+          type: boolean
+        location_geo:
+          $ref: '#/components/schemas/LocationFormat'
+        location_gsm:
+          $ref: '#/components/schemas/LocationFormat'
+        nbtrace:
+          $ref: '#/components/schemas/LocationFormat'
+        sbtrace:
+          $ref: '#/components/schemas/LocationFormat'
+        metadata:
+          type: boolean
+      description: Optional advanced formatting of the response data
+    SearchRequest:
+      type: object
+      properties:
+        request_id:
+          type: string
+        query:
+          type: string
+        requested:
+          type: string
+          format: date-time
+        request_type:
+          type: string
+          enum:
+          - conjunction
+          - ephemeris
+          - data_product
+      description: The original search request
+    Ephemeris:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/Data Source'
+        epoch:
+          type: string
+          format: date-time
+        location_geo:
+          $ref: '#/components/schemas/Location'
+        location_gsm:
+          $ref: '#/components/schemas/Location'
+        nbtrace:
+          $ref: '#/components/schemas/Location'
+        sbtrace:
+          $ref: '#/components/schemas/Location'
+        metadata:
+          type: string
+    JsonNode:
+      type: object
+    MetadataExpression:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The metadata key found as described in the data_source metadata schema record
+        operator:
+          type: string
+          description: The filter expression operator
+          enum:
+          - '='
+          - <
+          - <=
+          - '>'
+          - '>='
+          - '!='
+          - in
+          - not in
+          - between
+        values:
+          type: array
+          description: The value(s) to test for. Note that 'in' and 'not-in' accept a list of values; 'between' accepts two values; all others accept just one value
+          items:
+            type: string
+            description: The value(s) to test for. Note that 'in' and 'not-in' accept a list of values; 'between' accepts two values; all others accept just one value
+      description: An expression like a where clause in SQL
+    EphemerisQueryWithResponseFormat:
+      required:
+      - query
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/EphemerisQuery'
+        response_format:
+          $ref: '#/components/schemas/EphemerisFormat'
+      description: Ephemeris Query with Response Format
+    LocationFormat:
+      type: object
+      properties:
+        lat:
+          type: boolean
+        lon:
+          type: boolean
+    SearchRequestLog:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        level:
+          type: string
+          enum:
+          - debug
+          - info
+          - warn
+          - error
+        summary:
+          type: string
+  securitySchemes:
+    AccessToken:
+      type: http
+      description: Send the Authorization header found in the response of a successful /authentication request on all  secure endpoints. Copy it verbatim to the request header. It is fine to send this header on all requests  to the API. The value in Swagger UI should only include the access token part (leave out 'Bearer').
+      name: Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: Generated by server
+    ApiKeyAuth:
+      type: apiKey
+      description: API keys are intended to be used by non-interactive software interfacing with the REST API. These can  be used instead of an Access Token approach.
+      name: x-aurorax-api-key
+      in: header

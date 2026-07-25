@@ -1,0 +1,245 @@
+openapi: 3.0.1
+info:
+  title: AuroraX Application.wadl Utilities API
+  description: "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n"
+  version: stable
+servers:
+- url: https://api.aurorax.space
+  description: AuroraX production server
+  variables: {}
+- url: https://api.staging.aurorax.space
+  description: AuroraX staging server
+  variables: {}
+- url: http://localhost:8080/
+  description: Local Development and Debugging
+  variables: {}
+tags:
+- name: Utilities
+  description: Various helper endpoints
+paths:
+  /api/v1/utils/terminator:
+    get:
+      tags:
+      - Utilities
+      summary: Retrieve terminator coordinates
+      description: "Retrieve coordinates for the terminator. \n\nThe timestamp parameter should be supplied in the format \"YYYY-MM-DDTHH:mm:ss\". \nUTC is the expected timezone.\n\nThe angle parameter is used for retrieving the terminator for civil, nautical, \nor astronomical twilight. Use the values -6.0, -12.0, or -18.0 for each of these \nterminators, respectively.\n\nNotes:\n  - The algorithm does not account for altitude at this time\n  - By default requests are cached. Use the 'no_cache' parameter to disable this functionality."
+      operationId: get_terminator_api_v1_utils_terminator_get
+      parameters:
+      - name: timestamp
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Timestamp
+      - name: angle
+        in: query
+        required: false
+        schema:
+          type: number
+          default: -12.0
+          title: Angle
+      - name: no_cache
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: No Cache
+      responses:
+        '200':
+          description: Terminator coordinates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Terminator'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/utils/magnetic_grid:
+    get:
+      tags:
+      - Utilities
+      summary: Retrieve geomagnetic coordinate grid
+      description: "Retrieve a geomagnetic coordinate grid for a given timestamp.\n\nThe timestamp parameter should be supplied in the format \"YYYY-MM-DDTHH:mm:ss\". \nUTC is the expected timezone.\n\nThe grid consists of meridian lines (constant magnetic longitude, \"vertical\") and parallel lines\n(constant magnetic latitude, \"horizontal\") for both northern and southern hemispheres.\n\nNotes\n  - The resolution_lon and resolution_lat parameters control the spacing (in degrees) between\nmagnetic longitude and latitude lines, respectively. Lower values produce a denser grid.\n  - By default requests are cached. Use the 'no_cache' parameter to disable this functionality."
+      operationId: get_magnetic_grid_api_v1_utils_magnetic_grid_get
+      parameters:
+      - name: timestamp
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Timestamp
+      - name: resolution_lon
+        in: query
+        required: false
+        schema:
+          type: number
+          default: 10.0
+          title: Resolution Lon
+      - name: resolution_lat
+        in: query
+        required: false
+        schema:
+          type: number
+          default: 5.0
+          title: Resolution Lat
+      - name: min_latitude
+        in: query
+        required: false
+        schema:
+          type: number
+          default: 50.0
+          title: Min Latitude
+      - name: altitude_km
+        in: query
+        required: false
+        schema:
+          type: number
+          default: 0.0
+          title: Altitude Km
+      - name: no_cache
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: No Cache
+      responses:
+        '200':
+          description: Geomagnetic grid in geographic coordinates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MagneticGrid'
+        '400':
+          description: Problematic request made
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Terminator:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        coords:
+          items: {}
+          type: array
+          title: Coords
+      type: object
+      required:
+      - timestamp
+      - coords
+      title: Terminator
+    MagneticGrid:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        north:
+          $ref: '#/components/schemas/MagneticGridHemisphere'
+        south:
+          $ref: '#/components/schemas/MagneticGridHemisphere'
+      type: object
+      required:
+      - timestamp
+      - north
+      - south
+      title: MagneticGrid
+    ErrorMessage:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: ErrorMessage
+    MagneticGridHemisphere:
+      properties:
+        vertical:
+          items:
+            items:
+              items:
+                type: number
+              type: array
+            type: array
+          type: array
+          title: Vertical
+        horizontal:
+          items:
+            items:
+              items:
+                type: number
+              type: array
+            type: array
+          type: array
+          title: Horizontal
+      type: object
+      required:
+      - vertical
+      - horizontal
+      title: MagneticGridHemisphere
+  securitySchemes:
+    AccessToken:
+      type: http
+      description: Send the Authorization header found in the response of a successful /authentication request on all  secure endpoints. Copy it verbatim to the request header. It is fine to send this header on all requests  to the API. The value in Swagger UI should only include the access token part (leave out 'Bearer').
+      name: Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: Generated by server
+    ApiKeyAuth:
+      type: apiKey
+      description: API keys are intended to be used by non-interactive software interfacing with the REST API. These can  be used instead of an Access Token approach.
+      name: x-aurorax-api-key
+      in: header

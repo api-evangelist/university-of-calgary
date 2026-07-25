@@ -1,0 +1,489 @@
+openapi: 3.0.1
+info:
+  title: AuroraX Application.wadl Manage Data API
+  description: "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n"
+  version: stable
+servers:
+- url: https://api.aurorax.space
+  description: AuroraX production server
+  variables: {}
+- url: https://api.staging.aurorax.space
+  description: AuroraX staging server
+  variables: {}
+- url: http://localhost:8080/
+  description: Local Development and Debugging
+  variables: {}
+tags:
+- name: Manage Data
+  description: Operations relating to managing ephemeris and data products data
+paths:
+  /api/v1/data_sources/{identifier}/data_products:
+    post:
+      tags:
+      - Manage Data
+      summary: Add a data product
+      description: 'Adds one or more Data Product records to the set of Data Products for this Data Source record. Must be an Administrator, Owner of this Data Source or have been assigned Maintainer of this Data Source.
+
+
+        This end-point will accept very large files or continuous streams containing data product records. Data is processed asynchronously.'
+      operationId: addDataProducts
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier specified in the Data Source record
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/LoadDataProductSpecification'
+        required: true
+      responses:
+        '202':
+          description: The data product stream was accepted for processing.
+        '400':
+          description: 'Errors generated during load.
+
+
+            Please refer to the documentation for correctness of this operation. Because this operation is  asynchronous, some errors occurring later in the load may not be present in this response'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid API key\n * Invalid access token\n * Access token expired"
+        '403':
+          description: 'Not Permitted
+
+            Only the Data Source Owner, a Maintainer, or an Administrator may post new data products.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. This endpoint is currently offline.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - ApiKeyAuth: []
+      - AccessToken: []
+    delete:
+      tags:
+      - Manage Data
+      summary: Deletes a Data Product record
+      description: "*Must be the Data Source Maintainer, Owner, or have Administrator access in order to perform this operation* \n\n*Must be authenticated*"
+      operationId: deleteDataProduct
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier of the Data Source
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        description: The delete operation specification
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteDataProductSpecification'
+        required: true
+      responses:
+        '200':
+          description: Data Product record deleted
+        '400':
+          description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this operation."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid API key\n * Invalid access token\n * Access token expired"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '403':
+          description: 'Not Permitted
+
+            Only the Data Source Owner, a Maintainer, or an Administrator may delete data products.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: identifier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. This endpoint is currently offline.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - ApiKeyAuth: []
+      - AccessToken: []
+  /api/v1/data_sources/{identifier}/ephemeris:
+    post:
+      tags:
+      - Manage Data
+      summary: Add ephemeris data
+      description: 'Adds data to the set of Ephemeris for this Data Source record. Must be an Administrator, Owner of this Data Source or have been assigned Maintainer of this Data Source.
+
+
+        This end-point will accept very large files or continuous streams containing Ephemeris data. Data is processed asynchronously.'
+      operationId: addEphemerisData
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier specified in the Data Source record
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/LoadEphemerisSpecification'
+        required: true
+      responses:
+        '202':
+          description: The ephemeris stream was accepted for processing.
+        '400':
+          description: 'Errors generated during load.
+
+
+            Please refer to the documentation for correctness of this operation. Because this operation is  asynchronous, some errors occurring later in the load may not be present in this response'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid API key\n * Invalid access token\n * Access token expired"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '403':
+          description: 'Not Permitted
+
+            Only the Data Source Owner, a Maintainer, or an Administrator may post new ephemeris data.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. This endpoint is currently offline.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - ApiKeyAuth: []
+      - AccessToken: []
+    delete:
+      tags:
+      - Manage Data
+      summary: Delete a range of Ephemeris records. This interface is asynchronous.
+      description: "*Must be the Data Source Maintainer, Owner, or have Administrator access in order to perform this operation* \n\n*Must be authenticated*"
+      operationId: deleteEphemeris
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier of the Data Source
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        description: The specification that matches the identifier (for data integrity)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteEphemerisSpecification'
+        required: true
+      responses:
+        '202':
+          description: Delete request accepted
+        '400':
+          description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this operation."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid API key\n * Invalid access token\n * Access token expired"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '403':
+          description: 'Not Permitted
+
+            Only the Data Source Owner, a Maintainer, or an Administrator may delete ephemeris data.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: identifier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. This endpoint is currently offline.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - ApiKeyAuth: []
+      - AccessToken: []
+  /api/v1/data_sources/{identifier}/ephemeris/delete_jobs/{delete_job_id}:
+    get:
+      tags:
+      - Manage Data
+      summary: Get a recent (within 1 hour) delete job details
+      operationId: getEphemerisDeleteJobDetail
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier of the Data Source
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: delete_job_id
+        in: path
+        description: The delete job identifier
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Delete job details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '404':
+          description: identifier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/data_sources/{identifier}/ephemeris/delete_jobs:
+    get:
+      tags:
+      - Manage Data
+      summary: List recent (within 1 hour) delete jobs
+      operationId: listEphemerisDeleteJobs
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier of the Data Source
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: List of recent delete jobs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '404':
+          description: identifier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+components:
+  schemas:
+    DeleteDataProductSpecification:
+      required:
+      - instrument_type
+      - platform
+      - program
+      type: object
+      properties:
+        program:
+          type: string
+        platform:
+          type: string
+        instrument_type:
+          type: string
+        urls:
+          type: array
+          items:
+            type: string
+    LoadEphemerisSpecification:
+      required:
+      - epoch
+      - instrument_type
+      - platform
+      - program
+      type: object
+      properties:
+        program:
+          type: string
+        platform:
+          type: string
+        instrument_type:
+          type: string
+        epoch:
+          type: string
+          format: date-time
+        location_geo:
+          $ref: '#/components/schemas/Location'
+        location_gsm:
+          $ref: '#/components/schemas/Location'
+        nbtrace:
+          $ref: '#/components/schemas/Location'
+        sbtrace:
+          $ref: '#/components/schemas/Location'
+        metadata:
+          $ref: '#/components/schemas/JsonNode'
+    JsonNode:
+      type: object
+    LoadDataProductSpecification:
+      required:
+      - data_product_type
+      - end
+      - instrument_type
+      - platform
+      - program
+      - start
+      - url
+      type: object
+      properties:
+        program:
+          type: string
+        platform:
+          type: string
+        instrument_type:
+          type: string
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        url:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/JsonNode'
+        data_product_type:
+          type: string
+          enum:
+          - keogram
+          - montage
+          - movie
+          - summary_plot
+          - data_availability
+    DeleteEphemerisSpecification:
+      required:
+      - end
+      - instrument_type
+      - platform
+      - program
+      - start
+      type: object
+      properties:
+        program:
+          type: string
+        platform:
+          type: string
+        instrument_type:
+          type: string
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+    Location:
+      type: object
+      properties:
+        lat:
+          maximum: 90
+          minimum: -90
+          type: number
+        lon:
+          maximum: 180
+          minimum: -180
+          type: number
+      description: A list of latitude and longitude locations of your choice
+    ErrorDocument:
+      type: object
+      properties:
+        error_message:
+          type: string
+          description: If an error code exists, this will have contextual information for debugging
+        error_code:
+          type: string
+          description: The error code
+          enum:
+          - Nil
+          - Ok
+          - NotPermitted
+          - NotAuthorized
+          - Duplicate
+          - AssertionError
+          - NotFound
+          - ApplicationError
+          - NotImplemented
+          - ToManyRequests
+          - Other
+          - Conflict
+          - NotAuthenticated
+          - Unavailable
+      description: This model provides additional details about error conditions that can be used for debugging.
+  securitySchemes:
+    AccessToken:
+      type: http
+      description: Send the Authorization header found in the response of a successful /authentication request on all  secure endpoints. Copy it verbatim to the request header. It is fine to send this header on all requests  to the API. The value in Swagger UI should only include the access token part (leave out 'Bearer').
+      name: Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: Generated by server
+    ApiKeyAuth:
+      type: apiKey
+      description: API keys are intended to be used by non-interactive software interfacing with the REST API. These can  be used instead of an Access Token approach.
+      name: x-aurorax-api-key
+      in: header

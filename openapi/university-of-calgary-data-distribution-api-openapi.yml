@@ -1,0 +1,569 @@
+openapi: 3.0.1
+info:
+  title: AuroraX Application.wadl Data Distribution API
+  description: "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n"
+  version: stable
+servers:
+- url: https://api.aurorax.space
+  description: AuroraX production server
+  variables: {}
+- url: https://api.staging.aurorax.space
+  description: AuroraX staging server
+  variables: {}
+- url: http://localhost:8080/
+  description: Local Development and Debugging
+  variables: {}
+tags:
+- name: Data Distribution
+  description: Endpoints supporting data distribution
+paths:
+  /api/v1/data_distribution/datasets:
+    get:
+      tags:
+      - Data Distribution
+      summary: Retrieve available datasets
+      description: "Retrieve information about available datasets. Filter based on parameters supplied.\n\nNotes:\n  - filtering is case insensitive\n  - data level description: https://www.earthdata.nasa.gov/engage/open-data-services-and-software/data-information-policy/data-levels"
+      operationId: retrieve_datasets_api_v1_data_distribution_datasets_get
+      parameters:
+      - name: name
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Name
+      - name: level
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - L0
+          - L1
+          - L1A
+          - L2
+          - L3
+          title: Level
+      responses:
+        '200':
+          description: Dataset information
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/Dataset'
+                  - $ref: '#/components/schemas/DatasetLegacy1'
+                  - $ref: '#/components/schemas/DatasetLegacy2'
+                title: Response Retrieve Datasets Api V1 Data Distribution Datasets Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/data_distribution/urls:
+    get:
+      tags:
+      - Data Distribution
+      summary: Retrieve list of URLs for a given dataset
+      description: "Retrieve list of URLs for a given dataset and timeframe.\n\nNotes:\n  - start and end times are inclusive\n  - start and end time format is YYYY-mm-ddTHH:MM:SS. Excluding values from the right to \n    the left result in default values being used (eg. YYYY-mm-ddTHH results in YYYY-mm-ddTHH:00:00)\n  - dataset matching is case insensitive\n  - site_uid is expected to be the 4-letter site code, and is case insensitive\n  - device_uid is expected to be the instrument identifier such as \"themis02\", \"rego-657\", or \"rgb-07\",\n    and is case insensitive"
+      operationId: retrieve_urls_api_v1_data_distribution_urls_get
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Name
+      - name: start
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: Start
+      - name: end
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date-time
+          title: End
+      - name: site_uid
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Site Uid
+      - name: device_uid
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Device Uid
+      - name: include_total_bytes
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Total Bytes
+      responses:
+        '200':
+          description: URLs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileListingResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Dataset not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Data retrieval error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/data_distribution/observatories:
+    get:
+      tags:
+      - Data Distribution
+      summary: Retrieve information about observatories
+      description: "Retrieve information about observatories. Filter based on parameters supplied.\n\nNotes:\n  - filtering for \"uid\" is case insensitive"
+      operationId: retrieve_observatories_api_v1_data_distribution_observatories_get
+      parameters:
+      - name: instrument_array
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - norstar_riometer
+          - rego
+          - smile_asi
+          - swan_hsr
+          - themis_asi
+          - trex_blue
+          - trex_nir
+          - trex_rgb
+          - trex_spectrograph
+          title: Instrument Array
+      - name: uid
+        in: query
+        required: false
+        schema:
+          nullable: true
+          type: string
+          title: Uid
+      responses:
+        '200':
+          description: Observatory information
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Observatory'
+                title: Response Retrieve Observatories Api V1 Data Distribution Observatories Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/data_distribution/imaging_timeframes:
+    post:
+      tags:
+      - Data Distribution
+      summary: Retrieve imaging start and end times for a set of locations
+      description: "Retrieve imaging start and end times for a set of locations. This is specific to the optical \ninstrumentation we provide data for.\n\nThe timestamp is expected to be UTC time.\n\nEach location in the 'locations' array can be specified either by a 4-letter site UID, or by\nproviding geodetic latitude and longitude. If the site_uid is provided, it is resolved to\ncoordinates using the known observatory list.\n\nNotes:\n  - The threshold parameter is the solar zenith angle (in degrees) above which imaging occurs. \n    The default value of 102.0 corresponds to nautical twilight, and what all UCalgary optical\n    instruments use.\n  - The `site_uid` parameter matching is case insensitive"
+      operationId: retrieve_imaging_timeframes_api_v1_data_distribution_imaging_timeframes_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImagingTimeframesRequest'
+        required: true
+      responses:
+        '200':
+          description: Imaging times
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ImagingTimeframeResponse'
+                type: array
+                title: Response Retrieve Imaging Timeframes Api V1 Data Distribution Imaging Timeframes Post
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Site not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ImagingTimeframeResponse:
+      properties:
+        timestamp:
+          type: string
+          title: Timestamp
+        site_uid:
+          nullable: true
+          type: string
+          title: Site Uid
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+        imaging_start:
+          nullable: true
+          type: string
+          format: date-time
+          title: Imaging Start
+        imaging_end:
+          nullable: true
+          type: string
+          format: date-time
+          title: Imaging End
+      type: object
+      required:
+      - timestamp
+      - geodetic_latitude
+      - geodetic_longitude
+      title: ImagingTimeframeResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DatasetLegacy2:
+      properties:
+        name:
+          type: string
+          title: Name
+        short_description:
+          type: string
+          title: Short Description
+        long_description:
+          type: string
+          title: Long Description
+        data_tree_url:
+          type: string
+          title: Data Tree Url
+        file_listing_supported:
+          type: boolean
+          title: File Listing Supported
+        level:
+          type: string
+          title: Level
+        doi:
+          nullable: true
+          type: string
+          title: Doi
+        doi_details:
+          nullable: true
+          type: string
+          title: Doi Details
+        citation:
+          nullable: true
+          type: string
+          title: Citation
+        supported_libraries:
+          items:
+            type: string
+            enum:
+            - pyaurorax
+            - pyucrio
+            - idl-aurorax
+            - idl-ucrio
+            - pyucalgarysrs
+          type: array
+          title: Supported Libraries
+          default: []
+      type: object
+      required:
+      - name
+      - short_description
+      - long_description
+      - data_tree_url
+      - file_listing_supported
+      - level
+      title: DatasetLegacy2
+      description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
+    FileListingResponse:
+      properties:
+        urls:
+          items:
+            type: string
+          type: array
+          title: Urls
+        path_prefix:
+          type: string
+          title: Path Prefix
+        count:
+          type: integer
+          title: Count
+        total_bytes:
+          nullable: true
+          type: integer
+          title: Total Bytes
+        dataset:
+          anyOf:
+          - $ref: '#/components/schemas/Dataset'
+          - $ref: '#/components/schemas/DatasetLegacy1'
+          - $ref: '#/components/schemas/DatasetLegacy2'
+          title: Dataset
+      type: object
+      required:
+      - urls
+      - path_prefix
+      - count
+      - total_bytes
+      - dataset
+      title: FileListingResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DatasetLegacy1:
+      properties:
+        name:
+          type: string
+          title: Name
+        short_description:
+          type: string
+          title: Short Description
+        long_description:
+          type: string
+          title: Long Description
+        data_tree_url:
+          type: string
+          title: Data Tree Url
+        file_listing_supported:
+          type: boolean
+          title: File Listing Supported
+        level:
+          type: string
+          title: Level
+        doi:
+          nullable: true
+          type: string
+          title: Doi
+        doi_details:
+          nullable: true
+          type: string
+          title: Doi Details
+        citation:
+          nullable: true
+          type: string
+          title: Citation
+      type: object
+      required:
+      - name
+      - short_description
+      - long_description
+      - data_tree_url
+      - file_listing_supported
+      - level
+      title: DatasetLegacy1
+      description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
+    ErrorMessage:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: ErrorMessage
+    ImagingTimeframesRequest:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        locations:
+          items:
+            $ref: '#/components/schemas/ImagingTimeframeLocation'
+          type: array
+          title: Locations
+        threshold:
+          type: number
+          title: Threshold
+          default: 102.0
+      type: object
+      required:
+      - timestamp
+      - locations
+      title: ImagingTimeframesRequest
+    Observatory:
+      properties:
+        uid:
+          type: string
+          title: Uid
+        full_name:
+          type: string
+          title: Full Name
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+      type: object
+      required:
+      - uid
+      - full_name
+      - geodetic_latitude
+      - geodetic_longitude
+      title: Observatory
+    Dataset:
+      properties:
+        name:
+          type: string
+          title: Name
+        short_description:
+          type: string
+          title: Short Description
+        long_description:
+          type: string
+          title: Long Description
+        data_tree_url:
+          type: string
+          title: Data Tree Url
+        file_listing_supported:
+          type: boolean
+          title: File Listing Supported
+        level:
+          type: string
+          title: Level
+        doi:
+          nullable: true
+          type: string
+          title: Doi
+        doi_details:
+          nullable: true
+          type: string
+          title: Doi Details
+        citation:
+          nullable: true
+          type: string
+          title: Citation
+        supported_libraries:
+          items:
+            type: string
+            enum:
+            - pyaurorax
+            - pyucrio
+            - idl-aurorax
+            - idl-ucrio
+            - pyucalgarysrs
+          type: array
+          title: Supported Libraries
+          default: []
+        file_time_resolution:
+          type: string
+          enum:
+          - 1min
+          - 1hr
+          - 1day
+          - not_applicable
+          title: File Time Resolution
+      type: object
+      required:
+      - name
+      - short_description
+      - long_description
+      - data_tree_url
+      - file_listing_supported
+      - level
+      - file_time_resolution
+      title: Dataset
+    ImagingTimeframeLocation:
+      properties:
+        site_uid:
+          nullable: true
+          type: string
+          title: Site Uid
+        geodetic_latitude:
+          nullable: true
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          nullable: true
+          type: number
+          title: Geodetic Longitude
+      type: object
+      title: ImagingTimeframeLocation
+  securitySchemes:
+    AccessToken:
+      type: http
+      description: Send the Authorization header found in the response of a successful /authentication request on all  secure endpoints. Copy it verbatim to the request header. It is fine to send this header on all requests  to the API. The value in Swagger UI should only include the access token part (leave out 'Bearer').
+      name: Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: Generated by server
+    ApiKeyAuth:
+      type: apiKey
+      description: API keys are intended to be used by non-interactive software interfacing with the REST API. These can  be used instead of an Access Token approach.
+      name: x-aurorax-api-key
+      in: header

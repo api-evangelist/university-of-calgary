@@ -1,0 +1,163 @@
+openapi: 3.0.1
+info:
+  title: AuroraX Application.wadl Authenticate API
+  description: "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n"
+  version: stable
+servers:
+- url: https://api.aurorax.space
+  description: AuroraX production server
+  variables: {}
+- url: https://api.staging.aurorax.space
+  description: AuroraX staging server
+  variables: {}
+- url: http://localhost:8080/
+  description: Local Development and Debugging
+  variables: {}
+tags:
+- name: Authenticate
+  description: Authenticate via email and password to get an Access Token. Use your API Key if you  are building software without user interaction to run against the API.
+paths:
+  /api/v1/authenticate:
+    post:
+      tags:
+      - Authenticate
+      summary: Authenticate using email address and password
+      description: 'Successfull authentication will return the HTTP header ''Authorization: Bearer <access-token>. This header must be sent on all secure requests until /end_session is called or the access  token times out (typically about 1/2 hr of inactivity).'
+      operationId: authenticate
+      requestBody:
+        description: The authentication request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+        required: true
+      responses:
+        '200':
+          description: User authenticated. Send the 'Authorization' header found in the repsonse on all secure requests.
+          headers:
+            Authorization:
+              description: Contains the access token required on all secure requrests.
+              style: simple
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAccount'
+        '400':
+          description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this operation."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: 'Not Authorized
+
+            The email address and password combination is incorrect.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/authenticate/end_session:
+    post:
+      tags:
+      - Authenticate
+      summary: End user session
+      description: End an authenticated user session (invalidate an Access Token). This is the equivelant of a logout action.
+      operationId: endSession
+      responses:
+        '200':
+          description: User session is ended and the Access Token is no longer valid.
+        '400':
+          description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this operation."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - AccessToken: []
+components:
+  schemas:
+    UserAccount:
+      type: object
+      properties:
+        account_id:
+          type: string
+        upload_username:
+          type: string
+        email_address:
+          type: string
+        email_confirmed:
+          type: string
+          format: date-time
+        first_name:
+          type: string
+        last_name:
+          type: string
+        role:
+          type: string
+          enum:
+          - Administrator
+          - Owner
+          - Maintainer
+          - User
+        agree_terms:
+          type: string
+          format: date-time
+        this_login:
+          type: string
+          format: date-time
+        last_login:
+          type: string
+          format: date-time
+        disabled:
+          type: boolean
+    ErrorDocument:
+      type: object
+      properties:
+        error_message:
+          type: string
+          description: If an error code exists, this will have contextual information for debugging
+        error_code:
+          type: string
+          description: The error code
+          enum:
+          - Nil
+          - Ok
+          - NotPermitted
+          - NotAuthorized
+          - Duplicate
+          - AssertionError
+          - NotFound
+          - ApplicationError
+          - NotImplemented
+          - ToManyRequests
+          - Other
+          - Conflict
+          - NotAuthenticated
+          - Unavailable
+      description: This model provides additional details about error conditions that can be used for debugging.
+    AuthenticationRequest:
+      required:
+      - email_address
+      - password
+      type: object
+      properties:
+        email_address:
+          type: string
+          description: The email address of the user. An email will be sent to this address requesting confirmation of ownership.
+        password:
+          type: string
+          description: This users password
+      description: A container for authenticating a user by email address and password
+  securitySchemes:
+    AccessToken:
+      type: http
+      description: Send the Authorization header found in the response of a successful /authentication request on all  secure endpoints. Copy it verbatim to the request header. It is fine to send this header on all requests  to the API. The value in Swagger UI should only include the access token part (leave out 'Bearer').
+      name: Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: Generated by server
+    ApiKeyAuth:
+      type: apiKey
+      description: API keys are intended to be used by non-interactive software interfacing with the REST API. These can  be used instead of an Access Token approach.
+      name: x-aurorax-api-key
+      in: header
