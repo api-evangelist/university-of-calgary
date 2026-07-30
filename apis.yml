@@ -14,9 +14,22 @@ description: >-
   university also maintains a GitHub organization and a library guide cataloging
   third-party scholarly APIs.
 type: Index
+accessModel:
+  pricing: free
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Free · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/university-of-calgary.png
 url: https://raw.githubusercontent.com/api-evangelist/university-of-calgary/refs/heads/main/apis.yml
 tags:
   - Education
@@ -31,74 +44,327 @@ created: '2026-06-03'
 modified: '2026-06-03'
 specificationVersion: '0.19'
 apis:
-  - aid: university-of-calgary:srs-api
-    name: UCalgary Space Remote Sensing API
-    description: >-
-      RESTful API from the University of Calgary Space Remote Sensing group for
-      accessing space physics and remote-sensing data (all-sky imagers,
-      riometers, and related instruments). Usable directly over HTTP or via the
-      pyucalgarysrs / pyucrio Python and IDL client libraries. Interactive
-      Swagger documentation is served at the API root.
-    humanURL: https://api.phys.ucalgary.ca/
-    baseURL: https://api.phys.ucalgary.ca/
-    tags: [ Space Physics, Remote Sensing, Open Data, Research, REST ]
-    properties:
-      - type: Documentation
-        url: https://api.phys.ucalgary.ca/
-      - type: Documentation
-        url: https://data.phys.ucalgary.ca/working_with_data/
-      - type: OpenAPI
-        url: openapi/university-of-calgary-srs-api.yaml
-  - aid: university-of-calgary:aurorax-api
-    name: AuroraX API
-    description: >-
-      Public RESTful API for the AuroraX auroral-science data platform,
-      developed and operated with the University of Calgary. Provides search and
-      access to auroral metadata, ephemeris, and imagery data. An API key is only
-      required for write operations; read access is open. Python (PyAuroraX) and
-      IDL client libraries are available.
-    humanURL: https://docs.aurorax.space/
-    baseURL: https://api.aurorax.space/
-    tags: [ Space Physics, Aurora, Open Data, Research, REST ]
-    properties:
-      - type: Documentation
-        url: https://docs.aurorax.space/
-      - type: Documentation
-        url: https://api.aurorax.space/
-      - type: GitHub
-        url: https://github.com/aurorax-space
-      - type: OpenAPI
-        url: openapi/university-of-calgary-aurorax-api.yaml
-  - aid: university-of-calgary:prism-dspace
-    name: PRISM Institutional Repository (DSpace)
-    description: >-
-      PRISM is the University of Calgary's institutional repository, running on
-      DSpace 8.3 (now served from ucalgary.scholaris.ca). It exposes the standard
-      DSpace REST API for programmatic access to communities, collections, and
-      items, plus an OAI-PMH endpoint for metadata harvesting.
-    humanURL: https://prism.ucalgary.ca/
-    baseURL: https://prism.ucalgary.ca/server/api
-    tags: [ Repository, Scholarly, Open Access, OAI-PMH, DSpace ]
-    properties:
-      - type: Documentation
-        url: https://prism.ucalgary.ca/server/api
-      - type: Documentation
-        url: https://prism.ucalgary.ca/server/oai/request?verb=Identify
-  - aid: university-of-calgary:prism-dataverse
-    name: PRISM Research Data Repository (Borealis Dataverse)
-    description: >-
-      The University of Calgary's PRISM research-data repository is a Dataverse
-      collection hosted on the Borealis (Canadian Dataverse) platform, exposing
-      the public Dataverse REST API (Borealis runs Dataverse v6.8.1) for
-      searching and retrieving dataset and file metadata.
-    humanURL: https://borealisdata.ca/dataverse/calgary
-    baseURL: https://borealisdata.ca/api
-    tags: [ Research Data, Repository, Open Data, Dataverse, REST ]
-    properties:
-      - type: Documentation
-        url: https://borealisdata.ca/dataverse/calgary
-      - type: Documentation
-        url: https://guides.dataverse.org/en/latest/api/
+- aid: university-of-calgary:prism-dspace
+  name: PRISM Institutional Repository (DSpace)
+  description: >-
+    PRISM is the University of Calgary's institutional repository, running on DSpace 8.3 (now served from
+    ucalgary.scholaris.ca). It exposes the standard DSpace REST API for programmatic access to communities,
+    collections, and items, plus an OAI-PMH endpoint for metadata harvesting.
+  humanURL: https://prism.ucalgary.ca/
+  baseURL: https://prism.ucalgary.ca/server/api
+  tags:
+  - Repository
+  - Scholarly
+  - Open Access
+  - OAI-PMH
+  - DSpace
+  properties:
+  - type: Documentation
+    url: https://prism.ucalgary.ca/server/api
+  - type: Documentation
+    url: https://prism.ucalgary.ca/server/oai/request?verb=Identify
+- aid: university-of-calgary:prism-dataverse
+  name: PRISM Research Data Repository (Borealis Dataverse)
+  description: >-
+    The University of Calgary's PRISM research-data repository is a Dataverse collection hosted on the
+    Borealis (Canadian Dataverse) platform, exposing the public Dataverse REST API (Borealis runs Dataverse
+    v6.8.1) for searching and retrieving dataset and file metadata.
+  humanURL: https://borealisdata.ca/dataverse/calgary
+  baseURL: https://borealisdata.ca/api
+  tags:
+  - Research Data
+  - Repository
+  - Open Data
+  - Dataverse
+  - REST
+  properties:
+  - type: Documentation
+    url: https://borealisdata.ca/dataverse/calgary
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+- aid: university-of-calgary:university-of-calgary-application-wadl-api
+  name: University of Calgary Application.wadl API
+  description: >-
+    The Application.wadl API from University of Calgary — 2 operation(s) for application.wadl.
+  humanURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca/
+  tags:
+  - Application.wadl
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-application-wadl-api-openapi.yml
+  - type: Documentation
+    url: https://api.phys.ucalgary.ca/
+  - type: Documentation
+    url: https://data.phys.ucalgary.ca/working_with_data/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-auroral-transport-model-atm-api
+  name: University of Calgary Auroral Transport Model (ATM) API
+  description: Endpoints to utilize the Auroral Transport Model
+  humanURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca/
+  tags:
+  - Auroral Transport Model (ATM)
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-auroral-transport-model-atm-api-openapi.yml
+  - type: Documentation
+    url: https://api.phys.ucalgary.ca/
+  - type: Documentation
+    url: https://data.phys.ucalgary.ca/working_with_data/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-authenticate-api
+  name: University of Calgary Authenticate API
+  description: >-
+    Authenticate via email and password to get an Access Token. Use your API Key if you  are building
+    software without user interaction to run against the API.
+  humanURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca/
+  tags:
+  - Authenticate
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-authenticate-api-openapi.yml
+  - type: Documentation
+    url: https://api.phys.ucalgary.ca/
+  - type: Documentation
+    url: https://data.phys.ucalgary.ca/working_with_data/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-availability-api
+  name: University of Calgary Availability API
+  description: Retrieve information about data in the database
+  humanURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca/
+  tags:
+  - Availability
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-availability-api-openapi.yml
+  - type: Documentation
+    url: https://api.phys.ucalgary.ca/
+  - type: Documentation
+    url: https://data.phys.ucalgary.ca/working_with_data/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-conjunction-search-api
+  name: University of Calgary Conjunction Search API
+  description: Search for conjunctions between multiple sets of data sources
+  humanURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca/
+  tags:
+  - Conjunction Search
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-conjunction-search-api-openapi.yml
+  - type: Documentation
+    url: https://api.phys.ucalgary.ca/
+  - type: Documentation
+    url: https://data.phys.ucalgary.ca/working_with_data/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-data-distribution-api
+  name: University of Calgary Data Distribution API
+  description: Endpoints supporting data distribution
+  humanURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca/
+  tags:
+  - Data Distribution
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-data-distribution-api-openapi.yml
+  - type: Documentation
+    url: https://api.phys.ucalgary.ca/
+  - type: Documentation
+    url: https://data.phys.ucalgary.ca/working_with_data/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-data-products-search-api
+  name: University of Calgary Data Products Search API
+  description: Search for data products
+  humanURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca/
+  tags:
+  - Data Products Search
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-data-products-search-api-openapi.yml
+  - type: Documentation
+    url: https://api.phys.ucalgary.ca/
+  - type: Documentation
+    url: https://data.phys.ucalgary.ca/working_with_data/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-data-sources-api
+  name: University of Calgary Data Sources API
+  description: Interact with data sources
+  humanURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca/
+  tags:
+  - Data Sources
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-data-sources-api-openapi.yml
+  - type: Documentation
+    url: https://api.phys.ucalgary.ca/
+  - type: Documentation
+    url: https://data.phys.ucalgary.ca/working_with_data/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-ephemeris-search-api
+  name: University of Calgary Ephemeris Search API
+  description: Search ephemeris records
+  humanURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca/
+  tags:
+  - Ephemeris Search
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-ephemeris-search-api-openapi.yml
+  - type: Documentation
+    url: https://api.phys.ucalgary.ca/
+  - type: Documentation
+    url: https://data.phys.ucalgary.ca/working_with_data/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-manage-data-api
+  name: University of Calgary Manage Data API
+  description: Operations relating to managing ephemeris and data products data
+  humanURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca/
+  tags:
+  - Manage Data
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-manage-data-api-openapi.yml
+  - type: Documentation
+    url: https://api.phys.ucalgary.ca/
+  - type: Documentation
+    url: https://data.phys.ucalgary.ca/working_with_data/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-operations-sitl-api
+  name: University of Calgary Operations - SITL API
+  description: Endpoints for Scientist In The Loop (SITL) operations
+  humanURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca/
+  tags:
+  - Operations - SITL
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-operations-sitl-api-openapi.yml
+  - type: Documentation
+    url: https://api.phys.ucalgary.ca/
+  - type: Documentation
+    url: https://data.phys.ucalgary.ca/working_with_data/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-real-time-data-api
+  name: University of Calgary Real-Time Data API
+  description: Endpoints providing real-time data streams
+  humanURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca/
+  tags:
+  - Real-Time Data
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-real-time-data-api-openapi.yml
+  - type: Documentation
+    url: https://api.phys.ucalgary.ca/
+  - type: Documentation
+    url: https://data.phys.ucalgary.ca/working_with_data/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-utilities-api
+  name: University of Calgary Utilities API
+  description: Various helper endpoints
+  humanURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca/
+  tags:
+  - Utilities
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-utilities-api-openapi.yml
+  - type: Documentation
+    url: https://api.phys.ucalgary.ca/
+  - type: Documentation
+    url: https://data.phys.ucalgary.ca/working_with_data/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-utils-api
+  name: University of Calgary Utils API
+  description: Various utilities
+  humanURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca/
+  tags:
+  - Utils
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-utils-api-openapi.yml
+  - type: Documentation
+    url: https://api.phys.ucalgary.ca/
+  - type: Documentation
+    url: https://data.phys.ucalgary.ca/working_with_data/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: GitHub
+    url: https://github.com/aurorax-space
 common:
   - type: AgenticAccess
     url: agentic-access/university-of-calgary-agentic-access.yml
