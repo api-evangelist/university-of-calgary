@@ -1,0 +1,40 @@
+{
+  "provider": "university-of-calgary",
+  "sources": [
+    "university-of-calgary-application-wadl-api-openapi.yml",
+    "university-of-calgary-auroral-transport-model-atm-api-openapi.yml",
+    "university-of-calgary-authenticate-api-openapi.yml",
+    "university-of-calgary-availability-api-openapi.yml",
+    "university-of-calgary-conjunction-search-api-openapi.yml",
+    "university-of-calgary-data-distribution-api-openapi.yml",
+    "university-of-calgary-data-products-search-api-openapi.yml",
+    "university-of-calgary-data-sources-api-openapi.yml",
+    "university-of-calgary-ephemeris-search-api-openapi.yml",
+    "university-of-calgary-manage-data-api-openapi.yml",
+    "university-of-calgary-operations-sitl-api-openapi.yml",
+    "university-of-calgary-real-time-data-api-openapi.yml",
+    "university-of-calgary-utilities-api-openapi.yml",
+    "university-of-calgary-utils-api-openapi.yml"
+  ],
+  "outputs": [
+    "university-of-calgary-application-wadl-api-openapi.yml",
+    "university-of-calgary-auroral-transport-model-atm-api-openapi.yml",
+    "university-of-calgary-authenticate-api-openapi.yml",
+    "university-of-calgary-availability-api-openapi.yml",
+    "university-of-calgary-conjunction-search-api-openapi.yml",
+    "university-of-calgary-data-distribution-api-openapi.yml",
+    "university-of-calgary-data-products-search-api-openapi.yml",
+    "university-of-calgary-data-sources-api-openapi.yml",
+    "university-of-calgary-ephemeris-search-api-openapi.yml",
+    "university-of-calgary-manage-data-api-openapi.yml",
+    "university-of-calgary-operations-sitl-api-openapi.yml",
+    "university-of-calgary-real-time-data-api-openapi.yml",
+    "university-of-calgary-utilities-api-openapi.yml",
+    "university-of-calgary-utils-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

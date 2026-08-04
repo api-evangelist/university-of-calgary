@@ -1,0 +1,3469 @@
+openapi: 3.0.1
+info:
+  title: AuroraX API
+  description: "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX\
+    \ RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search,\
+    \ Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries\
+    \ at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space'\
+    \ target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX\
+    \ platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\
+    \nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description\
+    \                                                                 |\n| ---------------- | ---------------------------------------------------------------------------\
+    \ |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data    \
+    \     |\n| Authentication   | Authentication using an email address and password, or an API key  \
+    \         |\n| Availability     | Retrieve information describing what data is in the database   \
+    \             |\n| Data Sources     | Interact with data sources                                 \
+    \                 |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources\
+    \               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source\
+    \              |\n| Data Products    | Search and manage data products data associated with a data\
+    \ source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like\
+    \ format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n\
+    1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n \
+    \  token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n\
+    \   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key\
+    \ called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication'\
+    \ target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the\
+    \ success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON\
+    \ and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"\
+    error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes\
+    \ were made.\"\n}\n```\n"
+  version: stable
+servers:
+- url: https://api.aurorax.space
+  description: AuroraX production server
+  variables: {}
+- url: https://api.staging.aurorax.space
+  description: AuroraX staging server
+  variables: {}
+- url: http://localhost:8080/
+  description: Local Development and Debugging
+  variables: {}
+tags:
+- name: Availability
+  description: Retrieve information about data in the database
+- name: Conjunction Search
+  description: Search for conjunctions between multiple sets of data sources
+- name: Data Products Search
+  description: Search for data products
+- name: Data Sources
+  description: Interact with data sources
+- name: Manage Data
+  description: Operations relating to managing ephemeris and data products data
+- name: Ephemeris Search
+  description: Search ephemeris records
+- name: Authenticate
+  description: Authenticate via email and password to get an Access Token. Use your API Key if you  are
+    building software without user interaction to run against the API.
+- name: Utils
+  description: Various utilities
+paths:
+  /api/v1/availability/data_products:
+    get:
+      tags:
+      - Availability
+      summary: Get the data_product availability for all Data Sources
+      description: Returns a count of data by day for each data source. Provide query parameters to filter
+        the results to just the sources you wish, in the time frames you wish
+      operationId: getDataProductAvailability
+      parameters:
+      - name: start
+        in: query
+        description: Start date (default to Jan 1 of this year
+        schema:
+          type: string
+          format: date
+      - name: end
+        in: query
+        description: End date (default to start + 12 months or today + 1 month if start not provided)
+        schema:
+          type: string
+          format: date
+      - name: program
+        in: query
+        description: Filter by Program
+        schema:
+          type: string
+      - name: platform
+        in: query
+        description: Filter by Platform
+        schema:
+          type: string
+      - name: instrument_type
+        in: query
+        description: Filter by Instrument Type
+        schema:
+          type: string
+      - name: source_type
+        in: query
+        description: Filter by Source Type
+        schema:
+          type: string
+          enum:
+          - ground
+          - heo
+          - leo
+          - lunar
+          - event_list
+          - not_applicable
+      - name: data_product_type
+        in: query
+        description: Filter by Data Product Type
+        schema:
+          type: string
+          enum:
+          - keogram
+          - montage
+          - movie
+          - summary_plot
+          - data_availability
+      - name: owner
+        in: query
+        description: Filter by Owner
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the Data Source returned. Default is basic_info.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      - name: slow
+        in: query
+        description: Query the data directly (slower) for more accurate results. Default is false.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: List of data_product availability.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataProduct Availability'
+        '400':
+          description: Not foundThis can occur if start or end is not in the ISO format YYYY-MM-DD.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. Slow mode is currently not available.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/availability/ephemeris:
+    get:
+      tags:
+      - Availability
+      summary: Get the ephemeris availability for all Data Sources
+      description: Returns a count of data by day for each data source. Provide query parameters to filter
+        the results to just the sources you wish, in the time frames you wish
+      operationId: getEphemerisAvailability
+      parameters:
+      - name: start
+        in: query
+        description: Start date (default to Jan 1 of this year
+        schema:
+          type: string
+          format: date
+      - name: end
+        in: query
+        description: End date (default to start + 12 months or today + 1 month if start not provided)
+        schema:
+          type: string
+          format: date
+      - name: program
+        in: query
+        description: Filter by Program
+        schema:
+          type: string
+      - name: platform
+        in: query
+        description: Filter by Platform
+        schema:
+          type: string
+      - name: instrument_type
+        in: query
+        description: Filter by Instrument Type
+        schema:
+          type: string
+      - name: source_type
+        in: query
+        description: Filter by Source Type
+        schema:
+          type: string
+          enum:
+          - ground
+          - heo
+          - leo
+          - lunar
+          - event_list
+          - not_applicable
+      - name: owner
+        in: query
+        description: Filter by Owner
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the Data Source returned. Default is basic_info.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      - name: slow
+        in: query
+        description: Query the data directly (slower) for more accurate results. Default is false.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: List of ephemeris availability.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ephemeris Availability'
+        '400':
+          description: Not foundThis can occur if start or end is not in the ISO format YYYY-MM-DD.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. Slow mode is currently not available.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/conjunctions/requests/{request_id}:
+    get:
+      tags:
+      - Conjunction Search
+      summary: Get the conjunction search request details
+      description: This endpoint is anonymous. The request ID can be shared with anyone.
+      operationId: getSearchRequestDetails
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchQueryResponse'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+    delete:
+      tags:
+      - Conjunction Search
+      summary: Cancel the conjunction search request
+      description: Attempts to cancel the search request. If the request is already finished, attempts
+        to delete  the associated data file. If the request could be cancledd, the log will contain an
+        error against  the request noting the cancellation.
+      operationId: cancelRequest
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchQueryResponse'
+        '204':
+          description: The search request finished and is no longer cancellable. The data file was deleted
+            if it exists.
+        '400':
+          description: Request did not contain a request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/conjunctions/requests/{request_id}/data:
+    get:
+      tags:
+      - Conjunction Search
+      summary: Get the conjunction search result data
+      description: Anonymous endpoint. The request ID can be shared with anyone.
+      operationId: getSearchResultData
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      - name: generate_ephemeris_queries
+        in: query
+        description: Return generated ephemeris queries. Default is false.
+        schema:
+          type: boolean
+      - name: data_source_record_format
+        in: query
+        description: Control which epehermis source data is returned. Default is basic.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      responses:
+        '200':
+          description: Get the search result data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConjunctionEvent'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+    post:
+      tags:
+      - Conjunction Search
+      summary: Get the conjunction search result data with a data format specification
+      description: Anonymous endpoint. The request ID can be shared with anyone.
+      operationId: getSearchResultWithDatAdvancedFormatting
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuperConjunctionEventFormat'
+        required: true
+      responses:
+        '200':
+          description: Get the search result data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConjunctionEvent'
+        '400':
+          description: The request is invalid. Please correct it and retry.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+    delete:
+      tags:
+      - Conjunction Search
+      summary: Delete a search result data file.
+      description: Deletes the data file containing the search results. If this search is run in the future,
+        the query will re-create the data file.
+      operationId: deleteDataFile
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchQueryResponse'
+        '400':
+          description: Request did not contain a request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/conjunctions/search:
+    post:
+      tags:
+      - Conjunction Search
+      summary: Search for conjunctions
+      description: "Anonymous unless logged in. Conjunctions may occur between satellites, or between\
+        \ satellites and ground instruments.  AuroraX maintains an index of all conjunctions for north\
+        \ and south B-trace footprints (or magnetic location for ground-instruments).  Conjunction queries\
+        \ describe the conjunction relationship between sources you are interested in.\n\n Some examples\
+        \ of conjunction queries are: \n Find all the nbtrace conjunction events that occured in Sep-2019\
+        \ between any satellite in the swarm program and themisd platform  that were within 200 km of\
+        \ each other.\n\n Find all the nbtrace conjunction events that occured in 2019 between any themis\
+        \ satellite and any themis-asi platform that were  within 450 km of the themis-asi platform but\
+        \ only when the themis satellite was also in a Dayside Magnetosphere (D_Msphere)  region of space.\n\
+        \n Data returned when a ground-instrument is involved returns the time ranges for when that instrument\
+        \ was operational."
+      operationId: searchMulti
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuperConjunctionQuery'
+        required: true
+      responses:
+        '400':
+          description: 'Missing or invalid parameters.
+
+
+            Please refer to the documentation for correctness of this operation.'
+  /api/v1/data_products/requests/{request_id}:
+    get:
+      tags:
+      - Data Products Search
+      summary: Get the data_product search request details
+      description: This endpoint is anonymous. The request ID can be shared with anyone.
+      operationId: getSearchRequestDetails_1
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchQueryResponse'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+    delete:
+      tags:
+      - Data Products Search
+      summary: Cancel the data_product search request
+      description: Attempts to cancel the search request. The system will log an error against the request
+        noting the cancellation.
+      operationId: cancelRequest_1
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchQueryResponse'
+        '400':
+          description: Request did not contain a request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/data_products/requests/{request_id}/data:
+    get:
+      tags:
+      - Data Products Search
+      summary: Get the data_product search result data
+      description: Get the data returned by the given search request. If the data has expired, then 404
+        will be returned.
+      operationId: getSearchResultData_1
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      - name: data_source_record_format
+        in: query
+        description: Control which epehermis source data is returned. Default is basic.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      responses:
+        '200':
+          description: Get the search result data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataProduct'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+    post:
+      tags:
+      - Data Products Search
+      summary: Get the data_product search result data with a data format specification
+      description: Get the data returned by the given search request. If the data has expired, then 404
+        will be returned.
+      operationId: getSearchResultDataWithAdvancedFormatting
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataProductFormat'
+        required: true
+      responses:
+        '200':
+          description: Get the search result data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataProduct'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+    delete:
+      tags:
+      - Data Products Search
+      summary: Delete a search result data file.
+      description: Deletes the data file containing the search results. If this search is run in the future,
+        the query will re-create the data file.
+      operationId: deleteDataFile_1
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchQueryResponse'
+        '400':
+          description: Request did not contain a request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/data_products/search:
+    post:
+      tags:
+      - Data Products Search
+      summary: Search for data products
+      description: Data products have their own metadata and can be filtered on those. Additionally, because
+        data products are also linked to one or more data sources, they can also be found by adding metadata
+        filters to data source criteria
+      operationId: search
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataProductQuery'
+        required: true
+      responses:
+        '400':
+          description: 'Missing or invalid parameters.
+
+
+            Please refer to the documentation for correctness of this operation.'
+  /api/v1/data_products/search_synchronous:
+    post:
+      tags:
+      - Data Products Search
+      summary: Synchronously search for data products
+      description: Anonymous unless logged in. The same search functionality as asynchronous search, except
+        it is synchronous. Search results are limited to 10 years of data products. These requests are
+        not saved, even if you are logged in.
+      operationId: searchSynchronous
+      parameters:
+      - name: data_source_record_format
+        in: query
+        description: Control how the data product data source data is returned. Default is basic.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataProductQueryWithResponseFormat'
+        required: true
+      responses:
+        '200':
+          description: List of data products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataProduct'
+        '400':
+          description: 'Missing or invalid parameters.
+
+
+            Please refer to the documentation for correctness of this operation.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/data_sources:
+    get:
+      tags:
+      - Data Sources
+      summary: List all data sources
+      description: Data Sources are entities like satellites and ground stations (platforms) that  produce
+        data.
+      operationId: getList
+      parameters:
+      - name: program
+        in: query
+        description: Filter by Program
+        schema:
+          type: string
+      - name: platform
+        in: query
+        description: Filter by Platform
+        schema:
+          type: string
+      - name: instrument_type
+        in: query
+        description: Filter by Instrument Type
+        schema:
+          type: string
+      - name: source_type
+        in: query
+        description: Filter by Source Type
+        schema:
+          type: string
+          enum:
+          - ground
+          - heo
+          - leo
+          - lunar
+          - event_list
+          - not_applicable
+      - name: owner
+        in: query
+        description: Filter by Owner
+        schema:
+          type: string
+      - name: format
+        in: query
+        description: The format of the Data Source returned. Default is basic_info.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      - name: include_stats
+        in: query
+        description: Include the data_source stats with the response. Default is false.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: List of data sources.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Data Source'
+    post:
+      tags:
+      - Data Sources
+      summary: Add an Data Source record
+      description: "*Must have the Administrator or Owner role to perform this operation* \n\n*Must be\
+        \ authenticated*"
+      operationId: add_1
+      requestBody:
+        description: The Data Source record to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Data Source'
+        required: true
+      responses:
+        '200':
+          description: Data Source record created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Data Source'
+        '400':
+          description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this\
+            \ operation."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid\
+            \ API key\n * Invalid access token\n * Access token expired"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '403':
+          description: 'Not Permitted
+
+            Only the Data Source Owner or an Administrator may create new data sources.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '409':
+          description: "Duplicate. \nThere is already a Data Source record with this identifier"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. This endpoint is currently offline.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - ApiKeyAuth: []
+      - AccessToken: []
+  /api/v1/data_sources/{identifier}:
+    get:
+      tags:
+      - Data Sources
+      summary: Get details about a Data Source
+      operationId: getDetail
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier of the Data Source
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: format
+        in: query
+        description: The format of the Data Source returned. Default is basic_info.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      - name: include_stats
+        in: query
+        description: Include the data_source stats with the response. Default is false.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Data Source'
+        '400':
+          description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this\
+            \ operation."
+        '404':
+          description: identifier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+    put:
+      tags:
+      - Data Sources
+      summary: Update an Data Source record
+      description: "*Must be an Administrator or be the Owner of this record* \n\n*Must be authenticated*"
+      operationId: update_1
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier of the Data Source
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        description: The Data Source record to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Data Source'
+        required: true
+      responses:
+        '200':
+          description: Data Source record updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Data Source'
+        '400':
+          description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this\
+            \ operation."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid\
+            \ API key\n * Invalid access token\n * Access token expired"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '403':
+          description: 'Not Permitted
+
+            Only the Data Source Owner or an Administrator may update data sources.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: identifier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '409':
+          description: "Duplicate. \nThere is already an Data Source record for this identifier"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. This endpoint is currently offline.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - ApiKeyAuth: []
+      - AccessToken: []
+    delete:
+      tags:
+      - Data Sources
+      summary: Delete an Data Source record
+      description: "*Must be an Owner of the Data Source or an Administrator in order to perform this\
+        \ operation* \n\n*Must be authenticated*"
+      operationId: delete_1
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier of the Data Source
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Data Source record deleted
+        '400':
+          description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this\
+            \ operation."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid\
+            \ API key\n * Invalid access token\n * Access token expired"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '403':
+          description: 'Not Permitted
+
+            Only the Data Source Owner or an Administrator may delete data sources.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: identifier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '409':
+          description: "Conflict. \nThere is existing data associated with this source. Remove the data\
+            \ first, and then try this operation again."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. This endpoint is currently offline.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - ApiKeyAuth: []
+      - AccessToken: []
+    patch:
+      tags:
+      - Data Sources
+      summary: Partially update an Data Source record. Omitted fields are ignored.
+      description: "*Must be an Administrator or be the Owner of this record* \n\n*Must be authenticated*"
+      operationId: partialUpdate_1
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier of the Data Source
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        description: The Data Source record to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Data Source'
+        required: true
+      responses:
+        '200':
+          description: Data Source record updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Data Source'
+        '400':
+          description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this\
+            \ operation."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid\
+            \ API key\n * Invalid access token\n * Access token expired"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '403':
+          description: 'Not Permitted
+
+            Only the Data Source Owner or an Administrator may update data sources.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: identifier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '409':
+          description: "Duplicate. \nThere is already an Data Source record for this identifier"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. This endpoint is currently offline.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - ApiKeyAuth: []
+      - AccessToken: []
+  /api/v1/data_sources/{identifier}/stats:
+    get:
+      tags:
+      - Data Sources
+      summary: Get some statistics about a Data Source, like the earliest/latest ephemeris loaded into
+        AuroraX  and number of ephemeris records loaded. This will be removed and combined with list data_source  and
+        get data_source detail.
+      operationId: getStats
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier of the Data Source
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: format
+        in: query
+        description: The format of the Data Source returned. Default is basic_info.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      - name: slow
+        in: query
+        description: Query the data directly (slower) for more accurate results. Default is false.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSourceStats'
+        '404':
+          description: identifier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '400':
+          description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this\
+            \ operation."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      deprecated: true
+  /api/v1/data_sources/search:
+    post:
+      tags:
+      - Data Sources
+      summary: Search for data sources
+      description: Find the data sources matching a set of search parameters. This endpoint is synchronous.
+      operationId: search_1
+      parameters:
+      - name: format
+        in: query
+        description: The format of the Data Source returned. Default is basic_info.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      - name: include_stats
+        in: query
+        description: Include the data_source stats with the response
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataSourceQuery'
+        required: true
+      responses:
+        '200':
+          description: List of data sources.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Data Source'
+        '400':
+          description: 'Missing or invalid parameters.
+
+
+            Please refer to the documentation for correctness of this operation.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/data_sources/{identifier}/data_products:
+    post:
+      tags:
+      - Manage Data
+      summary: Add a data product
+      description: 'Adds one or more Data Product records to the set of Data Products for this Data Source
+        record. Must be an Administrator, Owner of this Data Source or have been assigned Maintainer of
+        this Data Source.
+
+
+        This end-point will accept very large files or continuous streams containing data product records.
+        Data is processed asynchronously.'
+      operationId: addDataProducts
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier specified in the Data Source record
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/LoadDataProductSpecification'
+        required: true
+      responses:
+        '202':
+          description: The data product stream was accepted for processing.
+        '400':
+          description: 'Errors generated during load.
+
+
+            Please refer to the documentation for correctness of this operation. Because this operation
+            is  asynchronous, some errors occurring later in the load may not be present in this response'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid\
+            \ API key\n * Invalid access token\n * Access token expired"
+        '403':
+          description: 'Not Permitted
+
+            Only the Data Source Owner, a Maintainer, or an Administrator may post new data products.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. This endpoint is currently offline.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - ApiKeyAuth: []
+      - AccessToken: []
+    delete:
+      tags:
+      - Manage Data
+      summary: Deletes a Data Product record
+      description: "*Must be the Data Source Maintainer, Owner, or have Administrator access in order\
+        \ to perform this operation* \n\n*Must be authenticated*"
+      operationId: deleteDataProduct
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier of the Data Source
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        description: The delete operation specification
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteDataProductSpecification'
+        required: true
+      responses:
+        '200':
+          description: Data Product record deleted
+        '400':
+          description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this\
+            \ operation."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid\
+            \ API key\n * Invalid access token\n * Access token expired"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '403':
+          description: 'Not Permitted
+
+            Only the Data Source Owner, a Maintainer, or an Administrator may delete data products.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: identifier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. This endpoint is currently offline.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - ApiKeyAuth: []
+      - AccessToken: []
+  /api/v1/data_sources/{identifier}/ephemeris:
+    post:
+      tags:
+      - Manage Data
+      summary: Add ephemeris data
+      description: 'Adds data to the set of Ephemeris for this Data Source record. Must be an Administrator,
+        Owner of this Data Source or have been assigned Maintainer of this Data Source.
+
+
+        This end-point will accept very large files or continuous streams containing Ephemeris data. Data
+        is processed asynchronously.'
+      operationId: addEphemerisData
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier specified in the Data Source record
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/LoadEphemerisSpecification'
+        required: true
+      responses:
+        '202':
+          description: The ephemeris stream was accepted for processing.
+        '400':
+          description: 'Errors generated during load.
+
+
+            Please refer to the documentation for correctness of this operation. Because this operation
+            is  asynchronous, some errors occurring later in the load may not be present in this response'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid\
+            \ API key\n * Invalid access token\n * Access token expired"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '403':
+          description: 'Not Permitted
+
+            Only the Data Source Owner, a Maintainer, or an Administrator may post new ephemeris data.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. This endpoint is currently offline.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - ApiKeyAuth: []
+      - AccessToken: []
+    delete:
+      tags:
+      - Manage Data
+      summary: Delete a range of Ephemeris records. This interface is asynchronous.
+      description: "*Must be the Data Source Maintainer, Owner, or have Administrator access in order\
+        \ to perform this operation* \n\n*Must be authenticated*"
+      operationId: deleteEphemeris
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier of the Data Source
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        description: The specification that matches the identifier (for data integrity)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteEphemerisSpecification'
+        required: true
+      responses:
+        '202':
+          description: Delete request accepted
+        '400':
+          description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this\
+            \ operation."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid\
+            \ API key\n * Invalid access token\n * Access token expired"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '403':
+          description: 'Not Permitted
+
+            Only the Data Source Owner, a Maintainer, or an Administrator may delete ephemeris data.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: identifier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '503':
+          description: 'Maintenance Mode
+
+
+            The API is in maintenance mode. This endpoint is currently offline.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - ApiKeyAuth: []
+      - AccessToken: []
+  /api/v1/data_sources/{identifier}/ephemeris/delete_jobs/{delete_job_id}:
+    get:
+      tags:
+      - Manage Data
+      summary: Get a recent (within 1 hour) delete job details
+      operationId: getEphemerisDeleteJobDetail
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier of the Data Source
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: delete_job_id
+        in: path
+        description: The delete job identifier
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Delete job details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '404':
+          description: identifier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/data_sources/{identifier}/ephemeris/delete_jobs:
+    get:
+      tags:
+      - Manage Data
+      summary: List recent (within 1 hour) delete jobs
+      operationId: listEphemerisDeleteJobs
+      parameters:
+      - name: identifier
+        in: path
+        description: The identifier of the Data Source
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: List of recent delete jobs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '404':
+          description: identifier not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/ephemeris/requests/{request_id}:
+    get:
+      tags:
+      - Ephemeris Search
+      summary: Get the ephemeris search request details
+      description: This endpoint is anonymous. The request ID can be shared with anyone.
+      operationId: getSearchRequestDetails_2
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchQueryResponse'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+    delete:
+      tags:
+      - Ephemeris Search
+      summary: Cancel the ephemeris search request
+      description: Attempts to cancel the search request. The system will log an error against the request
+        noting the cancellation.
+      operationId: cancelRequest_2
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchQueryResponse'
+        '400':
+          description: Request did not contain a request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/ephemeris/requests/{request_id}/data:
+    get:
+      tags:
+      - Ephemeris Search
+      summary: Get the ephemeris search result data
+      description: Get the data returned by the given search request. If the data has expired, then 404
+        will be returned.
+      operationId: getSearchResultData_2
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      - name: data_source_record_format
+        in: query
+        description: Control which epehermis source data is returned. Default is basic.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      responses:
+        '200':
+          description: Get the search result data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ephemeris'
+        '400':
+          description: Bad request. Please fix the request and try again.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+    post:
+      tags:
+      - Ephemeris Search
+      summary: Get the ephemeris search result data
+      description: Get the data returned by the given search request. If the data has expired, then 404
+        will be returned.
+      operationId: getSearchResultDataWithAdvancedFormatting_1
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EphemerisFormat'
+        required: true
+      responses:
+        '200':
+          description: Get the search result data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ephemeris'
+        '400':
+          description: There is an error in the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: No request with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+    delete:
+      tags:
+      - Ephemeris Search
+      summary: Delete a search result data file.
+      description: Deletes the data file containing the search results. If this search is run in the future,
+        the query will re-create the data file.
+      operationId: deleteDataFile_2
+      parameters:
+      - name: request_id
+        in: path
+        description: The request ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchQueryResponse'
+        '400':
+          description: Request did not contain a request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '404':
+          description: No request found with given request id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/ephemeris/search:
+    post:
+      tags:
+      - Ephemeris Search
+      summary: Search for ephemeris
+      description: "Anonymous unless logged in. Just like a conjunction search, but contains one side\
+        \ of the query. Used to search  for particular ephemeris data of one or more Data Sources. Maximum\
+        \ time span returned is 1 month. Must provide at least one filter parameter. \n ** If you are\
+        \ logged in, your search will be private to only you, otherwise it is public **\n"
+      operationId: search_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EphemerisQuery'
+        required: true
+      responses:
+        '202':
+          description: The search request was accepted. See the location header for the status of the
+            search request.
+        '400':
+          description: 'Missing or invalid parameters.
+
+
+            Please refer to the documentation for correctness of this operation.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/ephemeris/search_synchronous:
+    post:
+      tags:
+      - Ephemeris Search
+      summary: Synchronously search for ephemeris
+      description: Anonymous unless logged in. The same search functionality as asynchronous search, except
+        it is synchronous. Because of the synchronous nature, the maximum time frame is significantly
+        reduced to a maximum of two days. These requests are not saved, even if you are logged in.
+      operationId: searchSynchronous_1
+      parameters:
+      - name: data_source_record_format
+        in: query
+        description: Control how the epehermis data source is returned. Default is basic. This option
+          will be used if the advanced format is not present in the request body.
+        schema:
+          type: string
+          enum:
+          - identifier_only
+          - basic_info
+          - with_metadata
+          - full_record
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EphemerisQueryWithResponseFormat'
+        required: true
+      responses:
+        '200':
+          description: List of ephemeris
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ephemeris'
+        '400':
+          description: 'Missing or invalid parameters.
+
+
+            Please refer to the documentation for correctness of this operation.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '500':
+          description: There was an application error. Please contact support.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/authenticate:
+    post:
+      tags:
+      - Authenticate
+      summary: Authenticate using email address and password
+      description: 'Successfull authentication will return the HTTP header ''Authorization: Bearer <access-token>.
+        This header must be sent on all secure requests until /end_session is called or the access  token
+        times out (typically about 1/2 hr of inactivity).'
+      operationId: authenticate
+      requestBody:
+        description: The authentication request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+        required: true
+      responses:
+        '200':
+          description: User authenticated. Send the 'Authorization' header found in the repsonse on all
+            secure requests.
+          headers:
+            Authorization:
+              description: Contains the access token required on all secure requrests.
+              style: simple
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAccount'
+        '400':
+          description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this\
+            \ operation."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: 'Not Authorized
+
+            The email address and password combination is incorrect.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+  /api/v1/authenticate/end_session:
+    post:
+      tags:
+      - Authenticate
+      summary: End user session
+      description: End an authenticated user session (invalidate an Access Token). This is the equivelant
+        of a logout action.
+      operationId: endSession
+      responses:
+        '200':
+          description: User session is ended and the Access Token is no longer valid.
+        '400':
+          description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this\
+            \ operation."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - AccessToken: []
+  /api/v1/utils/timezones/convert:
+    get:
+      tags:
+      - Utils
+      summary: Given a timestamp in ISO format and a timezone, return the UTC equivelant
+      description: This is the same operation for Citizen Science timestamps that are provided, but allows
+        for preview of the calculated value
+      operationId: calcUtc
+      parameters:
+      - name: ts
+        in: query
+        description: The timestamp
+        schema:
+          type: string
+          format: date-time
+      - name: tz
+        in: query
+        description: The timezone ts is in
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Timestamp in UTC
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/v1/utils/describe/cartesian_products:
+    post:
+      tags:
+      - Utils
+      summary: Returns a count of cartesian products (tuples of data sources) of the given conjunction
+        search object. This number is the combinations  simple conjunction tuples between each data source
+        found through the criteria block
+      operationId: cartesianProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuperConjunctionQuery'
+        required: true
+      responses:
+        '200':
+          description: The count of cartesian products found
+          content:
+            application/json: {}
+  /api/v1/utils/admin/search_requests/{request_id}:
+    delete:
+      tags:
+      - Utils
+      summary: Delete a search request
+      description: "Removes this search request and all associated data. \n\n*Must be authenticated*"
+      operationId: deleteSearchRequest
+      parameters:
+      - name: request_id
+        in: path
+        description: The search request ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The search request was delete
+        '400':
+          description: Invalid request. Please consult the documentation and retry.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: 'Not Authorized
+
+            Must be authenticated as an Administrator to remove a search request.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '403':
+          description: 'Not Permitted
+
+            Only an Administrator may list active searches.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - ApiKeyAuth: []
+      - AccessToken: []
+  /api/v1/utils/admin/search_requests:
+    get:
+      tags:
+      - Utils
+      summary: List search summaries
+      description: "List searches, optionally filtering by: active, type (ephemeris, data_product, conjunction),\
+        \ between start/end, file_size >=, result_count >=, query_duration >=, has error_condition \n\n\
+        *Must be authenticated*"
+      operationId: findSearchRequests
+      parameters:
+      - name: active
+        in: query
+        description: 'Filter by active. True: active only, false: completed only, omit: both'
+        schema:
+          type: boolean
+      - name: search_type
+        in: query
+        description: 'Filter by Search Type. Omit: all'
+        schema:
+          type: string
+          enum:
+          - conjunction
+          - ephemeris
+          - data_product
+      - name: start
+        in: query
+        description: Filter by start. Later than or equal if provided or omit for all before end
+        schema:
+          type: string
+          format: date-time
+      - name: end
+        in: query
+        description: Filter by end. Earlier than or equal if provided or omit for all before start
+        schema:
+          type: string
+          format: date-time
+      - name: file_size
+        in: query
+        description: Filter by file size. Greater than or equal if provided or omit for all file sizes
+          (kilobytes). Overrides active to be false.
+        schema:
+          type: integer
+          format: int64
+      - name: result_count
+        in: query
+        description: Filter by result count. Greater than or equal if provided or omit for all result
+          counts. Overrides active to be false.
+        schema:
+          type: integer
+          format: int32
+      - name: query_duration
+        in: query
+        description: Filter by query duration (millis). Greater than or equal if provided or omit for
+          any duration
+        schema:
+          type: integer
+          format: int64
+      - name: error_condition
+        in: query
+        description: 'Filter by queries with an error condition. Ignored if filtering for active queries.
+          True: must have error, false: must not have error, omit: both'
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: List of search summaries.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchRequestListing'
+        '400':
+          description: Invalid request. Please consult the documentation and retry.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '401':
+          description: 'Not Authorized
+
+            Must be authenticated as an Administrator to list search requests.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+        '403':
+          description: 'Not Permitted
+
+            Only an Administrator may list search requests.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDocument'
+      security:
+      - ApiKeyAuth: []
+      - AccessToken: []
+  /api/v1/utils/timezones:
+    get:
+      tags:
+      - Utils
+      summary: List available time zones
+      description: List available time zones. These should be standard from the TZ Database. In javascript,
+        it is possible to use Intl.supportedValuesOf('timeZone') for valid values.
+      operationId: listTimeZones
+      responses:
+        '200':
+          description: List of time zones.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/v1/utils/describe/query/conjunction:
+    post:
+      tags:
+      - Utils
+      summary: Parses the query into an 'SQL like' query expression
+      operationId: parse
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuperConjunctionQuery'
+        required: true
+      responses:
+        '200':
+          description: The parsed query
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/v1/utils/describe/query/data_products:
+    post:
+      tags:
+      - Utils
+      summary: Parses the query into an 'SQL like' query expression
+      operationId: parse_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataProductQuery'
+        required: true
+      responses:
+        '200':
+          description: The parsed query
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/v1/utils/describe/query/ephemeris:
+    post:
+      tags:
+      - Utils
+      summary: Parses the query into an 'SQL like' query expression
+      operationId: parse_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EphemerisQuery'
+        required: true
+      responses:
+        '200':
+          description: The parsed query
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /api/application.wadl/{path}:
+    get:
+      operationId: getExternalGrammar
+      parameters:
+      - name: path
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        default:
+          description: default response
+          content:
+            application/xml: {}
+  /api/application.wadl:
+    get:
+      operationId: getWadl
+      responses:
+        default:
+          description: default response
+          content:
+            application/vnd.sun.wadl+xml: {}
+            application/xml: {}
+components:
+  schemas:
+    UserAccount:
+      type: object
+      properties:
+        account_id:
+          type: string
+        upload_username:
+          type: string
+        email_address:
+          type: string
+        email_confirmed:
+          type: string
+          format: date-time
+        first_name:
+          type: string
+        last_name:
+          type: string
+        role:
+          type: string
+          enum:
+          - Administrator
+          - Owner
+          - Maintainer
+          - User
+        agree_terms:
+          type: string
+          format: date-time
+        this_login:
+          type: string
+          format: date-time
+        last_login:
+          type: string
+          format: date-time
+        disabled:
+          type: boolean
+    ErrorDocument:
+      type: object
+      properties:
+        error_message:
+          type: string
+          description: If an error code exists, this will have contextual information for debugging
+        error_code:
+          type: string
+          description: The error code
+          enum:
+          - Nil
+          - Ok
+          - NotPermitted
+          - NotAuthorized
+          - Duplicate
+          - AssertionError
+          - NotFound
+          - ApplicationError
+          - NotImplemented
+          - ToManyRequests
+          - Other
+          - Conflict
+          - NotAuthenticated
+          - Unavailable
+      description: This model provides additional details about error conditions that can be used for
+        debugging.
+    NewAccountRequest:
+      required:
+      - agree_terms
+      - email_address
+      - first_name
+      - last_name
+      - password
+      type: object
+      properties:
+        email_address:
+          type: string
+          description: The email address of the user. An email will be sent to this address requesting
+            confirmation of ownership.
+        first_name:
+          type: string
+          description: The user's first name
+        last_name:
+          type: string
+          description: The user's last name
+        agree_terms:
+          type: string
+          description: A timestamp of when the user agreed to any terms and conditions for use of this
+            account
+          format: date-time
+        password:
+          type: string
+          description: The users chosen password required to obtain an access token for use on subsequent
+            API requests
+      description: Represents the basic information required to create an account on AuroraX. Accounts
+        are used to perform secure operations, save queries, and other metadata the user wishes to save
+        on AuroraX.
+    UpdateAccountRequest:
+      required:
+      - email_address
+      type: object
+      properties:
+        email_address:
+          type: string
+          description: The email address of the user. An email will be sent to this address requesting
+            confirmation of ownership.
+        first_name:
+          type: string
+          description: The user's first name
+        last_name:
+          type: string
+          description: The user's last name
+        role:
+          type: string
+          description: Administrators can update a user's Role
+          enum:
+          - Administrator
+          - Owner
+          - Maintainer
+          - User
+        upload_username:
+          type: string
+          description: Set an upload_username to participate in citizen science
+      description: Represents the basic information required to create an account on AuroraX. Accounts
+        are used to perform secure operations, save queries, and other metadata the user wishes to save
+        on AuroraX.
+    NewApiKeyResponse:
+      type: object
+      properties:
+        api_key:
+          type: string
+          description: Your secret API key
+      description: Your new private API key. Treat this like a password and keep it safe. We do not store
+        this value. If your API key is lost, please request a new one. Requesting a new API will invalidate
+        the old one. Your API key is tied to your account, so your user role is applied to requests made
+        with your API key.
+    PasswordResetRequest:
+      required:
+      - email_address
+      - password
+      - reset_token
+      type: object
+      properties:
+        email_address:
+          type: string
+        reset_token:
+          type: string
+        password:
+          type: string
+    Data Source:
+      required:
+      - display_name
+      - instrument_type
+      - platform
+      - program
+      - source_type
+      type: object
+      properties:
+        identifier:
+          type: integer
+          description: Uniquely identifies this record. Optional when adding a new source record; system
+            generated, unless this is a replacement (e.g., delete old, create new with same identifier
+            as old).
+          format: int32
+        program:
+          type: string
+          description: 'Examples: themis, themis-asi, rbsp'
+        platform:
+          type: string
+          description: 'Examples: themisa, gill, rbspb'
+        instrument_type:
+          type: string
+          description: 'Examples: pancromatic-asi'
+        source_type:
+          type: string
+          description: g = Ground, h = Highly Eliptical Orbit, l = Low Earth Orbit
+          enum:
+          - ground
+          - heo
+          - leo
+          - lunar
+          - event_list
+          - not_applicable
+        display_name:
+          type: string
+          description: A friendly display name for web applications
+        ephemeris_metadata_schema:
+          type: array
+          description: The ephemeris metadata schema and descriptions
+          items:
+            $ref: '#/components/schemas/MetadataSchema'
+        data_product_metadata_schema:
+          type: array
+          description: The data_product metadata schema and descriptions
+          items:
+            $ref: '#/components/schemas/MetadataSchema'
+        owner:
+          type: string
+          description: The Owner of this Data Source record. Defaults to the currently logged in user.
+        maintainers:
+          type: array
+          description: The list of Maintainers
+          items:
+            type: string
+            description: The list of Maintainers
+        stats:
+          $ref: '#/components/schemas/DataSourceStats'
+        metadata:
+          $ref: '#/components/schemas/JsonNode'
+      description: Things that produce data, like satellites, ground stations/instruments, platforms
+    DataProduct Availability:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/Data Source'
+        available_data_products:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+      description: DataProduct data availability by Data Source by Data_Product_Type by day.
+    DataSourceStats:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/Data Source'
+        earliest_ephemeris_loaded:
+          type: string
+          format: date-time
+        latest_ephemeris_loaded:
+          type: string
+          format: date-time
+        ephemeris_count:
+          type: integer
+          format: int32
+        earliest_data_product_loaded:
+          type: string
+          format: date-time
+        latest_data_product_loaded:
+          type: string
+          format: date-time
+        data_product_count:
+          type: integer
+          format: int32
+      description: Some basic stats about this data_source, like number of ephemeris records. Read only.
+    JsonNode:
+      type: object
+    MetadataSchema:
+      type: object
+      properties:
+        field_name:
+          type: string
+          description: The name of the field found in the ephemeris metadata
+        description:
+          type: string
+          description: A brief description of what the metadata field represents
+        data_type:
+          type: string
+          description: An indicator to let you know what filter operations are available. Strings allow
+            for =, !=, and in. Decimals allow for =, !=, <, >, <=, >=, and in.
+        allowed_values:
+          type: array
+          description: An optional list of possible values available in the metadata.
+          items:
+            type: string
+            description: An optional list of possible values available in the metadata.
+        additional_description:
+          type: string
+          description: More details about what this metadata field is about
+        searchable:
+          type: boolean
+          description: Used by UI's to include it in metadata fields exposed as searchable through the
+            conjunction interface. The API allows for all fields to be searchable but some applications
+            may chose to hide any fields marked searchable=false
+      description: Describes the metadata fields found on Ephemeris data.
+    Ephemeris Availability:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/Data Source'
+        available_ephemeris:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+      description: Ephemeris data availability by Data Source by day.
+    File Summary:
+      required:
+      - metadata
+      - size_bytes
+      - uuid
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The internal ID of the image (for sorting)
+          format: int32
+        uuid:
+          type: string
+          description: The generated UUID of the image
+        sha1:
+          type: string
+          description: The generated SHA1 hash of the image
+        original_filename:
+          type: string
+          description: The original filename of the image
+        thumbnail:
+          type: string
+          description: Name of the thumbnail image
+        thumbnail_size_bytes:
+          type: integer
+          description: Size of the thumbnail image in bytes
+          format: int32
+        size_bytes:
+          type: integer
+          description: The size of the image in bytes
+          format: int64
+        approved:
+          type: boolean
+          description: Indicates if this image has been approved by the System Administrator for public
+            viewing.
+        metadata:
+          $ref: '#/components/schemas/Image Metadata'
+        thumbnail_base64:
+          type: string
+          description: A thumbnail of the uplaoded image encoded in Base64
+        upload_username:
+          type: string
+          description: The upload username
+        upload_date:
+          type: string
+          description: The date the file was uploaded
+          format: date-time
+        approved_date:
+          type: string
+          description: The date the file was approved
+          format: date-time
+        file_path_on_disk:
+          type: string
+    Image Metadata:
+      required:
+      - file_created_timestamp
+      - file_format
+      - file_type
+      - image_height
+      - image_width
+      - timezone
+      type: object
+      properties:
+        image_width:
+          type: integer
+          description: The image width in pixels
+          format: int32
+        image_height:
+          type: integer
+          description: The image height in pixels
+          format: int32
+        file_created_timestamp:
+          type: string
+          description: The timestamp this image/video was taken at.
+          format: date-time
+        timezone:
+          type: string
+          description: The timezone in which the file was taken
+        timestamp_utc:
+          type: string
+          description: The UTC equivelant of fileCreatedTimestamp. Becomes the epoch value in the ephemeris
+            record created. Optional. Will be calculated.
+          format: date-time
+        file_original_filename:
+          type: string
+          description: The file's original filename.
+        video_length_seconds:
+          type: integer
+          description: The length of the video in seconds. Each minute becomes an ephemeris record. Required
+            if this is an video, else not required.
+          format: int32
+        file_format:
+          type: string
+          description: The file format (png, jpeg, MP4, MOV)
+        mime_type:
+          type: string
+          description: The file mime type as set by the camera manufacturer
+        file_type:
+          type: string
+          description: 'The file type: image or video'
+          enum:
+          - image
+          - video
+        geo_location:
+          $ref: '#/components/schemas/Location'
+      description: The metdata extracted from the image
+    Location:
+      type: object
+      properties:
+        lat:
+          maximum: 90
+          minimum: -90
+          type: number
+        lon:
+          maximum: 180
+          minimum: -180
+          type: number
+      description: A list of latitude and longitude locations of your choice
+    SearchQueryResponse:
+      type: object
+      properties:
+        search_request:
+          $ref: '#/components/schemas/SearchRequest'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchRequestLog'
+        search_result:
+          $ref: '#/components/schemas/SearchResult'
+      description: Search query response details
+    SearchRequest:
+      type: object
+      properties:
+        request_id:
+          type: string
+        query:
+          type: string
+        requested:
+          type: string
+          format: date-time
+        request_type:
+          type: string
+          enum:
+          - conjunction
+          - ephemeris
+          - data_product
+      description: The original search request
+    SearchRequestLog:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        level:
+          type: string
+          enum:
+          - debug
+          - info
+          - warn
+          - error
+        summary:
+          type: string
+    SearchResult:
+      type: object
+      properties:
+        data_uri:
+          type: string
+        result_count:
+          type: integer
+          format: int32
+        result_file_deleted_timestamp:
+          type: string
+          format: date-time
+        file_size:
+          type: integer
+          format: int64
+        completed_timestamp:
+          type: string
+          format: date-time
+        query_duration:
+          type: integer
+          format: int64
+        error_condition:
+          type: boolean
+      description: Search result
+    ConjunctionEvent:
+      type: object
+      properties:
+        conjunction_type:
+          type: string
+          description: 'The conjunction type: north, south, or radial'
+          enum:
+          - nbtrace
+          - sbtrace
+          - geographic
+        e1_source:
+          $ref: '#/components/schemas/Data Source'
+        e2_source:
+          $ref: '#/components/schemas/Data Source'
+        start:
+          type: string
+          description: When the conjunction started
+          format: date-time
+        end:
+          type: string
+          description: When the conjunction ended
+          format: date-time
+        min_distance:
+          type: number
+          description: The closest distance between the e1 source and e2 source in the time period
+        max_distance:
+          type: number
+          description: The farthest distance between the e1 source and e2 source in the time period
+        generated_e1_ephemeris_query:
+          $ref: '#/components/schemas/EphemerisQuery'
+        generated_e2_ephemeris_query:
+          $ref: '#/components/schemas/EphemerisQuery'
+      description: Conjunction events occur between data sources e1 and e2. The labels e1 and e2 simply
+        define the program, platform, and instrument_type.  This document contains the sources involved
+        along with the start and end time frame as well as the minimum and maximum distance  between e1
+        and e2 during the conjunction.
+    DataSourceCriteriaForEphemeris:
+      type: object
+      properties:
+        programs:
+          type: array
+          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis',
+            'swarm', 'themis-asi', 'TRex'
+          items:
+            type: string
+            description: The list of programs in e1 or e2. Programs group platforms. Programs are like
+              'themis', 'swarm', 'themis-asi', 'TRex'
+        platforms:
+          type: array
+          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'.
+            Use this to narrow the set of sources within the programs listed.
+          items:
+            type: string
+            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'.
+              Use this to narrow the set of sources within the programs listed.
+        instrument_types:
+          type: array
+          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'.
+            A platform may have zero or more instrument types.
+          items:
+            type: string
+            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'.
+              A platform may have zero or more instrument types.
+        ephemeris_metadata_filters:
+          $ref: '#/components/schemas/MetadataExpressionGroup'
+      description: Find Ephemeris data for these Data Sources. This could be a single platform (e.g.,
+        gillam;  or swarma), or an entire program containing a group of platforms (e.g., all locations
+        in the themis-asi program;  or all satellites in the themis program).
+    EphemerisQuery:
+      required:
+      - data_sources
+      type: object
+      properties:
+        request_id:
+          type: string
+          description: An optional request_id to be used for this query. Ommit to have the API generate
+            one for you. If you are using websockets, this id can be used establish a websocket before
+            sending the search request to avoid a race condition of the query finishing before websocket
+            is established. This technique is used by the AuroraX website
+        data_sources:
+          $ref: '#/components/schemas/DataSourceCriteriaForEphemeris'
+        start:
+          type: string
+          description: Return ephemeris data that occured after this timestamp.  Optional. Large time
+            windows may take a long time for results to return.
+          format: date-time
+        end:
+          type: string
+          description: Return ephemeris data that occured before this timestamp.  Optional. Large time
+            windows may take a long time for results to return.
+          format: date-time
+    MetadataExpression:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The metadata key found as described in the data_source metadata schema record
+        operator:
+          type: string
+          description: The filter expression operator
+          enum:
+          - '='
+          - <
+          - <=
+          - '>'
+          - '>='
+          - '!='
+          - in
+          - not in
+          - between
+        values:
+          type: array
+          description: The value(s) to test for. Note that 'in' and 'not-in' accept a list of values;
+            'between' accepts two values; all others accept just one value
+          items:
+            type: string
+            description: The value(s) to test for. Note that 'in' and 'not-in' accept a list of values;
+              'between' accepts two values; all others accept just one value
+      description: An expression like a where clause in SQL
+    MetadataExpressionGroup:
+      type: object
+      properties:
+        logical_operator:
+          type: string
+          description: Specifies if these filters should be OR'd or AND'd. If omitted, the default is
+            to AND the expressions together
+          enum:
+          - AND
+          - OR
+        expressions:
+          type: array
+          description: The list of filter expressions
+          items:
+            $ref: '#/components/schemas/MetadataExpression'
+      description: An expression group to allow for OR'd or AND'd expression filters
+    ConjunctionEventFormat:
+      type: object
+      properties:
+        conjunction_type:
+          type: boolean
+        e1_source:
+          $ref: '#/components/schemas/DataSourceFormat'
+        e2_source:
+          $ref: '#/components/schemas/DataSourceFormat'
+        start:
+          type: boolean
+        end:
+          type: boolean
+        min_distance:
+          type: boolean
+        max_distance:
+          type: boolean
+        generated_e1_ephemeris_query:
+          $ref: '#/components/schemas/EphemerisQueryFormat'
+        generated_e2_ephemeris_query:
+          $ref: '#/components/schemas/EphemerisQueryFormat'
+    DataSourceCriteriaForEphemerisFormat:
+      type: object
+      properties:
+        programs:
+          type: boolean
+        platforms:
+          type: boolean
+        instrument_types:
+          type: boolean
+        ephemeris_metadata_filters:
+          $ref: '#/components/schemas/MetadataExpressionGroupFormat'
+    DataSourceFormat:
+      type: object
+      properties:
+        identifier:
+          type: boolean
+        program:
+          type: boolean
+        platform:
+          type: boolean
+        instrument_type:
+          type: boolean
+        source_type:
+          type: boolean
+        display_name:
+          type: boolean
+        ephemeris_metadata_schema:
+          $ref: '#/components/schemas/MetadataSchemaFormat'
+        data_product_metadata_schema:
+          $ref: '#/components/schemas/MetadataSchemaFormat'
+        owner:
+          type: boolean
+        maintainers:
+          type: boolean
+        metadata:
+          type: boolean
+    EphemerisQueryFormat:
+      type: object
+      properties:
+        request_id:
+          type: boolean
+        data_sources:
+          $ref: '#/components/schemas/DataSourceCriteriaForEphemerisFormat'
+        start:
+          type: boolean
+        end:
+          type: boolean
+    MetadataExpressionFormat:
+      type: object
+      properties:
+        key:
+          type: boolean
+        operator:
+          type: boolean
+        values:
+          type: boolean
+    MetadataExpressionGroupFormat:
+      type: object
+      properties:
+        logicalOperator:
+          type: boolean
+        expressions:
+          $ref: '#/components/schemas/MetadataExpressionFormat'
+    MetadataSchemaFormat:
+      type: object
+      properties:
+        field_name:
+          type: boolean
+        description:
+          type: boolean
+        data_type:
+          type: boolean
+        allowed_values:
+          type: boolean
+        additional_description:
+          type: boolean
+    SuperConjunctionEventFormat:
+      type: object
+      properties:
+        conjunction_type:
+          type: boolean
+        start:
+          type: boolean
+        end:
+          type: boolean
+        min_distance:
+          type: boolean
+        max_distance:
+          type: boolean
+        closest_epoch:
+          type: boolean
+        farthest_epoch:
+          type: boolean
+        data_sources:
+          $ref: '#/components/schemas/DataSourceFormat'
+        events:
+          $ref: '#/components/schemas/ConjunctionEventFormat'
+      description: Specify false for any data field you do not wish to be returned. All fields are optional.
+        If omitted, the data won't be returned.
+    EphemerisCriteriaAdhocLatLon:
+      required:
+      - locations
+      type: object
+      properties:
+        locations:
+          type: array
+          description: A list of latitude and longitude locations of your choice
+          items:
+            $ref: '#/components/schemas/Location'
+      description: Defines a geographical location (latitude, longitude) on Earth's surface to use as
+        a criterion for calculating distance measurements between other criteria objects
+    EphemerisCriteriaEvent:
+      type: object
+      properties:
+        programs:
+          type: array
+          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis',
+            'swarm', 'themis-asi', 'TRex'
+          items:
+            type: string
+            description: The list of programs in e1 or e2. Programs group platforms. Programs are like
+              'themis', 'swarm', 'themis-asi', 'TRex'
+        platforms:
+          type: array
+          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'.
+            Use this to narrow the set of sources within the programs listed.
+          items:
+            type: string
+            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'.
+              Use this to narrow the set of sources within the programs listed.
+        instrument_types:
+          type: array
+          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'.
+            A platform may have zero or more instrument types.
+          items:
+            type: string
+            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'.
+              A platform may have zero or more instrument types.
+        ephemeris_metadata_filters:
+          $ref: '#/components/schemas/MetadataExpressionGroup'
+      description: Defines the particpants in the conjunction that are events. Participants in each of
+        these criteria are OR'd while participants  in different criteria are AND'd.
+    EphemerisCriteriaGround:
+      type: object
+      properties:
+        programs:
+          type: array
+          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis',
+            'swarm', 'themis-asi', 'TRex'
+          items:
+            type: string
+            description: The list of programs in e1 or e2. Programs group platforms. Programs are like
+              'themis', 'swarm', 'themis-asi', 'TRex'
+        platforms:
+          type: array
+          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'.
+            Use this to narrow the set of sources within the programs listed.
+          items:
+            type: string
+            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'.
+              Use this to narrow the set of sources within the programs listed.
+        instrument_types:
+          type: array
+          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'.
+            A platform may have zero or more instrument types.
+          items:
+            type: string
+            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'.
+              A platform may have zero or more instrument types.
+        ephemeris_metadata_filters:
+          $ref: '#/components/schemas/MetadataExpressionGroup'
+      description: Defines the ephemeris particpants in the conjunction that are ground stations. Participants
+        in each these criteria are OR'd while participants  in different criteria are AND'd.
+    EphemerisCriteriaSpace:
+      type: object
+      properties:
+        programs:
+          type: array
+          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis',
+            'swarm', 'themis-asi', 'TRex'
+          items:
+            type: string
+            description: The list of programs in e1 or e2. Programs group platforms. Programs are like
+              'themis', 'swarm', 'themis-asi', 'TRex'
+        platforms:
+          type: array
+          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'.
+            Use this to narrow the set of sources within the programs listed.
+          items:
+            type: string
+            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'.
+              Use this to narrow the set of sources within the programs listed.
+        instrument_types:
+          type: array
+          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'.
+            A platform may have zero or more instrument types.
+          items:
+            type: string
+            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'.
+              A platform may have zero or more instrument types.
+        hemisphere:
+          type: array
+          description: Filter these satellites to the hemisphere they are currently in geographicly
+          items:
+            type: string
+            description: Filter these satellites to the hemisphere they are currently in geographicly
+            enum:
+            - northern
+            - southern
+        ephemeris_metadata_filters:
+          $ref: '#/components/schemas/MetadataExpressionGroup'
+      description: Defines the ephemeris particpants in the conjunction that are satellites. Participants
+        in each of these criteria are OR'd while participants  in different criteria are AND'd.
+    SuperConjunctionQuery:
+      type: object
+      properties:
+        request_id:
+          type: string
+          description: An optional request_id to be used for this query. Ommit to have the API generate
+            one for you. If you are using websockets, this id can be used establish a websocket before
+            sending the search request to avoid a race condition of the query finishing before websocket
+            is established. This technique is used by the AuroraX website
+        ground:
+          type: array
+          description: Defines the ephemeris particpants in the conjunction that are ground stations.
+            Participants in each these criteria are OR'd while participants  in different criteria are
+            AND'd.
+          items:
+            $ref: '#/components/schemas/EphemerisCriteriaGround'
+        space:
+          type: array
+          description: Defines the ephemeris particpants in the conjunction that are satellites. Participants
+            in each of these criteria are OR'd while participants  in different criteria are AND'd.
+          items:
+            $ref: '#/components/schemas/EphemerisCriteriaSpace'
+        events:
+          type: array
+          description: Defines the particpants in the conjunction that are events. Participants in each
+            of these criteria are OR'd while participants  in different criteria are AND'd.
+          items:
+            $ref: '#/components/schemas/EphemerisCriteriaEvent'
+        adhoc:
+          type: array
+          description: Defines the particpants in the conjunction that are locations of your choice. Participants
+            in each of these criteria are OR'd while participants  in different criteria are AND'd.
+          items:
+            $ref: '#/components/schemas/EphemerisCriteriaAdhocLatLon'
+        start:
+          type: string
+          description: Return conjunction events that occured after this timestamp.  Optional. Large time
+            windows may take a long time for results to return.
+          format: date-time
+        end:
+          type: string
+          description: Return conjunction events that occured before this timestamp.  Optional. Large
+            time windows may take a long time for results to return.
+          format: date-time
+        conjunction_types:
+          type: array
+          description: Return conjunctions of any North B-Trace, Sourth B-Trace, and Geo Location.
+          items:
+            type: string
+            description: Return conjunctions of any North B-Trace, Sourth B-Trace, and Geo Location.
+            enum:
+            - nbtrace
+            - sbtrace
+            - geographic
+        max_distances:
+          type: object
+          additionalProperties:
+            type: integer
+            description: Return conjunctions there were within this distance (km) between criteria blocks.
+              ground-ground defaults to 0. Null defaults to 2^31.
+            format: int32
+          description: Return conjunctions there were within this distance (km) between criteria blocks.
+            ground-ground defaults to 0. Null defaults to 2^31.
+          example:
+            ground1-space1: 300
+            ground2-space1: 400
+            ground1-events1: 900
+            space1-space2: null
+            adhoc1-space1: 700
+        epoch_search_precision:
+          type: integer
+          description: Runs the query with higher fidelity and interpolates each 30 second epoch. Queries
+            can be much slower using this method, but a greater number of results may be found.
+          format: int32
+          default: 60
+          enum:
+          - 30
+          - 60
+      description: There must be at least 2 Ephemeris Criteria in order to calculate the distance between
+        them in a conjunction.
+    DataProduct:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        data_source:
+          $ref: '#/components/schemas/Data Source'
+        url:
+          type: string
+        data_product_type:
+          type: string
+          enum:
+          - keogram
+          - montage
+          - movie
+          - summary_plot
+          - data_availability
+        metadata:
+          type: string
+    DataProductFormat:
+      type: object
+      properties:
+        start:
+          type: boolean
+        end:
+          type: boolean
+        data_source:
+          $ref: '#/components/schemas/DataSourceFormat'
+        url:
+          type: boolean
+        data_product_type:
+          type: boolean
+        metadata:
+          type: boolean
+      description: The advanced format to use in the response object data
+    DataProductQuery:
+      type: object
+      properties:
+        request_id:
+          type: string
+          description: An optional request_id to be used for this query. Ommit to have the API generate
+            one for you. If you are using websockets, this id can be used establish a websocket before
+            sending the search request to avoid a race condition of the query finishing before websocket
+            is established. This technique is used by the AuroraX website
+        data_sources:
+          $ref: '#/components/schemas/DataSourcesCriteriaForDataProducts'
+        start:
+          type: string
+          description: Return data products that have a start date equal or after this this timestamp.  Optional.
+            Large time windows may take a long time for results to return.
+          format: date-time
+        end:
+          type: string
+          description: Return data products that have an end date equal of before this timestamp.  Optional.
+            Large time windows may take a long time for results to return.
+          format: date-time
+        data_product_type_filters:
+          type: array
+          description: Filter the data products to return only these data product types.
+          items:
+            type: string
+            description: Filter the data products to return only these data product types.
+            enum:
+            - keogram
+            - montage
+            - movie
+            - summary_plot
+            - data_availability
+    DataSourcesCriteriaForDataProducts:
+      type: object
+      properties:
+        programs:
+          type: array
+          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis',
+            'swarm', 'themis-asi', 'TRex'
+          items:
+            type: string
+            description: The list of programs in e1 or e2. Programs group platforms. Programs are like
+              'themis', 'swarm', 'themis-asi', 'TRex'
+        platforms:
+          type: array
+          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'.
+            Use this to narrow the set of sources within the programs listed.
+          items:
+            type: string
+            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'.
+              Use this to narrow the set of sources within the programs listed.
+        instrument_types:
+          type: array
+          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'.
+            A platform may have zero or more instrument types.
+          items:
+            type: string
+            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'.
+              A platform may have zero or more instrument types.
+        data_product_metadata_filters:
+          $ref: '#/components/schemas/MetadataExpressionGroup'
+      description: Find data products generated from data of these Data Sources. This could be a single
+        platform (e.g., gillam;  or swarma), or an entire program containing a group of platforms (e.g.,
+        all locations in the themis-asi program;  or all satellites in the themis program).
+    DataProductQueryWithResponseFormat:
+      required:
+      - query
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/DataProductQuery'
+        response_format:
+          $ref: '#/components/schemas/DataProductFormat'
+      description: DataProduct Query with Response Format
+    DataSourceQuery:
+      type: object
+      properties:
+        programs:
+          type: array
+          items:
+            type: string
+        platforms:
+          type: array
+          items:
+            type: string
+        instrument_types:
+          type: array
+          items:
+            type: string
+    LoadDataProductSpecification:
+      required:
+      - data_product_type
+      - end
+      - instrument_type
+      - platform
+      - program
+      - start
+      - url
+      type: object
+      properties:
+        program:
+          type: string
+        platform:
+          type: string
+        instrument_type:
+          type: string
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        url:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/JsonNode'
+        data_product_type:
+          type: string
+          enum:
+          - keogram
+          - montage
+          - movie
+          - summary_plot
+          - data_availability
+    LoadEphemerisSpecification:
+      required:
+      - epoch
+      - instrument_type
+      - platform
+      - program
+      type: object
+      properties:
+        program:
+          type: string
+        platform:
+          type: string
+        instrument_type:
+          type: string
+        epoch:
+          type: string
+          format: date-time
+        location_geo:
+          $ref: '#/components/schemas/Location'
+        location_gsm:
+          $ref: '#/components/schemas/Location'
+        nbtrace:
+          $ref: '#/components/schemas/Location'
+        sbtrace:
+          $ref: '#/components/schemas/Location'
+        metadata:
+          $ref: '#/components/schemas/JsonNode'
+    DeleteDataProductSpecification:
+      required:
+      - instrument_type
+      - platform
+      - program
+      type: object
+      properties:
+        program:
+          type: string
+        platform:
+          type: string
+        instrument_type:
+          type: string
+        urls:
+          type: array
+          items:
+            type: string
+    DeleteEphemerisSpecification:
+      required:
+      - end
+      - instrument_type
+      - platform
+      - program
+      - start
+      type: object
+      properties:
+        program:
+          type: string
+        platform:
+          type: string
+        instrument_type:
+          type: string
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+    Ephemeris:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/Data Source'
+        epoch:
+          type: string
+          format: date-time
+        location_geo:
+          $ref: '#/components/schemas/Location'
+        location_gsm:
+          $ref: '#/components/schemas/Location'
+        nbtrace:
+          $ref: '#/components/schemas/Location'
+        sbtrace:
+          $ref: '#/components/schemas/Location'
+        metadata:
+          type: string
+    EphemerisFormat:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/DataSourceFormat'
+        epoch:
+          type: boolean
+        location_geo:
+          $ref: '#/components/schemas/LocationFormat'
+        location_gsm:
+          $ref: '#/components/schemas/LocationFormat'
+        nbtrace:
+          $ref: '#/components/schemas/LocationFormat'
+        sbtrace:
+          $ref: '#/components/schemas/LocationFormat'
+        metadata:
+          type: boolean
+      description: Optional advanced formatting of the response data
+    LocationFormat:
+      type: object
+      properties:
+        lat:
+          type: boolean
+        lon:
+          type: boolean
+    EphemerisQueryWithResponseFormat:
+      required:
+      - query
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/EphemerisQuery'
+        response_format:
+          $ref: '#/components/schemas/EphemerisFormat'
+      description: Ephemeris Query with Response Format
+    AuthenticationRequest:
+      required:
+      - email_address
+      - password
+      type: object
+      properties:
+        email_address:
+          type: string
+          description: The email address of the user. An email will be sent to this address requesting
+            confirmation of ownership.
+        password:
+          type: string
+          description: This users password
+      description: A container for authenticating a user by email address and password
+    AddImageSpecification:
+      type: object
+      properties:
+        url:
+          type: string
+        type_of_image:
+          type: string
+        image_timestamp:
+          type: string
+          format: date-time
+        features:
+          type: array
+          items:
+            type: number
+            format: float
+    SimilarImage:
+      type: object
+      properties:
+        url:
+          type: string
+        features:
+          type: array
+          items:
+            type: number
+            format: float
+        similarity:
+          type: number
+          format: float
+        image_id:
+          type: integer
+          format: int32
+    SimilarImagesSpecification:
+      type: object
+      properties:
+        image_id:
+          type: integer
+          format: int32
+        type_of_image:
+          type: string
+        similar_images:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimilarImage'
+    Image:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        url:
+          type: string
+        type_of_image:
+          type: string
+        indexed:
+          type: boolean
+        image_timestamp:
+          type: string
+          format: date-time
+        features:
+          type: array
+          items:
+            type: number
+            format: float
+    DeleteImagesSpecification:
+      type: object
+      properties:
+        image_ids:
+          type: array
+          items:
+            type: integer
+            format: int32
+        types_of_images:
+          type: array
+          items:
+            type: string
+    SearchRequestListing:
+      type: object
+      properties:
+        search_type:
+          type: string
+          description: The type of search request (e.g., ephemeris, conjunction, etc.)
+          enum:
+          - conjunction
+          - ephemeris
+          - data_product
+        ip_address:
+          type: string
+          description: The IP address that requested the search
+        request_id:
+          type: string
+          description: The unique request id
+        requested:
+          type: string
+          description: The date and time when the search was requested
+          format: date-time
+        active:
+          type: boolean
+          description: The request is currently active (not completed).
+        query_duration:
+          type: integer
+          description: How long the query is/was running for in milliseconds
+          format: int64
+        result_file_exists:
+          type: boolean
+          description: True if the result file still exists
+        file_size:
+          type: integer
+          description: The size of the file in bytes (even if deleted, the size of the file that was).
+            Null if there is no result file found.
+          format: int64
+        result_count:
+          type: integer
+          description: The number of results this search yielded. Null if there is no result yet.
+          format: int32
+        error_condition:
+          type: boolean
+          description: If the search ended with an error condition
+      description: Search request listing
+  securitySchemes:
+    AccessToken:
+      type: http
+      description: Send the Authorization header found in the response of a successful /authentication
+        request on all  secure endpoints. Copy it verbatim to the request header. It is fine to send this
+        header on all requests  to the API. The value in Swagger UI should only include the access token
+        part (leave out 'Bearer').
+      name: Authorization
+      in: header
+      scheme: bearer
+      bearerFormat: Generated by server
+    ApiKeyAuth:
+      type: apiKey
+      description: API keys are intended to be used by non-interactive software interfacing with the REST
+        API. These can  be used instead of an Access Token approach.
+      name: x-aurorax-api-key
+      in: header
