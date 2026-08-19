@@ -1,0 +1,144 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AuroraX Application.wadl Conjunction Search API",
+    "version": "stable"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Conjunction Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the conjunction search request details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/conjunctions/requests/:request_id",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              }
+            ]
+          },
+          "docs": "This endpoint is anonymous. The request ID can be shared with anyone."
+        },
+        {
+          "info": {
+            "name": "Cancel the conjunction search request",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.aurorax.space/api/v1/conjunctions/requests/:request_id",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              }
+            ]
+          },
+          "docs": "Attempts to cancel the search request. If the request is already finished, attempts to delete  the associated data file. If the request could be cancledd, the log will contain an error against  the request noting the cancellation."
+        },
+        {
+          "info": {
+            "name": "Get the conjunction search result data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/conjunctions/requests/:request_id/data",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              },
+              {
+                "name": "generate_ephemeris_queries",
+                "value": "",
+                "type": "query",
+                "description": "Return generated ephemeris queries. Default is false."
+              },
+              {
+                "name": "data_source_record_format",
+                "value": "",
+                "type": "query",
+                "description": "Control which epehermis source data is returned. Default is basic."
+              }
+            ]
+          },
+          "docs": "Anonymous endpoint. The request ID can be shared with anyone."
+        },
+        {
+          "info": {
+            "name": "Get the conjunction search result data with a data format specification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/conjunctions/requests/:request_id/data",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Anonymous endpoint. The request ID can be shared with anyone."
+        },
+        {
+          "info": {
+            "name": "Delete a search result data file.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.aurorax.space/api/v1/conjunctions/requests/:request_id/data",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              }
+            ]
+          },
+          "docs": "Deletes the data file containing the search results. If this search is run in the future, the query will re-create the data file."
+        },
+        {
+          "info": {
+            "name": "Search for conjunctions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/conjunctions/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Anonymous unless logged in. Conjunctions may occur between satellites, or between satellites and ground instruments.  AuroraX maintains an index of all conjunctions for north and south B-trace footprints (or magnetic location for ground-instruments).  Conjunction queries describe the conjunction relationship between sources you are interested in.\n\n Some examples of conjunction queries are: \n Find all the nbtrace conjunction events that occured in Sep-2019 between any satellite in the swarm progr"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

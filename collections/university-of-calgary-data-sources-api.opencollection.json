@@ -1,0 +1,268 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AuroraX Application.wadl Data Sources API",
+    "version": "stable"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data Sources",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all data sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/data_sources",
+            "params": [
+              {
+                "name": "program",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Program"
+              },
+              {
+                "name": "platform",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Platform"
+              },
+              {
+                "name": "instrument_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Instrument Type"
+              },
+              {
+                "name": "source_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Source Type"
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Owner"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "The format of the Data Source returned. Default is basic_info."
+              },
+              {
+                "name": "include_stats",
+                "value": "",
+                "type": "query",
+                "description": "Include the data_source stats with the response. Default is false."
+              }
+            ]
+          },
+          "docs": "Data Sources are entities like satellites and ground stations (platforms) that  produce data."
+        },
+        {
+          "info": {
+            "name": "Add an Data Source record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/data_sources",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-aurorax-api-key",
+              "value": "{{x-aurorax-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "*Must have the Administrator or Owner role to perform this operation* \n\n*Must be authenticated*"
+        },
+        {
+          "info": {
+            "name": "Get details about a Data Source",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/data_sources/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the Data Source"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "The format of the Data Source returned. Default is basic_info."
+              },
+              {
+                "name": "include_stats",
+                "value": "",
+                "type": "query",
+                "description": "Include the data_source stats with the response. Default is false."
+              }
+            ]
+          },
+          "docs": "Get details about a Data Source"
+        },
+        {
+          "info": {
+            "name": "Update an Data Source record",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.aurorax.space/api/v1/data_sources/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the Data Source"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-aurorax-api-key",
+              "value": "{{x-aurorax-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "*Must be an Administrator or be the Owner of this record* \n\n*Must be authenticated*"
+        },
+        {
+          "info": {
+            "name": "Partially update an Data Source record. Omitted fields are ignored.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.aurorax.space/api/v1/data_sources/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the Data Source"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-aurorax-api-key",
+              "value": "{{x-aurorax-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "*Must be an Administrator or be the Owner of this record* \n\n*Must be authenticated*"
+        },
+        {
+          "info": {
+            "name": "Delete an Data Source record",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.aurorax.space/api/v1/data_sources/:identifier",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the Data Source"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-aurorax-api-key",
+              "value": "{{x-aurorax-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "*Must be an Owner of the Data Source or an Administrator in order to perform this operation* \n\n*Must be authenticated*"
+        },
+        {
+          "info": {
+            "name": "Get some statistics about a Data Source, like the earliest/latest ephemeris loaded into AuroraX  and number of ephemeris records loaded. This will be removed and combined with list data_source  and get data_source detail.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/data_sources/:identifier/stats",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the Data Source"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "The format of the Data Source returned. Default is basic_info."
+              },
+              {
+                "name": "slow",
+                "value": "",
+                "type": "query",
+                "description": "Query the data directly (slower) for more accurate results. Default is false."
+              }
+            ]
+          },
+          "docs": "Get some statistics about a Data Source, like the earliest/latest ephemeris loaded into AuroraX  and number of ephemeris records loaded. This will be removed and combined with list data_source  and get data_source detail."
+        },
+        {
+          "info": {
+            "name": "Search for data sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/data_sources/search",
+            "params": [
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "The format of the Data Source returned. Default is basic_info."
+              },
+              {
+                "name": "include_stats",
+                "value": "",
+                "type": "query",
+                "description": "Include the data_source stats with the response"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Find the data sources matching a set of search parameters. This endpoint is synchronous."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

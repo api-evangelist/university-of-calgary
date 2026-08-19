@@ -1,0 +1,448 @@
+{
+  "item": [
+    {
+      "id": "112ae645-29f7-4820-ae79-7a1797e23a91",
+      "name": "Utilities",
+      "description": {
+        "content": "Various helper endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "39838eec-fbc2-47b5-803e-1bec2e688cd6",
+          "name": "Retrieve terminator coordinates",
+          "request": {
+            "name": "Retrieve terminator coordinates",
+            "description": {
+              "content": "Retrieve coordinates for the terminator. \n\nThe timestamp parameter should be supplied in the format \"YYYY-MM-DDTHH:mm:ss\". \nUTC is the expected timezone.\n\nThe angle parameter is used for retrieving the terminator for civil, nautical, \nor astronomical twilight. Use the values -6.0, -12.0, or -18.0 for each of these \nterminators, respectively.\n\nNotes:\n  - The algorithm does not account for altitude at this time\n  - By default requests are cached. Use the 'no_cache' parameter to disable this functionality.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "utils",
+                "terminator"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "timestamp",
+                  "value": "<dateTime>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "angle",
+                  "value": "-12"
+                },
+                {
+                  "disabled": false,
+                  "key": "no_cache",
+                  "value": "false"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "639c9e23-36da-4f5f-9737-4e6a7500cdf3",
+              "name": "Terminator coordinates",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "utils",
+                    "terminator"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "timestamp",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "angle",
+                      "value": "-12"
+                    },
+                    {
+                      "key": "no_cache",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"1993-12-02T03:13:59.410Z\",\n  \"coords\": []\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc341eab-711c-4c76-878b-4768625e6fed",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "utils",
+                    "terminator"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "timestamp",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "angle",
+                      "value": "-12"
+                    },
+                    {
+                      "key": "no_cache",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bed97874-d6e7-41f7-a51f-6d4615b8f5ef",
+          "name": "Retrieve geomagnetic coordinate grid",
+          "request": {
+            "name": "Retrieve geomagnetic coordinate grid",
+            "description": {
+              "content": "Retrieve a geomagnetic coordinate grid for a given timestamp.\n\nThe timestamp parameter should be supplied in the format \"YYYY-MM-DDTHH:mm:ss\". \nUTC is the expected timezone.\n\nThe grid consists of meridian lines (constant magnetic longitude, \"vertical\") and parallel lines\n(constant magnetic latitude, \"horizontal\") for both northern and southern hemispheres.\n\nNotes\n  - The resolution_lon and resolution_lat parameters control the spacing (in degrees) between\nmagnetic longitude and latitude lines, respectively. Lower values produce a denser grid.\n  - By default requests are cached. Use the 'no_cache' parameter to disable this functionality.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "utils",
+                "magnetic_grid"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "timestamp",
+                  "value": "<dateTime>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "resolution_lon",
+                  "value": "10"
+                },
+                {
+                  "disabled": false,
+                  "key": "resolution_lat",
+                  "value": "5"
+                },
+                {
+                  "disabled": false,
+                  "key": "min_latitude",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "altitude_km",
+                  "value": "0"
+                },
+                {
+                  "disabled": false,
+                  "key": "no_cache",
+                  "value": "false"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1a240548-374b-4b2a-b4e9-0fc96c0c36d7",
+              "name": "Geomagnetic grid in geographic coordinates",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "utils",
+                    "magnetic_grid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "timestamp",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "resolution_lon",
+                      "value": "10"
+                    },
+                    {
+                      "key": "resolution_lat",
+                      "value": "5"
+                    },
+                    {
+                      "key": "min_latitude",
+                      "value": "50"
+                    },
+                    {
+                      "key": "altitude_km",
+                      "value": "0"
+                    },
+                    {
+                      "key": "no_cache",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"1981-07-11T03:12:43.079Z\",\n  \"north\": {\n    \"vertical\": [\n      [\n        [\n          3159.6922420170904,\n          2873.006778161754\n        ],\n        [\n          7847.804965289606,\n          9275.551631797945\n        ]\n      ],\n      [\n        [\n          1645.718955486064,\n          4160.149079098135\n        ],\n        [\n          9917.682538282592,\n          8360.894896752163\n        ]\n      ]\n    ],\n    \"horizontal\": [\n      [\n        [\n          6524.074077817131,\n          6706.428039426142\n        ],\n        [\n          8307.508096794087,\n          5902.542964061263\n        ]\n      ],\n      [\n        [\n          482.7284574782698,\n          3656.489607855311\n        ],\n        [\n          9033.016353097668,\n          3276.1947756206755\n        ]\n      ]\n    ]\n  },\n  \"south\": {\n    \"vertical\": [\n      [\n        [\n          6844.60695621457,\n          183.85892218959253\n        ],\n        [\n          9013.741909435503,\n          2601.9144741315135\n        ]\n      ],\n      [\n        [\n          4477.068296523923,\n          4216.40389774697\n        ],\n        [\n          6052.19912160474,\n          8090.289071653978\n        ]\n      ]\n    ],\n    \"horizontal\": [\n      [\n        [\n          3289.215897760136,\n          8247.474538937411\n        ],\n        [\n          8309.25646546112,\n          9135.764093653892\n        ]\n      ],\n      [\n        [\n          8535.76317934085,\n          6886.9527735942975\n        ],\n        [\n          1988.8667090519484,\n          9132.955311569867\n        ]\n      ]\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "924dc136-a408-4dd7-8939-5ad9ad76a8f0",
+              "name": "Problematic request made",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "utils",
+                    "magnetic_grid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "timestamp",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "resolution_lon",
+                      "value": "10"
+                    },
+                    {
+                      "key": "resolution_lat",
+                      "value": "5"
+                    },
+                    {
+                      "key": "min_latitude",
+                      "value": "50"
+                    },
+                    {
+                      "key": "altitude_km",
+                      "value": "0"
+                    },
+                    {
+                      "key": "no_cache",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fcdfaa5b-c8e3-43ce-8071-add7d5e9f003",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "utils",
+                    "magnetic_grid"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "timestamp",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "resolution_lon",
+                      "value": "10"
+                    },
+                    {
+                      "key": "resolution_lat",
+                      "value": "5"
+                    },
+                    {
+                      "key": "min_latitude",
+                      "value": "50"
+                    },
+                    {
+                      "key": "altitude_km",
+                      "value": "0"
+                    },
+                    {
+                      "key": "no_cache",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.aurorax.space",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b025332e-b7ab-4946-ab7c-abcba2a5dc0d",
+    "name": "AuroraX Application.wadl Utilities API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n",
+      "type": "text/plain"
+    }
+  }
+}

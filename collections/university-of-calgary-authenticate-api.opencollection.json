@@ -1,0 +1,48 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AuroraX Application.wadl Authenticate API",
+    "version": "stable"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authenticate",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Authenticate using email address and password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/authenticate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Successfull authentication will return the HTTP header 'Authorization: Bearer <access-token>. This header must be sent on all secure requests until /end_session is called or the access  token times out (typically about 1/2 hr of inactivity)."
+        },
+        {
+          "info": {
+            "name": "End user session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/authenticate/end_session",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "End an authenticated user session (invalidate an Access Token). This is the equivelant of a logout action."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

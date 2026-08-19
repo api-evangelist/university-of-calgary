@@ -1,0 +1,81 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AuroraX Application.wadl Real-Time Data API",
+    "version": "stable"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Real-Time Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List available real-time data streams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/rt",
+            "params": [
+              {
+                "name": "network",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "site_uid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of all available real-time data streams.\n\nOptional query parameters can be used to filter results. All filters\nuse case-insensitive partial matching."
+        },
+        {
+          "info": {
+            "name": "WebSocket endpoint connection information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/rt/ws/info"
+          },
+          "docs": "Retrieve connection details and protocol documentation for the real-time\ndata WebSocket endpoint.\n\nThe WebSocket endpoint itself is at `/api/v1/rt/ws` and is not shown in\nthe OpenAPI schema because WebSocket routes are not part of the OpenAPI\nspecification. This endpoint provides the protocol documentation instead."
+        },
+        {
+          "info": {
+            "name": "Retrieve latest data for a real-time stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/rt/:id/latest",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "countdown_clock",
+                "value": "",
+                "type": "query",
+                "description": "Show countdown clock when not imaging"
+              }
+            ]
+          },
+          "docs": "Retrieve the latest data for a given real-time data stream.\n\nNotes:\n  - The `id` can be determined by using the stream listing endpoint.\n  - The response content type depends on the stream's mimetype (e.g., image/jpeg).\n  - Data is sourced from the database, populated by the RT ingester services.\n  - The response includes an `x-rt-stream-last-updated-utc` header with the ISO 8601 UTC timestamp of when the stream data was last updated."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

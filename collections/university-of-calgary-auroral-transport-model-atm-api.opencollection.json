@@ -1,0 +1,78 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AuroraX Application.wadl Auroral Transport Model (ATM) API",
+    "version": "stable"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Auroral Transport Model (ATM)",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Perform forward ATM calculation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/atm/forward",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform a forward calculation using **VERSION 1** of the TREx Auroral Transport Model and the supplied \ninput parameters.\n\nInput notes:\n  - timestamp\n    - timestamp is expected to be in UTC, and is valid for any value up to the end of the previous day\n    - the 'Z' character at the end of the timestamp is optional, and will be ignored if it is supplied\n  - latitude and longitude are to be in geodetic coordinates (-90 to 90 lat, -180 to 180 lon)\n  - maxwellian_characteristic_energy must be speci"
+        },
+        {
+          "info": {
+            "name": "Perform inverse ATM calculation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/atm/inverse",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform an inverse calculation using **VERSION 1** of the TREx Auroral Transport Model and the supplied \ninput parameters.\n\nInput notes:\n  - timestamp\n    - timestamp is expected to be in UTC\n    - only specific dates are valid at this time. A 400 error will be returned if an unsupported date is\n      requested. If you want to get a date that we have not enabled support for yet, please contact us.\n    - the 'Z' character at the end of the timestamp is optional, and will be ignored if it is suppl"
+        },
+        {
+          "info": {
+            "name": "Perform forward ATM calculation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v2/atm/forward",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform a forward calculation using **VERSION 2** of the TREx Auroral Transport Model and the supplied \ninput parameters.\n\n**NOTE**: As of API version 1.41.0 (released 2026-01-30), the `height_integrated_rayleighs_lbh` and \n`emission_lbh` output flags have been renamed to `height_integrated_rayleighs_smile_uvi_lbh` and \n`emission_smile_uvi_lbh`. Further, the `plasma_pederson_conductivity` output flag has been renamed to \n`plasma_pedersen_conductivity`. The original names will be removed in a lat"
+        },
+        {
+          "info": {
+            "name": "Perform inverse ATM calculation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v2/atm/inverse",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Perform an inverse calculation using **VERSION 2** of the TREx Auroral Transport Model and the supplied \ninput parameters.\n\n**NOTE**: This version of the model no longer provides extended outputs which are derived when doing a \nsubsequent forward request after the inversion determines the energy flux. Instead, we leave this up\nto the user to perform the forward request using the parameters of their choosing. This was done to \nallow further customization of the forward requests which use inversio"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,941 @@
+{
+  "item": [
+    {
+      "id": "e24ea326-bd0e-4b1e-b3d5-f1677d19450b",
+      "name": "Data Distribution",
+      "description": {
+        "content": "Endpoints supporting data distribution",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8b65e1ab-0b2a-4be9-b98e-580366d4a537",
+          "name": "Retrieve available datasets",
+          "request": {
+            "name": "Retrieve available datasets",
+            "description": {
+              "content": "Retrieve information about available datasets. Filter based on parameters supplied.\n\nNotes:\n  - filtering is case insensitive\n  - data level description: https://www.earthdata.nasa.gov/engage/open-data-services-and-software/data-information-policy/data-levels",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_distribution",
+                "datasets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "level",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "06420b91-6f5a-4959-a2cd-662352f98caa",
+              "name": "Dataset information",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_distribution",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "level",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"string\",\n    \"short_description\": \"string\",\n    \"long_description\": \"string\",\n    \"data_tree_url\": \"string\",\n    \"file_listing_supported\": false,\n    \"level\": \"string\",\n    \"file_time_resolution\": \"not_applicable\",\n    \"doi\": \"string\",\n    \"doi_details\": \"string\",\n    \"citation\": \"string\"\n  },\n  {\n    \"name\": \"string\",\n    \"short_description\": \"string\",\n    \"long_description\": \"string\",\n    \"data_tree_url\": \"string\",\n    \"file_listing_supported\": true,\n    \"level\": \"string\",\n    \"file_time_resolution\": \"not_applicable\",\n    \"doi\": \"string\",\n    \"doi_details\": \"string\",\n    \"citation\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "affa9937-ea76-4ffd-9f80-ff4d48a5c1de",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_distribution",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "level",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "238cf3c7-1b30-4cb1-8d7c-e251f21adcd7",
+          "name": "Retrieve list of URLs for a given dataset",
+          "request": {
+            "name": "Retrieve list of URLs for a given dataset",
+            "description": {
+              "content": "Retrieve list of URLs for a given dataset and timeframe.\n\nNotes:\n  - start and end times are inclusive\n  - start and end time format is YYYY-mm-ddTHH:MM:SS. Excluding values from the right to \n    the left result in default values being used (eg. YYYY-mm-ddTHH results in YYYY-mm-ddTHH:00:00)\n  - dataset matching is case insensitive\n  - site_uid is expected to be the 4-letter site code, and is case insensitive\n  - device_uid is expected to be the instrument identifier such as \"themis02\", \"rego-657\", or \"rgb-07\",\n    and is case insensitive",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_distribution",
+                "urls"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<dateTime>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<dateTime>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "site_uid",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "device_uid",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_total_bytes",
+                  "value": "false"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0fe685f8-b1c8-42e6-8ca0-02d450bd43b4",
+              "name": "URLs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_distribution",
+                    "urls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "site_uid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "device_uid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_bytes",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"urls\": [\n    \"string\",\n    \"string\"\n  ],\n  \"path_prefix\": \"string\",\n  \"count\": 5961,\n  \"total_bytes\": 9995,\n  \"dataset\": {\n    \"name\": \"string\",\n    \"short_description\": \"string\",\n    \"long_description\": \"string\",\n    \"data_tree_url\": \"string\",\n    \"file_listing_supported\": true,\n    \"level\": \"string\",\n    \"file_time_resolution\": \"1day\",\n    \"doi\": \"string\",\n    \"doi_details\": \"string\",\n    \"citation\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e4667784-da20-40c0-8095-504b6531b7bf",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_distribution",
+                    "urls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "site_uid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "device_uid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_bytes",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "be829ec4-b998-49a9-a714-aabdf3500d55",
+              "name": "Dataset not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_distribution",
+                    "urls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "site_uid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "device_uid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_bytes",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99ba852c-623e-4205-97b1-173caa8fc33a",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_distribution",
+                    "urls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "site_uid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "device_uid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_bytes",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f9693256-11bc-4893-aa7e-8905fa7b1b7c",
+              "name": "Data retrieval error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_distribution",
+                    "urls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "site_uid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "device_uid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_total_bytes",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1fe0dd49-e9d0-4132-9bfa-c3256efdf0fc",
+          "name": "Retrieve information about observatories",
+          "request": {
+            "name": "Retrieve information about observatories",
+            "description": {
+              "content": "Retrieve information about observatories. Filter based on parameters supplied.\n\nNotes:\n  - filtering for \"uid\" is case insensitive",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_distribution",
+                "observatories"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "instrument_array",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "uid",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "49045cf4-84f9-4df8-953b-6f1bf056e1b9",
+              "name": "Observatory information",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_distribution",
+                    "observatories"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_array",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "uid",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"uid\": \"string\",\n    \"full_name\": \"string\",\n    \"geodetic_latitude\": 2661.343736210652,\n    \"geodetic_longitude\": 20.70503352407882\n  },\n  {\n    \"uid\": \"string\",\n    \"full_name\": \"string\",\n    \"geodetic_latitude\": 5989.214498542294,\n    \"geodetic_longitude\": 9901.475230029295\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5914224d-670f-463d-a787-5d816bcdad57",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_distribution",
+                    "observatories"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "instrument_array",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "uid",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1b408f71-415f-4193-9a56-b4c59ffe5311",
+          "name": "Retrieve imaging start and end times for a set of locations",
+          "request": {
+            "name": "Retrieve imaging start and end times for a set of locations",
+            "description": {
+              "content": "Retrieve imaging start and end times for a set of locations. This is specific to the optical \ninstrumentation we provide data for.\n\nThe timestamp is expected to be UTC time.\n\nEach location in the 'locations' array can be specified either by a 4-letter site UID, or by\nproviding geodetic latitude and longitude. If the site_uid is provided, it is resolved to\ncoordinates using the known observatory list.\n\nNotes:\n  - The threshold parameter is the solar zenith angle (in degrees) above which imaging occurs. \n    The default value of 102.0 corresponds to nautical twilight, and what all UCalgary optical\n    instruments use.\n  - The `site_uid` parameter matching is case insensitive",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_distribution",
+                "imaging_timeframes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timestamp\": \"<dateTime>\",\n  \"locations\": [\n    {\n      \"site_uid\": \"<string>\",\n      \"geodetic_latitude\": \"<number>\",\n      \"geodetic_longitude\": \"<number>\"\n    },\n    {\n      \"site_uid\": \"<string>\",\n      \"geodetic_latitude\": \"<number>\",\n      \"geodetic_longitude\": \"<number>\"\n    }\n  ],\n  \"threshold\": 102\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a76a1ff2-793a-4c94-a3e7-1d9e530d2760",
+              "name": "Imaging times",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_distribution",
+                    "imaging_timeframes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"timestamp\": \"<dateTime>\",\n  \"locations\": [\n    {\n      \"site_uid\": \"<string>\",\n      \"geodetic_latitude\": \"<number>\",\n      \"geodetic_longitude\": \"<number>\"\n    },\n    {\n      \"site_uid\": \"<string>\",\n      \"geodetic_latitude\": \"<number>\",\n      \"geodetic_longitude\": \"<number>\"\n    }\n  ],\n  \"threshold\": 102\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"timestamp\": \"string\",\n    \"geodetic_latitude\": 4959.345637386091,\n    \"geodetic_longitude\": 7620.855376137464,\n    \"site_uid\": \"string\",\n    \"imaging_start\": \"1994-01-07T02:58:17.716Z\",\n    \"imaging_end\": \"2008-04-30T06:39:53.623Z\"\n  },\n  {\n    \"timestamp\": \"string\",\n    \"geodetic_latitude\": 553.9025863631585,\n    \"geodetic_longitude\": 9716.07460578649,\n    \"site_uid\": \"string\",\n    \"imaging_start\": \"1992-09-30T23:00:05.975Z\",\n    \"imaging_end\": \"2015-10-18T01:46:03.651Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "66f328fc-807c-40fc-9b2e-8ce43064ae8f",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_distribution",
+                    "imaging_timeframes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"timestamp\": \"<dateTime>\",\n  \"locations\": [\n    {\n      \"site_uid\": \"<string>\",\n      \"geodetic_latitude\": \"<number>\",\n      \"geodetic_longitude\": \"<number>\"\n    },\n    {\n      \"site_uid\": \"<string>\",\n      \"geodetic_latitude\": \"<number>\",\n      \"geodetic_longitude\": \"<number>\"\n    }\n  ],\n  \"threshold\": 102\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "08e4f2bc-0932-4c3b-97eb-ca712013afc1",
+              "name": "Site not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_distribution",
+                    "imaging_timeframes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"timestamp\": \"<dateTime>\",\n  \"locations\": [\n    {\n      \"site_uid\": \"<string>\",\n      \"geodetic_latitude\": \"<number>\",\n      \"geodetic_longitude\": \"<number>\"\n    },\n    {\n      \"site_uid\": \"<string>\",\n      \"geodetic_latitude\": \"<number>\",\n      \"geodetic_longitude\": \"<number>\"\n    }\n  ],\n  \"threshold\": 102\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "08e0851a-5ad3-4a13-94d7-43662aa95f11",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_distribution",
+                    "imaging_timeframes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"timestamp\": \"<dateTime>\",\n  \"locations\": [\n    {\n      \"site_uid\": \"<string>\",\n      \"geodetic_latitude\": \"<number>\",\n      \"geodetic_longitude\": \"<number>\"\n    },\n    {\n      \"site_uid\": \"<string>\",\n      \"geodetic_latitude\": \"<number>\",\n      \"geodetic_longitude\": \"<number>\"\n    }\n  ],\n  \"threshold\": 102\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.aurorax.space",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e5fbf43d-7127-4e42-899f-7f16cb31b39a",
+    "name": "AuroraX Application.wadl Data Distribution API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n",
+      "type": "text/plain"
+    }
+  }
+}

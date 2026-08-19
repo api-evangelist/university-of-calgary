@@ -1,0 +1,972 @@
+{
+  "item": [
+    {
+      "id": "c1f81786-1ff0-462e-bc37-cc57309e2381",
+      "name": "Auroral Transport Model (ATM)",
+      "description": {
+        "content": "Endpoints to utilize the Auroral Transport Model",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "456a5488-e7a1-4a5d-a740-597c0904f768",
+          "name": "Perform forward ATM calculation",
+          "request": {
+            "name": "Perform forward ATM calculation",
+            "description": {
+              "content": "Perform a forward calculation using **VERSION 1** of the TREx Auroral Transport Model and the supplied \ninput parameters.\n\nInput notes:\n  - timestamp\n    - timestamp is expected to be in UTC, and is valid for any value up to the end of the previous day\n    - the 'Z' character at the end of the timestamp is optional, and will be ignored if it is supplied\n  - latitude and longitude are to be in geodetic coordinates (-90 to 90 lat, -180 to 180 lon)\n  - maxwellian_characteristic_energy must be specified if the maxwellian_energy_flux is not 0\n  - gaussian_peak_energy must be specified if the gaussian_energy_flux is not 0\n  - gaussian_spectral_width must be specified if the gaussian_energy_flux is not 0\n  - valid values for nrlmsis_model_version are '00' and '2.0'\n  - The ATM model is 1D and time-independent. However, the optional parameters timescale_auroral and \n    timescale_transport provide limited support for time-dependent and transport process.\n      - timescale_auroral (T0) is the duration of the precipitation; default value is 600 sec\n      - timescale_transport is defined by L/v0, in which L is the dimension of the auroral structure, \n        and v0 is the cross-structure drift speed. Default value is 600 sec.\n      - the model quasi-analytically solves the continuity equation under a square input (with time \n        duration T0 and spatial width L) input of precipitation. The initial/boundary conditions are \n        given by IRI. The output yields the mean density/VER over [0-L] at time T0.\n  - units\n    - timescale parameters: seconds\n    - maxwellian energy flux: erg/cm2/s\n    - maxwellian characteristic energy: eV\n    - gaussian energy flux: erg/cm2/s\n    - gaussian peak energy: eV\n    - gaussian spectral width: eV\n  - custom spectrum\n    - energy in eV, flux in 1/cm2/s/eV\n    - energy and flux arrays must be the same length\n  - by default requests are cached; use the 'no_cache' parameter to disable this functionality\n\nOutput notes:\n  - output parameter of the request are toggles the enable/disable each field's inclusion in the response\n  - all output parameters are false by default\n  - altitude is in kilometers\n  - emission data: 1-D array -- volume emission rate (1/cm^3/s)\n  - plasma electron density: 1-D array -- density (cm^-3)\n  - plasma O2+ density: 1-D array -- density (cm^-3)\n  - plasma NO+ density: 1-D array -- density (cm^-3)\n  - plasma O+ density: 1-D array -- density (cm^-3)\n  - plasma ionisation rate: 1-D array -- ionisation rate (1/cm^3/s)\n  - plasma electron temperature: 1-D array -- temperature (K)\n  - plasma ion temperature: 1-D array -- temperature (K)\n  - plasma peterson conductivity: 1-D array -- conductivity (S/m)\n  - plasma hall conductivity: 1-D array -- conductivity (S/m)\n  - neutral O2 density: 1-D array -- density (cm^-3)\n  - neutral O density: 1-D array -- density (cm^-3)\n  - neutral N2 density: 1-D array -- density (cm^-3)\n  - neutral N density: 1-D array -- density (cm^-3)\n  - neutral temperature: 1-D array -- temperature (K)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "atm",
+                "forward"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timestamp\": \"<dateTime>\",\n  \"geodetic_latitude\": \"<number>\",\n  \"geodetic_longitude\": \"<number>\",\n  \"atm_model_version\": \"1.0\",\n  \"maxwellian_energy_flux\": 10,\n  \"gaussian_energy_flux\": 0,\n  \"maxwellian_characteristic_energy\": 5000,\n  \"gaussian_peak_energy\": 1000,\n  \"gaussian_spectral_width\": 100,\n  \"nrlmsis_model_version\": \"2.0\",\n  \"oxygen_correction_factor\": 1,\n  \"timescale_auroral\": 600,\n  \"timescale_transport\": 600,\n  \"custom_spectrum\": {\n    \"energy\": [\n      \"<number>\",\n      \"<number>\"\n    ],\n    \"flux\": [\n      \"<number>\",\n      \"<number>\"\n    ]\n  },\n  \"output\": {\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"height_integrated_rayleighs_lbh\": false,\n    \"height_integrated_rayleighs_1304\": false,\n    \"height_integrated_rayleighs_1356\": false,\n    \"altitudes\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"emission_lbh\": false,\n    \"emission_1304\": false,\n    \"emission_1356\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pederson_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false\n  },\n  \"no_cache\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "89f21b3c-7c5f-420b-9453-dafd287af0a1",
+              "name": "Calculated outputs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "atm",
+                    "forward"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"atm_model_version\": \"1.0\",\n  \"timestamp\": \"2024-01-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"maxwellian_energy_flux\": 10,\n  \"gaussian_energy_flux\": 0,\n  \"maxwellian_characteristic_energy\": 5000,\n  \"gaussian_peak_energy\": 1000,\n  \"gaussian_spectral_width\": 100,\n  \"nrlmsis_model_version\": \"2.0\",\n  \"oxygen_correction_factor\": 1,\n  \"timescale_auroral\": 600,\n  \"timescale_transport\": 600,\n  \"custom_spectrum\": {\n    \"energy\": [],\n    \"flux\": []\n  },\n  \"output\": {\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"height_integrated_rayleighs_lbh\": false,\n    \"height_integrated_rayleighs_1304\": false,\n    \"height_integrated_rayleighs_1356\": false,\n    \"altitudes\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"emission_lbh\": false,\n    \"emission_1304\": false,\n    \"emission_1356\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pederson_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"height_integrated_rayleighs_4278\": 3696.354016220764,\n    \"height_integrated_rayleighs_5577\": 2788.7053044776135,\n    \"height_integrated_rayleighs_6300\": 2776.7792794720904,\n    \"height_integrated_rayleighs_8446\": 80.06199002534298,\n    \"height_integrated_rayleighs_lbh\": 9286.948613234636,\n    \"height_integrated_rayleighs_1304\": 8998.270839036828,\n    \"height_integrated_rayleighs_1356\": 2471.9557715688843\n  },\n  \"request\": {\n    \"timestamp\": \"<dateTime>\",\n    \"geodetic_latitude\": \"<number>\",\n    \"geodetic_longitude\": \"<number>\",\n    \"atm_model_version\": \"1.0\",\n    \"maxwellian_energy_flux\": 10,\n    \"gaussian_energy_flux\": 0,\n    \"maxwellian_characteristic_energy\": 5000,\n    \"gaussian_peak_energy\": 1000,\n    \"gaussian_spectral_width\": 100,\n    \"nrlmsis_model_version\": \"2.0\",\n    \"oxygen_correction_factor\": 1,\n    \"timescale_auroral\": 600,\n    \"timescale_transport\": 600,\n    \"custom_spectrum\": {\n      \"energy\": [\n        \"<number>\",\n        \"<number>\"\n      ],\n      \"flux\": [\n        \"<number>\",\n        \"<number>\"\n      ]\n    },\n    \"output\": {\n      \"height_integrated_rayleighs_4278\": false,\n      \"height_integrated_rayleighs_5577\": false,\n      \"height_integrated_rayleighs_6300\": false,\n      \"height_integrated_rayleighs_8446\": false,\n      \"height_integrated_rayleighs_lbh\": false,\n      \"height_integrated_rayleighs_1304\": false,\n      \"height_integrated_rayleighs_1356\": false,\n      \"altitudes\": false,\n      \"emission_4278\": false,\n      \"emission_5577\": false,\n      \"emission_6300\": false,\n      \"emission_8446\": false,\n      \"emission_lbh\": false,\n      \"emission_1304\": false,\n      \"emission_1356\": false,\n      \"plasma_electron_density\": false,\n      \"plasma_o2plus_density\": false,\n      \"plasma_oplus_density\": false,\n      \"plasma_noplus_density\": false,\n      \"plasma_ionisation_rate\": false,\n      \"plasma_electron_temperature\": false,\n      \"plasma_ion_temperature\": false,\n      \"plasma_pederson_conductivity\": false,\n      \"plasma_hall_conductivity\": false,\n      \"neutral_o2_density\": false,\n      \"neutral_o_density\": false,\n      \"neutral_n2_density\": false,\n      \"neutral_n_density\": false,\n      \"neutral_temperature\": false\n    },\n    \"no_cache\": false\n  },\n  \"calculation_duration_ms\": 689.2329648795337\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f62fd7f3-e800-4225-a7d9-d940da38aa91",
+              "name": "Problematic request made",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "atm",
+                    "forward"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"atm_model_version\": \"1.0\",\n  \"timestamp\": \"2024-01-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"maxwellian_energy_flux\": 10,\n  \"gaussian_energy_flux\": 0,\n  \"maxwellian_characteristic_energy\": 5000,\n  \"gaussian_peak_energy\": 1000,\n  \"gaussian_spectral_width\": 100,\n  \"nrlmsis_model_version\": \"2.0\",\n  \"oxygen_correction_factor\": 1,\n  \"timescale_auroral\": 600,\n  \"timescale_transport\": 600,\n  \"custom_spectrum\": {\n    \"energy\": [],\n    \"flux\": []\n  },\n  \"output\": {\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"height_integrated_rayleighs_lbh\": false,\n    \"height_integrated_rayleighs_1304\": false,\n    \"height_integrated_rayleighs_1356\": false,\n    \"altitudes\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"emission_lbh\": false,\n    \"emission_1304\": false,\n    \"emission_1356\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pederson_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ff85fe09-2cb4-4989-aee2-b4d2fc163f7e",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "atm",
+                    "forward"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"atm_model_version\": \"1.0\",\n  \"timestamp\": \"2024-01-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"maxwellian_energy_flux\": 10,\n  \"gaussian_energy_flux\": 0,\n  \"maxwellian_characteristic_energy\": 5000,\n  \"gaussian_peak_energy\": 1000,\n  \"gaussian_spectral_width\": 100,\n  \"nrlmsis_model_version\": \"2.0\",\n  \"oxygen_correction_factor\": 1,\n  \"timescale_auroral\": 600,\n  \"timescale_transport\": 600,\n  \"custom_spectrum\": {\n    \"energy\": [],\n    \"flux\": []\n  },\n  \"output\": {\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"height_integrated_rayleighs_lbh\": false,\n    \"height_integrated_rayleighs_1304\": false,\n    \"height_integrated_rayleighs_1356\": false,\n    \"altitudes\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"emission_lbh\": false,\n    \"emission_1304\": false,\n    \"emission_1356\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pederson_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8bd42c16-7363-49b6-9417-35c0ec1c2d08",
+              "name": "Data generation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "atm",
+                    "forward"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"atm_model_version\": \"1.0\",\n  \"timestamp\": \"2024-01-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"maxwellian_energy_flux\": 10,\n  \"gaussian_energy_flux\": 0,\n  \"maxwellian_characteristic_energy\": 5000,\n  \"gaussian_peak_energy\": 1000,\n  \"gaussian_spectral_width\": 100,\n  \"nrlmsis_model_version\": \"2.0\",\n  \"oxygen_correction_factor\": 1,\n  \"timescale_auroral\": 600,\n  \"timescale_transport\": 600,\n  \"custom_spectrum\": {\n    \"energy\": [],\n    \"flux\": []\n  },\n  \"output\": {\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"height_integrated_rayleighs_lbh\": false,\n    \"height_integrated_rayleighs_1304\": false,\n    \"height_integrated_rayleighs_1356\": false,\n    \"altitudes\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"emission_lbh\": false,\n    \"emission_1304\": false,\n    \"emission_1356\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pederson_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "713e567f-6bd1-425e-8684-3e2892f7e214",
+          "name": "Perform inverse ATM calculation",
+          "request": {
+            "name": "Perform inverse ATM calculation",
+            "description": {
+              "content": "Perform an inverse calculation using **VERSION 1** of the TREx Auroral Transport Model and the supplied \ninput parameters.\n\nInput notes:\n  - timestamp\n    - timestamp is expected to be in UTC\n    - only specific dates are valid at this time. A 400 error will be returned if an unsupported date is\n      requested. If you want to get a date that we have not enabled support for yet, please contact us.\n    - the 'Z' character at the end of the timestamp is optional, and will be ignored if it is supplied\n  - latitude and longitude\n    - are to be in geodetic coordinates\n    - latitude is currently limited to >=50.0 and <61.5 degrees\n    - longitude is currently limited >=-110 and <-70 and degrees\n  - valid values for nrlmsis_model_version are '00' and '2.0'\n  - valid values for precipitation_flux_spectral_type are 'gaussian' and 'maxwellian'\n  - intensity parameters are expected to be height-integrated values, and in Rayleighs\n  - by default requests are cached; use the 'no_cache' parameter to disable this functionality\n\nOutput notes:\n  - output parameter of the request are toggles the enable/disable each field's inclusion in the response\n  - all output parameters are false by default\n  - altitude is in kilometers\n  - energy flux: erg/cm2/s\n  - characteristic energy: eV\n  - emission data: 1-D array -- volume emission rate (1/cm^3/s)\n  - plasma electron density: 1-D array -- density (cm^-3)\n  - plasma O2+ density: 1-D array -- density (cm^-3)\n  - plasma NO+ density: 1-D array -- density (cm^-3)\n  - plasma O+ density: 1-D array -- density (cm^-3)\n  - plasma ionisation rate: 1-D array -- ionisation rate (1/cm^3/s)\n  - plasma electron temperature: 1-D array -- temperature (K)\n  - plasma ion temperature: 1-D array -- temperature (K)\n  - plasma peterson conductivity: 1-D array -- conductivity (S/m)\n  - plasma hall conductivity: 1-D array -- conductivity (S/m)\n  - neutral O2 density: 1-D array -- density (cm^-3)\n  - neutral O density: 1-D array -- density (cm^-3)\n  - neutral N2 density: 1-D array -- density (cm^-3)\n  - neutral N density: 1-D array -- density (cm^-3)\n  - neutral temperature: 1-D array -- temperature (K)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "atm",
+                "inverse"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timestamp\": \"<dateTime>\",\n  \"geodetic_latitude\": \"<number>\",\n  \"geodetic_longitude\": \"<number>\",\n  \"atm_model_version\": \"1.0\",\n  \"intensity_4278\": 1000,\n  \"intensity_5577\": 6000,\n  \"intensity_6300\": 600,\n  \"intensity_8446\": 400,\n  \"precipitation_flux_spectral_type\": \"gaussian\",\n  \"nrlmsis_model_version\": \"2.0\",\n  \"atmospheric_attenuation_correction\": false,\n  \"output\": {\n    \"altitudes\": false,\n    \"energy_flux\": false,\n    \"characteristic_energy\": false,\n    \"oxygen_correction_factor\": false,\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pederson_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false\n  },\n  \"no_cache\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "170c5344-6395-4ba5-b4d6-e32713567c03",
+              "name": "Calculated outputs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "atm",
+                    "inverse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"atm_model_version\": \"1.0\",\n  \"timestamp\": \"2024-10-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"intensity_4278\": 1000,\n  \"intensity_5577\": 6000,\n  \"intensity_6300\": 600,\n  \"intensity_8446\": 400,\n  \"precipitation_flux_spectral_type\": \"gaussian\",\n  \"nrlmsis_model_version\": \"2.0\",\n  \"atmospheric_attenuation_correction\": false,\n  \"output\": {\n    \"altitudes\": false,\n    \"energy_flux\": false,\n    \"characteristic_energy\": false,\n    \"oxygen_correction_factor\": false,\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pederson_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"energy_flux\": 2657.1772296953523,\n    \"characteristic_energy\": 4238.810702926234,\n    \"oxygen_correction_factor\": 3982.852290343857,\n    \"height_integrated_rayleighs_4278\": 3443.1637024827787,\n    \"height_integrated_rayleighs_5577\": 1929.9268720207474,\n    \"height_integrated_rayleighs_6300\": 5939.225624014355,\n    \"height_integrated_rayleighs_8446\": 9352.16438231287\n  },\n  \"request\": {\n    \"timestamp\": \"<dateTime>\",\n    \"geodetic_latitude\": \"<number>\",\n    \"geodetic_longitude\": \"<number>\",\n    \"atm_model_version\": \"1.0\",\n    \"intensity_4278\": 1000,\n    \"intensity_5577\": 6000,\n    \"intensity_6300\": 600,\n    \"intensity_8446\": 400,\n    \"precipitation_flux_spectral_type\": \"gaussian\",\n    \"nrlmsis_model_version\": \"2.0\",\n    \"atmospheric_attenuation_correction\": false,\n    \"output\": {\n      \"altitudes\": false,\n      \"energy_flux\": false,\n      \"characteristic_energy\": false,\n      \"oxygen_correction_factor\": false,\n      \"height_integrated_rayleighs_4278\": false,\n      \"height_integrated_rayleighs_5577\": false,\n      \"height_integrated_rayleighs_6300\": false,\n      \"height_integrated_rayleighs_8446\": false,\n      \"emission_4278\": false,\n      \"emission_5577\": false,\n      \"emission_6300\": false,\n      \"emission_8446\": false,\n      \"plasma_electron_density\": false,\n      \"plasma_o2plus_density\": false,\n      \"plasma_oplus_density\": false,\n      \"plasma_noplus_density\": false,\n      \"plasma_ionisation_rate\": false,\n      \"plasma_electron_temperature\": false,\n      \"plasma_ion_temperature\": false,\n      \"plasma_pederson_conductivity\": false,\n      \"plasma_hall_conductivity\": false,\n      \"neutral_o2_density\": false,\n      \"neutral_o_density\": false,\n      \"neutral_n2_density\": false,\n      \"neutral_n_density\": false,\n      \"neutral_temperature\": false\n    },\n    \"no_cache\": false\n  },\n  \"calculation_duration_ms\": 3586.8774678653326,\n  \"forward_params\": {\n    \"maxwellian_energy_flux\": 2705.9491419548285,\n    \"gaussian_energy_flux\": 4985.032645491079,\n    \"maxwellian_characteristic_energy\": 1898.2890965595734,\n    \"gaussian_peak_energy\": 9747.156030955613,\n    \"gaussian_spectral_width\": 5304.297475911835,\n    \"nrlmsis_model_version\": \"00\",\n    \"oxygen_correction_factor\": 4162.715576285742,\n    \"timescale_auroral\": 4765,\n    \"timescale_transport\": 6338\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f8a304f-50ed-4879-970b-53c409654d4c",
+              "name": "Problematic request made",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "atm",
+                    "inverse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"atm_model_version\": \"1.0\",\n  \"timestamp\": \"2024-10-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"intensity_4278\": 1000,\n  \"intensity_5577\": 6000,\n  \"intensity_6300\": 600,\n  \"intensity_8446\": 400,\n  \"precipitation_flux_spectral_type\": \"gaussian\",\n  \"nrlmsis_model_version\": \"2.0\",\n  \"atmospheric_attenuation_correction\": false,\n  \"output\": {\n    \"altitudes\": false,\n    \"energy_flux\": false,\n    \"characteristic_energy\": false,\n    \"oxygen_correction_factor\": false,\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pederson_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44235098-2f08-4f2d-9dd9-3c73b753a0c9",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "atm",
+                    "inverse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"atm_model_version\": \"1.0\",\n  \"timestamp\": \"2024-10-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"intensity_4278\": 1000,\n  \"intensity_5577\": 6000,\n  \"intensity_6300\": 600,\n  \"intensity_8446\": 400,\n  \"precipitation_flux_spectral_type\": \"gaussian\",\n  \"nrlmsis_model_version\": \"2.0\",\n  \"atmospheric_attenuation_correction\": false,\n  \"output\": {\n    \"altitudes\": false,\n    \"energy_flux\": false,\n    \"characteristic_energy\": false,\n    \"oxygen_correction_factor\": false,\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pederson_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72506671-6d15-49c3-ab25-387653eb6c18",
+              "name": "Data generation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "atm",
+                    "inverse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"atm_model_version\": \"1.0\",\n  \"timestamp\": \"2024-10-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"intensity_4278\": 1000,\n  \"intensity_5577\": 6000,\n  \"intensity_6300\": 600,\n  \"intensity_8446\": 400,\n  \"precipitation_flux_spectral_type\": \"gaussian\",\n  \"nrlmsis_model_version\": \"2.0\",\n  \"atmospheric_attenuation_correction\": false,\n  \"output\": {\n    \"altitudes\": false,\n    \"energy_flux\": false,\n    \"characteristic_energy\": false,\n    \"oxygen_correction_factor\": false,\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pederson_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d9312861-0a03-414a-abe7-da82c8500a4c",
+          "name": "Perform forward ATM calculation",
+          "request": {
+            "name": "Perform forward ATM calculation",
+            "description": {
+              "content": "Perform a forward calculation using **VERSION 2** of the TREx Auroral Transport Model and the supplied \ninput parameters.\n\n**NOTE**: As of API version 1.41.0 (released 2026-01-30), the `height_integrated_rayleighs_lbh` and \n`emission_lbh` output flags have been renamed to `height_integrated_rayleighs_smile_uvi_lbh` and \n`emission_smile_uvi_lbh`. Further, the `plasma_pederson_conductivity` output flag has been renamed to \n`plasma_pedersen_conductivity`. The original names will be removed in a later release to be determined.\n\nInput notes:\n  - By default requests are cached. Use the 'no_cache' parameter to disable this functionality\n  - Latitude and longitude are to be in geodetic coordinates (-90 to 90 lat, -180 to 180 lon)\n  - Timestamp\n    - timestamp is expected to be in UTC, and is valid for any value up to the end of the previous day\n    - the 'Z' character at the end of the timestamp is optional, and will be ignored if it is supplied\n  - Spectral shapes\n    - If the maxwellian_energy_flux is not 0, then maxwellian_characteristic_energy will be used. If\n      maxwellian_characteristic_energy is not specified, then the default will be used.\n    - If the gaussian_energy_flux is not 0, then gaussian_peak_energy and gaussian_spectral_width will be\n      used. If these two values are not specified, then the defaults will be used. \n    - If kappa_energy_flux is not 0, then kappa_mean_energy and kappa_k_index will be used. If these two \n      values are not specified, then the defaults will be used.\n    - If exponential_energy_flux is not 0, then exponential_characteristic_energy and exponential_starting_energy\n      will be used. If these two values are not specified, then the defaults will be used.\n    - **IMPORTANT**: All the above spectral shapes are super-imposable except exponential. The exponential spectrum \n      should be only be used for high-energy tail and, starting from E0 (proton_starting_energy), will override any \n      other spectral specification.\n  - If proton_energy_flux is not 0, then proton_characteristic_energy will be used. If the \n    proton_characteristic_energy is not specified, then the default will be used.\n  - The ATM model is 1D and time-independent. However, the optional parameters timescale_auroral and \n    timescale_transport provide limited support for time-dependent and transport process.\n      - timescale_auroral (T0) is the duration of the precipitation; default value is 600 sec\n      - timescale_transport is defined by L/v0, in which L is the dimension of the auroral structure, \n        and v0 is the cross-structure drift speed. Default value is 600 sec.\n      - the model quasi-analytically solves the continuity equation under a square input (with time \n        duration T0 and spatial width L) input of precipitation. The initial/boundary conditions are \n        given by IRI. The output yields the mean density/VER over [0-L] at time T0.\n  - **NOTE**: proton precipitation is presently only for ionization rate and density calculations. Proton auroras are \n    not nominal TREx characteristics and currently not computed in this version of the model.\n  - Units and defaults\n    - maxwellian total energy flux: erg/cm2/s, default is 10 \n    - maxwellian characteristic energy: eV, default is 5000 \n    - gaussian total energy flux: erg/cm2/s, default is 0 (indicating all gaussian parameters are disabled) \n    - gaussian peak energy: eV, default is 1000\n    - gaussian spectral width: eV, default is 100\n    - kappa total energy flux: erg/cm2/s, default is 0 (indicating all kappa parameters are disabled) \n    - kappa mean energy: eV, default is 30000\n    - kappa k-index: no unit, default is 5\n    - exponential total energy flux: erg/cm2/s, default is 0 (indicating all exponential parameters are disabled) \n    - exponential characteristic energy: eV, default is 50000\n    - exponential starting energy: eV, default is 50000\n    - proton total energy flux: erg/cm2/s, default is 0 (indicating all proton parameters are disabled) \n    - proton characteristic energy: eV, default is 10000\n    - d-region flag: defaults to false\n    - custom spectrum (precipitation) \n      - energy in eV, flux in 1/cm2/s/eV \n      - energy and flux arrays must be the same length \n      - users are responsible for fully covering the energy range of interest in the provided spectrum. The model \n        only performs interpolation, not extrapolation.\n    - custom neutral profile \n      - altitude in km, density in cm^-3, temperature in K. \n      - users are responsible for fully covering the altitude range of interest in the provided profile (80-800 km \n        if d_region_flag=0, or 50-500 km if d_region_flag=1). The model only performs interpolation, not extrapolation.\n    - nrlmsis_model_version: valid values are \"00\" and \"2.0\", default is \"2.0\"\n    - oxygen_correction_factor: default is 1.0\n    - timescale_auroral: seconds, default is 600 \n    - timescale_transport: seconds, default is 600\n\nOutput notes:\n  - output parameter of the request are toggles the enable/disable each field's inclusion in the response\n  - all output parameters are false by default\n  - altitude: kilometers\n  - emission data: 1-D arrays -- volume emission rate, 1/cm^3/s\n  - plasma electron density: 1-D array, cm^-3\n  - plasma O2+ density: 1-D array, cm^-3\n  - plasma NO+ density: 1-D array, cm^-3\n  - plasma O+ density: 1-D array, cm^-3\n  - plasma ionisation rate: 1-D array, 1/cm^3/s\n  - plasma electron temperature: 1-D array, K\n  - plasma ion temperature: 1-D array, K\n  - plasma pedersen conductivity: 1-D array, S/m\n  - plasma hall conductivity: 1-D array, S/m\n  - neutral O2 density: 1-D array, cm^-3\n  - neutral O density: 1-D array, cm^-3\n  - neutral N2 density: 1-D array, cm^-3\n  - neutral N density: 1-D array, cm^-3\n  - neutral temperature: 1-D array, K\n  - production_rate_o2plus: 1-D array, 1/cm^3/s\n  - production_rate_oplus: 1-D array, 1/cm^3/s\n  - production_rate_oneg: 1-D array, 1/cm^3/s\n  - production_rate_o: 1-D array, 1/cm^3/s\n  - production_rate_nplus: 1-D array, 1/cm^3/s\n  - production_rate_n2plus: 1-D array, 1/cm^3/s\n  - production_rate_n: 1-D array, 1/cm^3/s\n  - production_rate_n2d: 1-D array, 1/cm^3/s",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "atm",
+                "forward"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timestamp\": \"<dateTime>\",\n  \"geodetic_latitude\": \"<number>\",\n  \"geodetic_longitude\": \"<number>\",\n  \"maxwellian_energy_flux\": 10,\n  \"maxwellian_characteristic_energy\": 5000,\n  \"gaussian_energy_flux\": 0,\n  \"gaussian_peak_energy\": 1000,\n  \"gaussian_spectral_width\": 100,\n  \"kappa_energy_flux\": 0,\n  \"kappa_mean_energy\": 30000,\n  \"kappa_k_index\": 5,\n  \"exponential_energy_flux\": 0,\n  \"exponential_characteristic_energy\": 50000,\n  \"exponential_starting_energy\": 50000,\n  \"proton_energy_flux\": 0,\n  \"proton_characteristic_energy\": 10000,\n  \"d_region\": false,\n  \"nrlmsis_model_version\": \"2.0\",\n  \"oxygen_correction_factor\": 1,\n  \"timescale_auroral\": 600,\n  \"timescale_transport\": 600,\n  \"custom_spectrum\": {\n    \"energy\": [\n      \"<number>\",\n      \"<number>\"\n    ],\n    \"flux\": [\n      \"<number>\",\n      \"<number>\"\n    ]\n  },\n  \"custom_neutral_profile\": {\n    \"altitude\": [\n      \"<number>\",\n      \"<number>\"\n    ],\n    \"o_density\": [\n      \"<number>\",\n      \"<number>\"\n    ],\n    \"o2_density\": [\n      \"<number>\",\n      \"<number>\"\n    ],\n    \"n2_density\": [\n      \"<number>\",\n      \"<number>\"\n    ],\n    \"n_density\": [\n      \"<number>\",\n      \"<number>\"\n    ],\n    \"no_density\": [\n      \"<number>\",\n      \"<number>\"\n    ],\n    \"temperature\": [\n      \"<number>\",\n      \"<number>\"\n    ]\n  },\n  \"output\": {\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"height_integrated_rayleighs_1304\": false,\n    \"height_integrated_rayleighs_1356\": false,\n    \"height_integrated_rayleighs_smile_uvi_lbh\": false,\n    \"height_integrated_rayleighs_lbh\": false,\n    \"altitudes\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"emission_1304\": false,\n    \"emission_1356\": false,\n    \"emission_smile_uvi_lbh\": false,\n    \"emission_lbh\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pedersen_conductivity\": false,\n    \"plasma_pederson_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false,\n    \"production_rate_o2plus\": false,\n    \"production_rate_oplus\": false,\n    \"production_rate_oneg\": false,\n    \"production_rate_o\": false,\n    \"production_rate_nplus\": false,\n    \"production_rate_n2plus\": false,\n    \"production_rate_n\": false,\n    \"production_rate_n2d\": false\n  },\n  \"no_cache\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "758aacdf-22e5-4d88-944e-ef0424d14c83",
+              "name": "Calculated outputs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "atm",
+                    "forward"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"timestamp\": \"2024-01-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"maxwellian_energy_flux\": 10,\n  \"maxwellian_characteristic_energy\": 5000,\n  \"gaussian_energy_flux\": 0,\n  \"gaussian_peak_energy\": 1000,\n  \"gaussian_spectral_width\": 100,\n  \"kappa_energy_flux\": 0,\n  \"kappa_mean_energy\": 30000,\n  \"kappa_k_index\": 5,\n  \"exponential_energy_flux\": 0,\n  \"exponential_characteristic_energy\": 50000,\n  \"exponential_starting_energy\": 50000,\n  \"proton_energy_flux\": 0,\n  \"proton_characteristic_energy\": 10000,\n  \"d_region\": false,\n  \"nrlmsis_model_version\": \"2.0\",\n  \"oxygen_correction_factor\": 1,\n  \"timescale_auroral\": 600,\n  \"timescale_transport\": 600,\n  \"custom_spectrum\": {\n    \"energy\": [],\n    \"flux\": []\n  },\n  \"custom_neutral_profile\": {\n    \"altitude\": [],\n    \"o_density\": [],\n    \"o2_density\": [],\n    \"n2_density\": [],\n    \"n_density\": [],\n    \"no_density\": [],\n    \"temperature\": []\n  },\n  \"output\": {\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"height_integrated_rayleighs_1304\": false,\n    \"height_integrated_rayleighs_1356\": false,\n    \"height_integrated_rayleighs_smile_uvi_lbh\": false,\n    \"altitudes\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"emission_1304\": false,\n    \"emission_1356\": false,\n    \"emission_smile_uvi_lbh\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pedersen_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false,\n    \"production_rate_o2plus\": false,\n    \"production_rate_oplus\": false,\n    \"production_rate_oneg\": false,\n    \"production_rate_o\": false,\n    \"production_rate_nplus\": false,\n    \"production_rate_n2plus\": false,\n    \"production_rate_n\": false,\n    \"production_rate_n2d\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"height_integrated_rayleighs_4278\": 1474.6868487021202,\n    \"height_integrated_rayleighs_5577\": 1260.8283193237023,\n    \"height_integrated_rayleighs_6300\": 4589.080178819221,\n    \"height_integrated_rayleighs_8446\": 5528.121600926173,\n    \"height_integrated_rayleighs_1304\": 4972.269087857575,\n    \"height_integrated_rayleighs_1356\": 5490.196632381142,\n    \"height_integrated_rayleighs_smile_uvi_lbh\": 5404.690179491981,\n    \"height_integrated_rayleighs_lbh\": 3738.6919826141498\n  },\n  \"request\": {\n    \"timestamp\": \"<dateTime>\",\n    \"geodetic_latitude\": \"<number>\",\n    \"geodetic_longitude\": \"<number>\",\n    \"maxwellian_energy_flux\": 10,\n    \"maxwellian_characteristic_energy\": 5000,\n    \"gaussian_energy_flux\": 0,\n    \"gaussian_peak_energy\": 1000,\n    \"gaussian_spectral_width\": 100,\n    \"kappa_energy_flux\": 0,\n    \"kappa_mean_energy\": 30000,\n    \"kappa_k_index\": 5,\n    \"exponential_energy_flux\": 0,\n    \"exponential_characteristic_energy\": 50000,\n    \"exponential_starting_energy\": 50000,\n    \"proton_energy_flux\": 0,\n    \"proton_characteristic_energy\": 10000,\n    \"d_region\": false,\n    \"nrlmsis_model_version\": \"2.0\",\n    \"oxygen_correction_factor\": 1,\n    \"timescale_auroral\": 600,\n    \"timescale_transport\": 600,\n    \"custom_spectrum\": {\n      \"energy\": [\n        \"<number>\",\n        \"<number>\"\n      ],\n      \"flux\": [\n        \"<number>\",\n        \"<number>\"\n      ]\n    },\n    \"custom_neutral_profile\": {\n      \"altitude\": [\n        \"<number>\",\n        \"<number>\"\n      ],\n      \"o_density\": [\n        \"<number>\",\n        \"<number>\"\n      ],\n      \"o2_density\": [\n        \"<number>\",\n        \"<number>\"\n      ],\n      \"n2_density\": [\n        \"<number>\",\n        \"<number>\"\n      ],\n      \"n_density\": [\n        \"<number>\",\n        \"<number>\"\n      ],\n      \"no_density\": [\n        \"<number>\",\n        \"<number>\"\n      ],\n      \"temperature\": [\n        \"<number>\",\n        \"<number>\"\n      ]\n    },\n    \"output\": {\n      \"height_integrated_rayleighs_4278\": false,\n      \"height_integrated_rayleighs_5577\": false,\n      \"height_integrated_rayleighs_6300\": false,\n      \"height_integrated_rayleighs_8446\": false,\n      \"height_integrated_rayleighs_1304\": false,\n      \"height_integrated_rayleighs_1356\": false,\n      \"height_integrated_rayleighs_smile_uvi_lbh\": false,\n      \"height_integrated_rayleighs_lbh\": false,\n      \"altitudes\": false,\n      \"emission_4278\": false,\n      \"emission_5577\": false,\n      \"emission_6300\": false,\n      \"emission_8446\": false,\n      \"emission_1304\": false,\n      \"emission_1356\": false,\n      \"emission_smile_uvi_lbh\": false,\n      \"emission_lbh\": false,\n      \"plasma_electron_density\": false,\n      \"plasma_o2plus_density\": false,\n      \"plasma_oplus_density\": false,\n      \"plasma_noplus_density\": false,\n      \"plasma_ionisation_rate\": false,\n      \"plasma_electron_temperature\": false,\n      \"plasma_ion_temperature\": false,\n      \"plasma_pedersen_conductivity\": false,\n      \"plasma_pederson_conductivity\": false,\n      \"plasma_hall_conductivity\": false,\n      \"neutral_o2_density\": false,\n      \"neutral_o_density\": false,\n      \"neutral_n2_density\": false,\n      \"neutral_n_density\": false,\n      \"neutral_temperature\": false,\n      \"production_rate_o2plus\": false,\n      \"production_rate_oplus\": false,\n      \"production_rate_oneg\": false,\n      \"production_rate_o\": false,\n      \"production_rate_nplus\": false,\n      \"production_rate_n2plus\": false,\n      \"production_rate_n\": false,\n      \"production_rate_n2d\": false\n    },\n    \"no_cache\": false\n  },\n  \"calculation_duration_ms\": 3376.2710053654164\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "56699f3f-de42-4f24-8f29-0b6ecb750755",
+              "name": "Problematic request made",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "atm",
+                    "forward"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"timestamp\": \"2024-01-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"maxwellian_energy_flux\": 10,\n  \"maxwellian_characteristic_energy\": 5000,\n  \"gaussian_energy_flux\": 0,\n  \"gaussian_peak_energy\": 1000,\n  \"gaussian_spectral_width\": 100,\n  \"kappa_energy_flux\": 0,\n  \"kappa_mean_energy\": 30000,\n  \"kappa_k_index\": 5,\n  \"exponential_energy_flux\": 0,\n  \"exponential_characteristic_energy\": 50000,\n  \"exponential_starting_energy\": 50000,\n  \"proton_energy_flux\": 0,\n  \"proton_characteristic_energy\": 10000,\n  \"d_region\": false,\n  \"nrlmsis_model_version\": \"2.0\",\n  \"oxygen_correction_factor\": 1,\n  \"timescale_auroral\": 600,\n  \"timescale_transport\": 600,\n  \"custom_spectrum\": {\n    \"energy\": [],\n    \"flux\": []\n  },\n  \"custom_neutral_profile\": {\n    \"altitude\": [],\n    \"o_density\": [],\n    \"o2_density\": [],\n    \"n2_density\": [],\n    \"n_density\": [],\n    \"no_density\": [],\n    \"temperature\": []\n  },\n  \"output\": {\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"height_integrated_rayleighs_1304\": false,\n    \"height_integrated_rayleighs_1356\": false,\n    \"height_integrated_rayleighs_smile_uvi_lbh\": false,\n    \"altitudes\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"emission_1304\": false,\n    \"emission_1356\": false,\n    \"emission_smile_uvi_lbh\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pedersen_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false,\n    \"production_rate_o2plus\": false,\n    \"production_rate_oplus\": false,\n    \"production_rate_oneg\": false,\n    \"production_rate_o\": false,\n    \"production_rate_nplus\": false,\n    \"production_rate_n2plus\": false,\n    \"production_rate_n\": false,\n    \"production_rate_n2d\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7e2f37a4-a178-4c9c-abcf-05ba4ac6809b",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "atm",
+                    "forward"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"timestamp\": \"2024-01-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"maxwellian_energy_flux\": 10,\n  \"maxwellian_characteristic_energy\": 5000,\n  \"gaussian_energy_flux\": 0,\n  \"gaussian_peak_energy\": 1000,\n  \"gaussian_spectral_width\": 100,\n  \"kappa_energy_flux\": 0,\n  \"kappa_mean_energy\": 30000,\n  \"kappa_k_index\": 5,\n  \"exponential_energy_flux\": 0,\n  \"exponential_characteristic_energy\": 50000,\n  \"exponential_starting_energy\": 50000,\n  \"proton_energy_flux\": 0,\n  \"proton_characteristic_energy\": 10000,\n  \"d_region\": false,\n  \"nrlmsis_model_version\": \"2.0\",\n  \"oxygen_correction_factor\": 1,\n  \"timescale_auroral\": 600,\n  \"timescale_transport\": 600,\n  \"custom_spectrum\": {\n    \"energy\": [],\n    \"flux\": []\n  },\n  \"custom_neutral_profile\": {\n    \"altitude\": [],\n    \"o_density\": [],\n    \"o2_density\": [],\n    \"n2_density\": [],\n    \"n_density\": [],\n    \"no_density\": [],\n    \"temperature\": []\n  },\n  \"output\": {\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"height_integrated_rayleighs_1304\": false,\n    \"height_integrated_rayleighs_1356\": false,\n    \"height_integrated_rayleighs_smile_uvi_lbh\": false,\n    \"altitudes\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"emission_1304\": false,\n    \"emission_1356\": false,\n    \"emission_smile_uvi_lbh\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pedersen_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false,\n    \"production_rate_o2plus\": false,\n    \"production_rate_oplus\": false,\n    \"production_rate_oneg\": false,\n    \"production_rate_o\": false,\n    \"production_rate_nplus\": false,\n    \"production_rate_n2plus\": false,\n    \"production_rate_n\": false,\n    \"production_rate_n2d\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9924132f-1e25-429f-9884-6a82719f4bbc",
+              "name": "Data generation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "atm",
+                    "forward"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"timestamp\": \"2024-01-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"maxwellian_energy_flux\": 10,\n  \"maxwellian_characteristic_energy\": 5000,\n  \"gaussian_energy_flux\": 0,\n  \"gaussian_peak_energy\": 1000,\n  \"gaussian_spectral_width\": 100,\n  \"kappa_energy_flux\": 0,\n  \"kappa_mean_energy\": 30000,\n  \"kappa_k_index\": 5,\n  \"exponential_energy_flux\": 0,\n  \"exponential_characteristic_energy\": 50000,\n  \"exponential_starting_energy\": 50000,\n  \"proton_energy_flux\": 0,\n  \"proton_characteristic_energy\": 10000,\n  \"d_region\": false,\n  \"nrlmsis_model_version\": \"2.0\",\n  \"oxygen_correction_factor\": 1,\n  \"timescale_auroral\": 600,\n  \"timescale_transport\": 600,\n  \"custom_spectrum\": {\n    \"energy\": [],\n    \"flux\": []\n  },\n  \"custom_neutral_profile\": {\n    \"altitude\": [],\n    \"o_density\": [],\n    \"o2_density\": [],\n    \"n2_density\": [],\n    \"n_density\": [],\n    \"no_density\": [],\n    \"temperature\": []\n  },\n  \"output\": {\n    \"height_integrated_rayleighs_4278\": false,\n    \"height_integrated_rayleighs_5577\": false,\n    \"height_integrated_rayleighs_6300\": false,\n    \"height_integrated_rayleighs_8446\": false,\n    \"height_integrated_rayleighs_1304\": false,\n    \"height_integrated_rayleighs_1356\": false,\n    \"height_integrated_rayleighs_smile_uvi_lbh\": false,\n    \"altitudes\": false,\n    \"emission_4278\": false,\n    \"emission_5577\": false,\n    \"emission_6300\": false,\n    \"emission_8446\": false,\n    \"emission_1304\": false,\n    \"emission_1356\": false,\n    \"emission_smile_uvi_lbh\": false,\n    \"plasma_electron_density\": false,\n    \"plasma_o2plus_density\": false,\n    \"plasma_oplus_density\": false,\n    \"plasma_noplus_density\": false,\n    \"plasma_ionisation_rate\": false,\n    \"plasma_electron_temperature\": false,\n    \"plasma_ion_temperature\": false,\n    \"plasma_pedersen_conductivity\": false,\n    \"plasma_hall_conductivity\": false,\n    \"neutral_o2_density\": false,\n    \"neutral_o_density\": false,\n    \"neutral_n2_density\": false,\n    \"neutral_n_density\": false,\n    \"neutral_temperature\": false,\n    \"production_rate_o2plus\": false,\n    \"production_rate_oplus\": false,\n    \"production_rate_oneg\": false,\n    \"production_rate_o\": false,\n    \"production_rate_nplus\": false,\n    \"production_rate_n2plus\": false,\n    \"production_rate_n\": false,\n    \"production_rate_n2d\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "69b4b360-fe31-43de-9f1d-ff94cd4bf1c4",
+          "name": "Perform inverse ATM calculation",
+          "request": {
+            "name": "Perform inverse ATM calculation",
+            "description": {
+              "content": "Perform an inverse calculation using **VERSION 2** of the TREx Auroral Transport Model and the supplied \ninput parameters.\n\n**NOTE**: This version of the model no longer provides extended outputs which are derived when doing a \nsubsequent forward request after the inversion determines the energy flux. Instead, we leave this up\nto the user to perform the forward request using the parameters of their choosing. This was done to \nallow further customization of the forward requests which use inversion-derived inputs.\n\n**NOTE**: As of API version 1.38.0 (released 2025-09-10), the `characteristic_energy` output flag has been\ndeprecated. Please use `mean_energy` instead. The characteristic_energy flag will be removed in a later release\nto be determined.\n\nInput notes:\n  - By default requests are cached. Use the 'no_cache' parameter to disable this functionality\n  - Timestamp\n    - Timestamp is expected to be in UTC\n    - Only specific dates are valid at this time. A 400 error will be returned if an unsupported date is\n      requested. If you want to get a date that we have not enabled support for yet, please contact us.\n    - the 'Z' character at the end of the timestamp is optional, and will be ignored if it is supplied\n  - Latitude and longitude\n    - Expected to be in geodetic coordinates\n    - latitude is currently limited to >=50.0 and <71.5 degrees\n    - longitude is currently limited >=-160 and <-75 and degrees\n  - Units and defaults\n    - intensity_4278: Rayleighs, default is 1000.0\n    - intensity_5577: Rayleighs, default is 6000.0\n    - intensity_6300: Rayleighs, default is 600.0\n    - intensity_8446: Rayleighs, default is 400.0\n    - precipitation_flux_spectral_type: valid values are \"gaussian\" or \"maxwellian\", default is \"gaussian\"\n    - nrlmsis_model_version: valid values are \"00\" and \"2.0\", default is \"2.0\"\n  - Special logic keyword\n    - If you would like special logic to be used, the special_logic_keyword parameter can be set with \n      a unique keyword provided by UCalgary staff. This is meant as a way to enable support for certain \n      special use-cases.\n\nOutput notes:\n  - output parameter of the request are toggles the enable/disable each field's inclusion in the response\n  - all output parameters are false by default\n  - altitude is in kilometers\n  - energy flux: erg/cm2/s\n  - mean energy: eV",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "atm",
+                "inverse"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"timestamp\": \"<dateTime>\",\n  \"geodetic_latitude\": \"<number>\",\n  \"geodetic_longitude\": \"<number>\",\n  \"intensity_4278\": 1000,\n  \"intensity_5577\": 6000,\n  \"intensity_6300\": 600,\n  \"intensity_8446\": 400,\n  \"precipitation_flux_spectral_type\": \"gaussian\",\n  \"nrlmsis_model_version\": \"2.0\",\n  \"special_logic_keyword\": \"not_applicable\",\n  \"output\": {\n    \"energy_flux\": false,\n    \"mean_energy\": false,\n    \"characteristic_energy\": false,\n    \"oxygen_correction_factor\": false\n  },\n  \"no_cache\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e23d6745-a6c3-4d17-8374-86c47cab2889",
+              "name": "Calculated outputs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "atm",
+                    "inverse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"atm_model_version\": \"1.0\",\n  \"timestamp\": \"2024-10-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"intensity_4278\": 1000,\n  \"intensity_5577\": 6000,\n  \"intensity_6300\": 600,\n  \"intensity_8446\": 400,\n  \"precipitation_flux_spectral_type\": \"gaussian\",\n  \"nrlmsis_model_version\": \"2.0\",\n  \"special_logic_keyword\": \"not_applicable\",\n  \"output\": {\n    \"altitudes\": false,\n    \"energy_flux\": false,\n    \"mean_energy\": false,\n    \"oxygen_correction_factor\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"energy_flux\": 4509.818371589163,\n    \"mean_energy\": 2822.6557140573527,\n    \"characteristic_energy\": 6453.4718156917925,\n    \"oxygen_correction_factor\": 5747.277997580185\n  },\n  \"request\": {\n    \"timestamp\": \"<dateTime>\",\n    \"geodetic_latitude\": \"<number>\",\n    \"geodetic_longitude\": \"<number>\",\n    \"intensity_4278\": 1000,\n    \"intensity_5577\": 6000,\n    \"intensity_6300\": 600,\n    \"intensity_8446\": 400,\n    \"precipitation_flux_spectral_type\": \"gaussian\",\n    \"nrlmsis_model_version\": \"2.0\",\n    \"special_logic_keyword\": \"not_applicable\",\n    \"output\": {\n      \"energy_flux\": false,\n      \"mean_energy\": false,\n      \"characteristic_energy\": false,\n      \"oxygen_correction_factor\": false\n    },\n    \"no_cache\": false\n  },\n  \"calculation_duration_ms\": 6921.949202972394\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aaa86c18-90ec-4d6f-9a38-852b3ccc41f2",
+              "name": "Problematic request made",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "atm",
+                    "inverse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"atm_model_version\": \"1.0\",\n  \"timestamp\": \"2024-10-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"intensity_4278\": 1000,\n  \"intensity_5577\": 6000,\n  \"intensity_6300\": 600,\n  \"intensity_8446\": 400,\n  \"precipitation_flux_spectral_type\": \"gaussian\",\n  \"nrlmsis_model_version\": \"2.0\",\n  \"special_logic_keyword\": \"not_applicable\",\n  \"output\": {\n    \"altitudes\": false,\n    \"energy_flux\": false,\n    \"mean_energy\": false,\n    \"oxygen_correction_factor\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f129e490-74cf-400e-b50c-f50b5fb1263e",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "atm",
+                    "inverse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"atm_model_version\": \"1.0\",\n  \"timestamp\": \"2024-10-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"intensity_4278\": 1000,\n  \"intensity_5577\": 6000,\n  \"intensity_6300\": 600,\n  \"intensity_8446\": 400,\n  \"precipitation_flux_spectral_type\": \"gaussian\",\n  \"nrlmsis_model_version\": \"2.0\",\n  \"special_logic_keyword\": \"not_applicable\",\n  \"output\": {\n    \"altitudes\": false,\n    \"energy_flux\": false,\n    \"mean_energy\": false,\n    \"oxygen_correction_factor\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "42366ab6-b0d6-4dcc-9a6e-6d368bf6af7c",
+              "name": "Data generation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "atm",
+                    "inverse"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"atm_model_version\": \"1.0\",\n  \"timestamp\": \"2024-10-01T06:00:00\",\n  \"geodetic_latitude\": 0,\n  \"geodetic_longitude\": 0,\n  \"intensity_4278\": 1000,\n  \"intensity_5577\": 6000,\n  \"intensity_6300\": 600,\n  \"intensity_8446\": 400,\n  \"precipitation_flux_spectral_type\": \"gaussian\",\n  \"nrlmsis_model_version\": \"2.0\",\n  \"special_logic_keyword\": \"not_applicable\",\n  \"output\": {\n    \"altitudes\": false,\n    \"energy_flux\": false,\n    \"mean_energy\": false,\n    \"oxygen_correction_factor\": false\n  },\n  \"no_cache\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.aurorax.space",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a7cbcd2d-1ca6-4695-af45-bffcbf9eb866",
+    "name": "AuroraX Application.wadl Auroral Transport Model (ATM) API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n",
+      "type": "text/plain"
+    }
+  }
+}

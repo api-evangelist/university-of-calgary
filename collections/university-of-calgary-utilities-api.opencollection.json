@@ -1,0 +1,89 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AuroraX Application.wadl Utilities API",
+    "version": "stable"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Utilities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve terminator coordinates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/utils/terminator",
+            "params": [
+              {
+                "name": "timestamp",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "angle",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "no_cache",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve coordinates for the terminator. \n\nThe timestamp parameter should be supplied in the format \"YYYY-MM-DDTHH:mm:ss\". \nUTC is the expected timezone.\n\nThe angle parameter is used for retrieving the terminator for civil, nautical, \nor astronomical twilight. Use the values -6.0, -12.0, or -18.0 for each of these \nterminators, respectively.\n\nNotes:\n  - The algorithm does not account for altitude at this time\n  - By default requests are cached. Use the 'no_cache' parameter to disable this functi"
+        },
+        {
+          "info": {
+            "name": "Retrieve geomagnetic coordinate grid",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/utils/magnetic_grid",
+            "params": [
+              {
+                "name": "timestamp",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "resolution_lon",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "resolution_lat",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "min_latitude",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "altitude_km",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "no_cache",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a geomagnetic coordinate grid for a given timestamp.\n\nThe timestamp parameter should be supplied in the format \"YYYY-MM-DDTHH:mm:ss\". \nUTC is the expected timezone.\n\nThe grid consists of meridian lines (constant magnetic longitude, \"vertical\") and parallel lines\n(constant magnetic latitude, \"horizontal\") for both northern and southern hemispheres.\n\nNotes\n  - The resolution_lon and resolution_lat parameters control the spacing (in degrees) between\nmagnetic longitude and latitude lines, r"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

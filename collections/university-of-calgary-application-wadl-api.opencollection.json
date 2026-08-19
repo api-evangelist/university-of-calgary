@@ -1,0 +1,45 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AuroraX Application.wadl API",
+    "version": "stable"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Application.wadl",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "getExternalGrammar",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/application.wadl/:path",
+            "params": [
+              {
+                "name": "path",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          }
+        },
+        {
+          "info": {
+            "name": "getWadl",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/application.wadl"
+          }
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

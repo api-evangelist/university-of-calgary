@@ -1,0 +1,167 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AuroraX Application.wadl Operations - SITL API",
+    "version": "stable"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Operations - SITL",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve ARCTICS SITL data products",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/ops/sitl/arctics/data_products",
+            "params": [
+              {
+                "name": "date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "site_uid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "device_uid",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve ARCTICS SITL data products"
+        },
+        {
+          "info": {
+            "name": "Retrieve timeframes to keep ARCTICS data for",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/ops/sitl/arctics/keep_times",
+            "params": [
+              {
+                "name": "start",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "site_uid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "device_uid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "instrument_uid",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve timeframes to keep ARCTICS data for"
+        },
+        {
+          "info": {
+            "name": "Upload a timeframe to keep ARCTICS data for",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/ops/sitl/arctics/keep_times",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upload a timeframe to keep ARCTICS data for."
+        },
+        {
+          "info": {
+            "name": "Delete a timeframe to keep ARCTICS data for",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.aurorax.space/api/v1/ops/sitl/arctics/keep_times",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete a timeframe to keep ARCTICS data for."
+        },
+        {
+          "info": {
+            "name": "Retrieve SITL log events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/ops/sitl/logging",
+            "params": [
+              {
+                "name": "start",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "category",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "level",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve SITL log messages.\n\nNotes:\n  - ordering key is 'timestamp'\n  - if level parameter is not supplied, it will return log messages from all levels"
+        },
+        {
+          "info": {
+            "name": "Upload a SITL log event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/ops/sitl/logging",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Upload a SITL log message.\n\nNotes:\n  - Possible values for category: arctics, trex_rgb_burst\n  - Possible values for level: debug, info, warning, error"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

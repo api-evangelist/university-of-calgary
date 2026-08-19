@@ -1,0 +1,1344 @@
+{
+  "item": [
+    {
+      "id": "1fdf43f5-7d42-4c4b-b6f9-af48a0c2cd19",
+      "name": "Ephemeris Search",
+      "description": {
+        "content": "Search ephemeris records",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8bbacec2-d91f-49c0-9407-02f2e40b41c5",
+          "name": "Get the ephemeris search request details",
+          "request": {
+            "name": "Get the ephemeris search request details",
+            "description": {
+              "content": "This endpoint is anonymous. The request ID can be shared with anyone.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ephemeris",
+                "requests",
+                ":request_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "91823116-5f69-4da5-bccd-aa44a9642340",
+              "name": "The request details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"search_request\": {\n    \"request_id\": \"string\",\n    \"query\": \"string\",\n    \"requested\": \"1969-01-04T23:30:44.006Z\",\n    \"request_type\": \"conjunction\"\n  },\n  \"logs\": [\n    {\n      \"timestamp\": \"1982-01-01T06:09:28.913Z\",\n      \"level\": \"error\",\n      \"summary\": \"string\"\n    },\n    {\n      \"timestamp\": \"2018-04-19T22:04:29.062Z\",\n      \"level\": \"warn\",\n      \"summary\": \"string\"\n    }\n  ],\n  \"search_result\": {\n    \"data_uri\": \"string\",\n    \"result_count\": 9912,\n    \"result_file_deleted_timestamp\": \"1997-05-04T00:35:32.435Z\",\n    \"file_size\": 94,\n    \"completed_timestamp\": \"1992-06-13T22:48:11.249Z\",\n    \"query_duration\": 7965,\n    \"error_condition\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "706b55e5-3ef6-48c1-9a74-57244bf68f3c",
+              "name": "No request with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"ApplicationError\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0302b49e-733b-443e-83ff-36b7115bf8b2",
+          "name": "Cancel the ephemeris search request",
+          "request": {
+            "name": "Cancel the ephemeris search request",
+            "description": {
+              "content": "Attempts to cancel the search request. The system will log an error against the request noting the cancellation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ephemeris",
+                "requests",
+                ":request_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "27c9740f-188d-452a-b212-c924e84eaba5",
+              "name": "The request details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"search_request\": {\n    \"request_id\": \"string\",\n    \"query\": \"string\",\n    \"requested\": \"1992-05-29T21:14:41.080Z\",\n    \"request_type\": \"conjunction\"\n  },\n  \"logs\": [\n    {\n      \"timestamp\": \"2018-12-11T12:37:30.885Z\",\n      \"level\": \"debug\",\n      \"summary\": \"string\"\n    },\n    {\n      \"timestamp\": \"1965-03-22T19:55:55.961Z\",\n      \"level\": \"debug\",\n      \"summary\": \"string\"\n    }\n  ],\n  \"search_result\": {\n    \"data_uri\": \"string\",\n    \"result_count\": 489,\n    \"result_file_deleted_timestamp\": \"1974-03-03T14:51:25.995Z\",\n    \"file_size\": 7270,\n    \"completed_timestamp\": \"1999-01-13T03:26:23.762Z\",\n    \"query_duration\": 5405,\n    \"error_condition\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "56f9de6c-906b-44b6-8813-a81768b17390",
+              "name": "Request did not contain a request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"ApplicationError\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6d9357b7-c732-4ff6-8c7a-4453b12d65b5",
+              "name": "No request with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"ApplicationError\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "73a96e67-58f2-4b37-af83-5f2e439f7a43",
+          "name": "Get the ephemeris search result data",
+          "request": {
+            "name": "Get the ephemeris search result data",
+            "description": {
+              "content": "Get the data returned by the given search request. If the data has expired, then 404 will be returned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ephemeris",
+                "requests",
+                ":request_id",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "data_source_record_format",
+                  "value": "<string>",
+                  "description": "Control which epehermis source data is returned. Default is basic."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "887d2ad1-9901-4cb2-832a-9ef6a4b6b4d1",
+              "name": "Get the search result data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "data_source_record_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"ground\",\n      \"identifier\": 472,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"2021-04-23T09:51:06.323Z\",\n        \"latest_ephemeris_loaded\": \"1962-01-06T04:36:00.636Z\",\n        \"ephemeris_count\": 759,\n        \"earliest_data_product_loaded\": \"1993-10-07T23:56:03.047Z\",\n        \"latest_data_product_loaded\": \"1955-06-21T21:46:03.842Z\",\n        \"data_product_count\": 9329\n      },\n      \"metadata\": {}\n    },\n    \"epoch\": \"2020-10-06T09:57:50.575Z\",\n    \"location_geo\": {\n      \"lat\": -50.920931929458334,\n      \"lon\": -20.91745540556593\n    },\n    \"location_gsm\": {\n      \"lat\": 42.94202668521382,\n      \"lon\": -147.34688011463214\n    },\n    \"nbtrace\": {\n      \"lat\": 73.52716358710526,\n      \"lon\": 163.47123921612177\n    },\n    \"sbtrace\": {\n      \"lat\": -0.9576185773488959,\n      \"lon\": -14.232832157952288\n    },\n    \"metadata\": \"string\"\n  },\n  {\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"leo\",\n      \"identifier\": 6674,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1966-01-25T22:19:45.300Z\",\n        \"latest_ephemeris_loaded\": \"2001-02-15T03:51:57.874Z\",\n        \"ephemeris_count\": 5513,\n        \"earliest_data_product_loaded\": \"1984-06-08T11:36:29.431Z\",\n        \"latest_data_product_loaded\": \"2020-08-31T01:12:26.181Z\",\n        \"data_product_count\": 4569\n      },\n      \"metadata\": {}\n    },\n    \"epoch\": \"2009-09-09T05:29:02.449Z\",\n    \"location_geo\": {\n      \"lat\": -87.69686863767384,\n      \"lon\": 59.31351507666079\n    },\n    \"location_gsm\": {\n      \"lat\": 6.570221337101302,\n      \"lon\": -153.88328540693348\n    },\n    \"nbtrace\": {\n      \"lat\": 58.14928413298995,\n      \"lon\": -39.63052608839507\n    },\n    \"sbtrace\": {\n      \"lat\": 15.867055754676088,\n      \"lon\": 2.199319744295508\n    },\n    \"metadata\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "598506e1-e667-414e-87f4-4f51c9f4ce8f",
+              "name": "Bad request. Please fix the request and try again.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "data_source_record_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"ApplicationError\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93c2e112-313e-42eb-84c9-c78d175e683d",
+              "name": "No request with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "data_source_record_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"ApplicationError\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1c0cdfcc-3392-4217-a7a9-13fd0e457fed",
+          "name": "Get the ephemeris search result data",
+          "request": {
+            "name": "Get the ephemeris search result data",
+            "description": {
+              "content": "Get the data returned by the given search request. If the data has expired, then 404 will be returned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ephemeris",
+                "requests",
+                ":request_id",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data_source\": {\n    \"identifier\": \"<boolean>\",\n    \"program\": \"<boolean>\",\n    \"platform\": \"<boolean>\",\n    \"instrument_type\": \"<boolean>\",\n    \"source_type\": \"<boolean>\",\n    \"display_name\": \"<boolean>\",\n    \"ephemeris_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"data_product_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"owner\": \"<boolean>\",\n    \"maintainers\": \"<boolean>\",\n    \"metadata\": \"<boolean>\"\n  },\n  \"epoch\": \"<boolean>\",\n  \"location_geo\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"location_gsm\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"nbtrace\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"sbtrace\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"metadata\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "044644b7-ddaf-4f79-8dd2-e9e504c20346",
+              "name": "Get the search result data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data_source\": {\n    \"identifier\": \"<boolean>\",\n    \"program\": \"<boolean>\",\n    \"platform\": \"<boolean>\",\n    \"instrument_type\": \"<boolean>\",\n    \"source_type\": \"<boolean>\",\n    \"display_name\": \"<boolean>\",\n    \"ephemeris_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"data_product_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"owner\": \"<boolean>\",\n    \"maintainers\": \"<boolean>\",\n    \"metadata\": \"<boolean>\"\n  },\n  \"epoch\": \"<boolean>\",\n  \"location_geo\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"location_gsm\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"nbtrace\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"sbtrace\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"metadata\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"not_applicable\",\n      \"identifier\": 5804,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"2012-10-29T20:12:24.968Z\",\n        \"latest_ephemeris_loaded\": \"1984-01-28T22:52:53.495Z\",\n        \"ephemeris_count\": 726,\n        \"earliest_data_product_loaded\": \"2025-06-11T23:04:09.553Z\",\n        \"latest_data_product_loaded\": \"1950-04-20T05:20:28.613Z\",\n        \"data_product_count\": 6872\n      },\n      \"metadata\": {}\n    },\n    \"epoch\": \"1970-01-15T13:18:28.929Z\",\n    \"location_geo\": {\n      \"lat\": -28.61491178842703,\n      \"lon\": 160.8617077647529\n    },\n    \"location_gsm\": {\n      \"lat\": 10.028069821510897,\n      \"lon\": 26.58351233746842\n    },\n    \"nbtrace\": {\n      \"lat\": 42.69312070752696,\n      \"lon\": -108.33448564348667\n    },\n    \"sbtrace\": {\n      \"lat\": 6.373310893944691,\n      \"lon\": -135.6753486326882\n    },\n    \"metadata\": \"string\"\n  },\n  {\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"heo\",\n      \"identifier\": 8086,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1951-11-08T04:23:44.823Z\",\n        \"latest_ephemeris_loaded\": \"1988-04-23T21:32:54.521Z\",\n        \"ephemeris_count\": 3358,\n        \"earliest_data_product_loaded\": \"2007-04-29T13:07:45.446Z\",\n        \"latest_data_product_loaded\": \"1951-01-30T18:59:17.750Z\",\n        \"data_product_count\": 1735\n      },\n      \"metadata\": {}\n    },\n    \"epoch\": \"2001-08-01T05:21:08.148Z\",\n    \"location_geo\": {\n      \"lat\": 27.276881404095747,\n      \"lon\": 145.8122732840252\n    },\n    \"location_gsm\": {\n      \"lat\": -73.5856210754285,\n      \"lon\": 130.54225475716305\n    },\n    \"nbtrace\": {\n      \"lat\": -72.43067316190478,\n      \"lon\": -131.11429049743896\n    },\n    \"sbtrace\": {\n      \"lat\": -63.48075137573191,\n      \"lon\": -85.055818810019\n    },\n    \"metadata\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d383cea3-b8ee-456c-bf87-bf5f130c0c52",
+              "name": "There is an error in the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data_source\": {\n    \"identifier\": \"<boolean>\",\n    \"program\": \"<boolean>\",\n    \"platform\": \"<boolean>\",\n    \"instrument_type\": \"<boolean>\",\n    \"source_type\": \"<boolean>\",\n    \"display_name\": \"<boolean>\",\n    \"ephemeris_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"data_product_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"owner\": \"<boolean>\",\n    \"maintainers\": \"<boolean>\",\n    \"metadata\": \"<boolean>\"\n  },\n  \"epoch\": \"<boolean>\",\n  \"location_geo\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"location_gsm\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"nbtrace\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"sbtrace\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"metadata\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"ApplicationError\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "adfa96fe-cc96-4d25-9cc3-3e37439a1d64",
+              "name": "No request with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data_source\": {\n    \"identifier\": \"<boolean>\",\n    \"program\": \"<boolean>\",\n    \"platform\": \"<boolean>\",\n    \"instrument_type\": \"<boolean>\",\n    \"source_type\": \"<boolean>\",\n    \"display_name\": \"<boolean>\",\n    \"ephemeris_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"data_product_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"owner\": \"<boolean>\",\n    \"maintainers\": \"<boolean>\",\n    \"metadata\": \"<boolean>\"\n  },\n  \"epoch\": \"<boolean>\",\n  \"location_geo\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"location_gsm\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"nbtrace\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"sbtrace\": {\n    \"lat\": \"<boolean>\",\n    \"lon\": \"<boolean>\"\n  },\n  \"metadata\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"ApplicationError\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3ccc05ec-b79b-4ebe-b06a-30f3c3e576c6",
+          "name": "Delete a search result data file.",
+          "request": {
+            "name": "Delete a search result data file.",
+            "description": {
+              "content": "Deletes the data file containing the search results. If this search is run in the future, the query will re-create the data file.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ephemeris",
+                "requests",
+                ":request_id",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1ce8f5f3-22ba-421c-b842-40457d060cf4",
+              "name": "The request details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"search_request\": {\n    \"request_id\": \"string\",\n    \"query\": \"string\",\n    \"requested\": \"1992-05-29T21:14:41.080Z\",\n    \"request_type\": \"conjunction\"\n  },\n  \"logs\": [\n    {\n      \"timestamp\": \"2018-12-11T12:37:30.885Z\",\n      \"level\": \"debug\",\n      \"summary\": \"string\"\n    },\n    {\n      \"timestamp\": \"1965-03-22T19:55:55.961Z\",\n      \"level\": \"debug\",\n      \"summary\": \"string\"\n    }\n  ],\n  \"search_result\": {\n    \"data_uri\": \"string\",\n    \"result_count\": 489,\n    \"result_file_deleted_timestamp\": \"1974-03-03T14:51:25.995Z\",\n    \"file_size\": 7270,\n    \"completed_timestamp\": \"1999-01-13T03:26:23.762Z\",\n    \"query_duration\": 5405,\n    \"error_condition\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5197bd5c-e907-4a02-bfb2-a8aa370009cf",
+              "name": "Request did not contain a request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"ApplicationError\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6960b3c1-2554-4cea-92fb-01cb1a44044e",
+              "name": "No request found with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"ApplicationError\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e2cb3c36-c17d-4f6e-8446-3490e2d523a8",
+          "name": "Search for ephemeris",
+          "request": {
+            "name": "Search for ephemeris",
+            "description": {
+              "content": "Anonymous unless logged in. Just like a conjunction search, but contains one side of the query. Used to search  for particular ephemeris data of one or more Data Sources. Maximum time span returned is 1 month. Must provide at least one filter parameter. \n ** If you are logged in, your search will be private to only you, otherwise it is public **\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ephemeris",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data_sources\": {\n    \"programs\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"platforms\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"instrument_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"ephemeris_metadata_filters\": {\n      \"logical_operator\": \"<string>\",\n      \"expressions\": [\n        {\n          \"key\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"key\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ]\n    }\n  },\n  \"request_id\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "490f3f40-de65-4a8e-9868-b743217c331f",
+              "name": "The search request was accepted. See the location header for the status of the search request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data_sources\": {\n    \"programs\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"platforms\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"instrument_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"ephemeris_metadata_filters\": {\n      \"logical_operator\": \"<string>\",\n      \"expressions\": [\n        {\n          \"key\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"key\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ]\n    }\n  },\n  \"request_id\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f9da4137-bda4-4993-b6e4-2db389c894be",
+              "name": "Missing or invalid parameters.\n\nPlease refer to the documentation for correctness of this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data_sources\": {\n    \"programs\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"platforms\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"instrument_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"ephemeris_metadata_filters\": {\n      \"logical_operator\": \"<string>\",\n      \"expressions\": [\n        {\n          \"key\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"key\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ]\n    }\n  },\n  \"request_id\": \"<string>\",\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"ApplicationError\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1c317553-feb0-40d3-a4b4-bd85135e9a41",
+          "name": "Synchronously search for ephemeris",
+          "request": {
+            "name": "Synchronously search for ephemeris",
+            "description": {
+              "content": "Anonymous unless logged in. The same search functionality as asynchronous search, except it is synchronous. Because of the synchronous nature, the maximum time frame is significantly reduced to a maximum of two days. These requests are not saved, even if you are logged in.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ephemeris",
+                "search_synchronous"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "data_source_record_format",
+                  "value": "<string>",
+                  "description": "Control how the epehermis data source is returned. Default is basic. This option will be used if the advanced format is not present in the request body."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": {\n    \"data_sources\": {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"values\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"key\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"values\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    },\n    \"request_id\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"response_format\": {\n    \"data_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"epoch\": \"<boolean>\",\n    \"location_geo\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"metadata\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "57061740-402a-48b7-96e4-07700f730808",
+              "name": "List of ephemeris",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "search_synchronous"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "data_source_record_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": {\n    \"data_sources\": {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"values\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"key\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"values\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    },\n    \"request_id\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"response_format\": {\n    \"data_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"epoch\": \"<boolean>\",\n    \"location_geo\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"metadata\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"not_applicable\",\n      \"identifier\": 5804,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"2012-10-29T20:12:24.968Z\",\n        \"latest_ephemeris_loaded\": \"1984-01-28T22:52:53.495Z\",\n        \"ephemeris_count\": 726,\n        \"earliest_data_product_loaded\": \"2025-06-11T23:04:09.553Z\",\n        \"latest_data_product_loaded\": \"1950-04-20T05:20:28.613Z\",\n        \"data_product_count\": 6872\n      },\n      \"metadata\": {}\n    },\n    \"epoch\": \"1970-01-15T13:18:28.929Z\",\n    \"location_geo\": {\n      \"lat\": -28.61491178842703,\n      \"lon\": 160.8617077647529\n    },\n    \"location_gsm\": {\n      \"lat\": 10.028069821510897,\n      \"lon\": 26.58351233746842\n    },\n    \"nbtrace\": {\n      \"lat\": 42.69312070752696,\n      \"lon\": -108.33448564348667\n    },\n    \"sbtrace\": {\n      \"lat\": 6.373310893944691,\n      \"lon\": -135.6753486326882\n    },\n    \"metadata\": \"string\"\n  },\n  {\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"heo\",\n      \"identifier\": 8086,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1951-11-08T04:23:44.823Z\",\n        \"latest_ephemeris_loaded\": \"1988-04-23T21:32:54.521Z\",\n        \"ephemeris_count\": 3358,\n        \"earliest_data_product_loaded\": \"2007-04-29T13:07:45.446Z\",\n        \"latest_data_product_loaded\": \"1951-01-30T18:59:17.750Z\",\n        \"data_product_count\": 1735\n      },\n      \"metadata\": {}\n    },\n    \"epoch\": \"2001-08-01T05:21:08.148Z\",\n    \"location_geo\": {\n      \"lat\": 27.276881404095747,\n      \"lon\": 145.8122732840252\n    },\n    \"location_gsm\": {\n      \"lat\": -73.5856210754285,\n      \"lon\": 130.54225475716305\n    },\n    \"nbtrace\": {\n      \"lat\": -72.43067316190478,\n      \"lon\": -131.11429049743896\n    },\n    \"sbtrace\": {\n      \"lat\": -63.48075137573191,\n      \"lon\": -85.055818810019\n    },\n    \"metadata\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "73ff4543-57db-46b9-879e-89c599d73dbc",
+              "name": "Missing or invalid parameters.\n\nPlease refer to the documentation for correctness of this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "search_synchronous"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "data_source_record_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": {\n    \"data_sources\": {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"values\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"key\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"values\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    },\n    \"request_id\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"response_format\": {\n    \"data_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"epoch\": \"<boolean>\",\n    \"location_geo\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"metadata\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"ApplicationError\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "359b40cc-b6b0-46a9-910e-213c52208868",
+              "name": "There was an application error. Please contact support.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ephemeris",
+                    "search_synchronous"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "data_source_record_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": {\n    \"data_sources\": {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"values\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"key\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"values\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    },\n    \"request_id\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"response_format\": {\n    \"data_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"epoch\": \"<boolean>\",\n    \"location_geo\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<boolean>\",\n      \"lon\": \"<boolean>\"\n    },\n    \"metadata\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"ApplicationError\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.aurorax.space",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b150487b-0e21-4678-bf66-da2e05affd6a",
+    "name": "AuroraX Application.wadl Ephemeris Search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n",
+      "type": "text/plain"
+    }
+  }
+}

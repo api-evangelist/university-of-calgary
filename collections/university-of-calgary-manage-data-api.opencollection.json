@@ -1,0 +1,178 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AuroraX Application.wadl Manage Data API",
+    "version": "stable"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Manage Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add a data product",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/data_sources/:identifier/data_products",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The identifier specified in the Data Source record"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-aurorax-api-key",
+              "value": "{{x-aurorax-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Adds one or more Data Product records to the set of Data Products for this Data Source record. Must be an Administrator, Owner of this Data Source or have been assigned Maintainer of this Data Source.\n\nThis end-point will accept very large files or continuous streams containing data product records. Data is processed asynchronously."
+        },
+        {
+          "info": {
+            "name": "Deletes a Data Product record",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.aurorax.space/api/v1/data_sources/:identifier/data_products",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the Data Source"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-aurorax-api-key",
+              "value": "{{x-aurorax-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "*Must be the Data Source Maintainer, Owner, or have Administrator access in order to perform this operation* \n\n*Must be authenticated*"
+        },
+        {
+          "info": {
+            "name": "Add ephemeris data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/data_sources/:identifier/ephemeris",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The identifier specified in the Data Source record"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-aurorax-api-key",
+              "value": "{{x-aurorax-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Adds data to the set of Ephemeris for this Data Source record. Must be an Administrator, Owner of this Data Source or have been assigned Maintainer of this Data Source.\n\nThis end-point will accept very large files or continuous streams containing Ephemeris data. Data is processed asynchronously."
+        },
+        {
+          "info": {
+            "name": "Delete a range of Ephemeris records. This interface is asynchronous.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.aurorax.space/api/v1/data_sources/:identifier/ephemeris",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the Data Source"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-aurorax-api-key",
+              "value": "{{x-aurorax-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "*Must be the Data Source Maintainer, Owner, or have Administrator access in order to perform this operation* \n\n*Must be authenticated*"
+        },
+        {
+          "info": {
+            "name": "Get a recent (within 1 hour) delete job details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/data_sources/:identifier/ephemeris/delete_jobs/:delete_job_id",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the Data Source"
+              },
+              {
+                "name": "delete_job_id",
+                "value": "",
+                "type": "path",
+                "description": "The delete job identifier"
+              }
+            ]
+          },
+          "docs": "Get a recent (within 1 hour) delete job details"
+        },
+        {
+          "info": {
+            "name": "List recent (within 1 hour) delete jobs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/data_sources/:identifier/ephemeris/delete_jobs",
+            "params": [
+              {
+                "name": "identifier",
+                "value": "",
+                "type": "path",
+                "description": "The identifier of the Data Source"
+              }
+            ]
+          },
+          "docs": "List recent (within 1 hour) delete jobs"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

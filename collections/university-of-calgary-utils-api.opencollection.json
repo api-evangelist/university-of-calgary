@@ -1,0 +1,206 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AuroraX Application.wadl Utils API",
+    "version": "stable"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Utils",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Given a timestamp in ISO format and a timezone, return the UTC equivelant",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/utils/timezones/convert",
+            "params": [
+              {
+                "name": "ts",
+                "value": "",
+                "type": "query",
+                "description": "The timestamp"
+              },
+              {
+                "name": "tz",
+                "value": "",
+                "type": "query",
+                "description": "The timezone ts is in"
+              }
+            ]
+          },
+          "docs": "This is the same operation for Citizen Science timestamps that are provided, but allows for preview of the calculated value"
+        },
+        {
+          "info": {
+            "name": "Returns a count of cartesian products (tuples of data sources) of the given conjunction search object. This number is the combinations  simple conjunction tuples between each data source found through the criteria block",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/utils/describe/cartesian_products",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns a count of cartesian products (tuples of data sources) of the given conjunction search object. This number is the combinations  simple conjunction tuples between each data source found through the criteria block"
+        },
+        {
+          "info": {
+            "name": "Delete a search request",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.aurorax.space/api/v1/utils/admin/search_requests/:request_id",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The search request ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-aurorax-api-key",
+              "value": "{{x-aurorax-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes this search request and all associated data. \n\n*Must be authenticated*"
+        },
+        {
+          "info": {
+            "name": "List search summaries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/utils/admin/search_requests",
+            "params": [
+              {
+                "name": "active",
+                "value": "",
+                "type": "query",
+                "description": "Filter by active. True: active only, false: completed only, omit: both"
+              },
+              {
+                "name": "search_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Search Type. Omit: all"
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "Filter by start. Later than or equal if provided or omit for all before end"
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query",
+                "description": "Filter by end. Earlier than or equal if provided or omit for all before start"
+              },
+              {
+                "name": "file_size",
+                "value": "",
+                "type": "query",
+                "description": "Filter by file size. Greater than or equal if provided or omit for all file sizes (kilobytes). Overrides active to be false."
+              },
+              {
+                "name": "result_count",
+                "value": "",
+                "type": "query",
+                "description": "Filter by result count. Greater than or equal if provided or omit for all result counts. Overrides active to be false."
+              },
+              {
+                "name": "query_duration",
+                "value": "",
+                "type": "query",
+                "description": "Filter by query duration (millis). Greater than or equal if provided or omit for any duration"
+              },
+              {
+                "name": "error_condition",
+                "value": "",
+                "type": "query",
+                "description": "Filter by queries with an error condition. Ignored if filtering for active queries. True: must have error, false: must not have error, omit: both"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-aurorax-api-key",
+              "value": "{{x-aurorax-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List searches, optionally filtering by: active, type (ephemeris, data_product, conjunction), between start/end, file_size >=, result_count >=, query_duration >=, has error_condition \n\n*Must be authenticated*"
+        },
+        {
+          "info": {
+            "name": "List available time zones",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/utils/timezones"
+          },
+          "docs": "List available time zones. These should be standard from the TZ Database. In javascript, it is possible to use Intl.supportedValuesOf('timeZone') for valid values."
+        },
+        {
+          "info": {
+            "name": "Parses the query into an 'SQL like' query expression",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/utils/describe/query/conjunction",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Parses the query into an 'SQL like' query expression"
+        },
+        {
+          "info": {
+            "name": "Parses the query into an 'SQL like' query expression",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/utils/describe/query/data_products",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Parses the query into an 'SQL like' query expression"
+        },
+        {
+          "info": {
+            "name": "Parses the query into an 'SQL like' query expression",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/utils/describe/query/ephemeris",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Parses the query into an 'SQL like' query expression"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

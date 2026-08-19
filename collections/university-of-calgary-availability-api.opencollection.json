@@ -1,0 +1,158 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AuroraX Application.wadl Availability API",
+    "version": "stable"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Availability",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the data_product availability for all Data Sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/availability/data_products",
+            "params": [
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "Start date (default to Jan 1 of this year"
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query",
+                "description": "End date (default to start + 12 months or today + 1 month if start not provided)"
+              },
+              {
+                "name": "program",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Program"
+              },
+              {
+                "name": "platform",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Platform"
+              },
+              {
+                "name": "instrument_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Instrument Type"
+              },
+              {
+                "name": "source_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Source Type"
+              },
+              {
+                "name": "data_product_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Data Product Type"
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Owner"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "The format of the Data Source returned. Default is basic_info."
+              },
+              {
+                "name": "slow",
+                "value": "",
+                "type": "query",
+                "description": "Query the data directly (slower) for more accurate results. Default is false."
+              }
+            ]
+          },
+          "docs": "Returns a count of data by day for each data source. Provide query parameters to filter the results to just the sources you wish, in the time frames you wish"
+        },
+        {
+          "info": {
+            "name": "Get the ephemeris availability for all Data Sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/availability/ephemeris",
+            "params": [
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "Start date (default to Jan 1 of this year"
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query",
+                "description": "End date (default to start + 12 months or today + 1 month if start not provided)"
+              },
+              {
+                "name": "program",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Program"
+              },
+              {
+                "name": "platform",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Platform"
+              },
+              {
+                "name": "instrument_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Instrument Type"
+              },
+              {
+                "name": "source_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Source Type"
+              },
+              {
+                "name": "owner",
+                "value": "",
+                "type": "query",
+                "description": "Filter by Owner"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "The format of the Data Source returned. Default is basic_info."
+              },
+              {
+                "name": "slow",
+                "value": "",
+                "type": "query",
+                "description": "Query the data directly (slower) for more accurate results. Default is false."
+              }
+            ]
+          },
+          "docs": "Returns a count of data by day for each data source. Provide query parameters to filter the results to just the sources you wish, in the time frames you wish"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

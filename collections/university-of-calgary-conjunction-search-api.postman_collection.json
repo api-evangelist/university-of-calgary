@@ -1,0 +1,1085 @@
+{
+  "item": [
+    {
+      "id": "9f6ab4b2-ad0f-4169-95cf-0ec2e2378347",
+      "name": "Conjunction Search",
+      "description": {
+        "content": "Search for conjunctions between multiple sets of data sources",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4cd198c7-4f79-478e-8283-4e91d8eed877",
+          "name": "Get the conjunction search request details",
+          "request": {
+            "name": "Get the conjunction search request details",
+            "description": {
+              "content": "This endpoint is anonymous. The request ID can be shared with anyone.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "conjunctions",
+                "requests",
+                ":request_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7e3b2297-8787-4f81-9214-95a3b5ebac59",
+              "name": "The request details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"search_request\": {\n    \"request_id\": \"string\",\n    \"query\": \"string\",\n    \"requested\": \"2013-10-03T03:29:18.986Z\",\n    \"request_type\": \"data_product\"\n  },\n  \"logs\": [\n    {\n      \"timestamp\": \"1996-02-15T22:48:23.957Z\",\n      \"level\": \"info\",\n      \"summary\": \"string\"\n    },\n    {\n      \"timestamp\": \"2017-10-18T12:08:36.643Z\",\n      \"level\": \"info\",\n      \"summary\": \"string\"\n    }\n  ],\n  \"search_result\": {\n    \"data_uri\": \"string\",\n    \"result_count\": 9311,\n    \"result_file_deleted_timestamp\": \"2014-06-10T02:29:57.002Z\",\n    \"file_size\": 9101,\n    \"completed_timestamp\": \"1947-04-07T01:44:38.463Z\",\n    \"query_duration\": 4745,\n    \"error_condition\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eacc595c-55db-42fb-80f5-40a513db515f",
+              "name": "No request with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d31a5a48-4472-42e0-85d3-d92e797dc0d1",
+          "name": "Cancel the conjunction search request",
+          "request": {
+            "name": "Cancel the conjunction search request",
+            "description": {
+              "content": "Attempts to cancel the search request. If the request is already finished, attempts to delete  the associated data file. If the request could be cancledd, the log will contain an error against  the request noting the cancellation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "conjunctions",
+                "requests",
+                ":request_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ca77894a-bfae-4d69-b020-f4e512547b91",
+              "name": "The request details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"search_request\": {\n    \"request_id\": \"string\",\n    \"query\": \"string\",\n    \"requested\": \"1966-04-06T08:57:28.115Z\",\n    \"request_type\": \"data_product\"\n  },\n  \"logs\": [\n    {\n      \"timestamp\": \"2005-03-12T05:28:02.794Z\",\n      \"level\": \"warn\",\n      \"summary\": \"string\"\n    },\n    {\n      \"timestamp\": \"1987-07-30T20:29:27.345Z\",\n      \"level\": \"debug\",\n      \"summary\": \"string\"\n    }\n  ],\n  \"search_result\": {\n    \"data_uri\": \"string\",\n    \"result_count\": 2322,\n    \"result_file_deleted_timestamp\": \"1997-08-11T09:06:47.390Z\",\n    \"file_size\": 9256,\n    \"completed_timestamp\": \"1969-04-19T22:48:22.956Z\",\n    \"query_duration\": 911,\n    \"error_condition\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c84fa673-a288-47e7-b134-eb4585e3e681",
+              "name": "The search request finished and is no longer cancellable. The data file was deleted if it exists.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "bd2bd96e-27e7-4ddc-8c99-b01264dcb851",
+              "name": "Request did not contain a request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f7b156c-94b0-4ed1-ac35-e57b8384336a",
+              "name": "No request with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a81118b1-7ec3-45e5-aa49-e29c946a0745",
+          "name": "Get the conjunction search result data",
+          "request": {
+            "name": "Get the conjunction search result data",
+            "description": {
+              "content": "Anonymous endpoint. The request ID can be shared with anyone.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "conjunctions",
+                "requests",
+                ":request_id",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "generate_ephemeris_queries",
+                  "value": "<boolean>",
+                  "description": "Return generated ephemeris queries. Default is false."
+                },
+                {
+                  "disabled": false,
+                  "key": "data_source_record_format",
+                  "value": "<string>",
+                  "description": "Control which epehermis source data is returned. Default is basic."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8239d9e1-ef44-4da5-8b21-fef061398d8c",
+              "name": "Get the search result data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "generate_ephemeris_queries",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "data_source_record_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"conjunction_type\": \"geographic\",\n    \"e1_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"heo\",\n      \"identifier\": 5408,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1977-10-10T18:04:58.446Z\",\n        \"latest_ephemeris_loaded\": \"1994-08-05T16:35:38.297Z\",\n        \"ephemeris_count\": 9891,\n        \"earliest_data_product_loaded\": \"1977-08-13T23:23:03.502Z\",\n        \"latest_data_product_loaded\": \"2005-07-23T22:52:13.198Z\",\n        \"data_product_count\": 4599\n      },\n      \"metadata\": {}\n    },\n    \"e2_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"event_list\",\n      \"identifier\": 8419,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"2014-05-21T22:43:45.791Z\",\n        \"latest_ephemeris_loaded\": \"1966-08-02T18:05:07.989Z\",\n        \"ephemeris_count\": 6046,\n        \"earliest_data_product_loaded\": \"2013-11-22T16:50:58.430Z\",\n        \"latest_data_product_loaded\": \"1948-01-01T15:17:45.645Z\",\n        \"data_product_count\": 4940\n      },\n      \"metadata\": {}\n    },\n    \"start\": \"1965-12-15T10:36:52.119Z\",\n    \"end\": \"1997-07-29T00:48:09.913Z\",\n    \"min_distance\": 9112.691371172246,\n    \"max_distance\": 1910.8031296148,\n    \"generated_e1_ephemeris_query\": {\n      \"data_sources\": {\n        \"programs\": [\n          \"string\",\n          \"string\"\n        ],\n        \"platforms\": [\n          \"string\",\n          \"string\"\n        ],\n        \"instrument_types\": [\n          \"string\",\n          \"string\"\n        ],\n        \"ephemeris_metadata_filters\": {\n          \"logical_operator\": \"OR\",\n          \"expressions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"request_id\": \"string\",\n      \"start\": \"2022-10-23T04:16:53.933Z\",\n      \"end\": \"2006-01-25T18:39:30.204Z\"\n    },\n    \"generated_e2_ephemeris_query\": {\n      \"data_sources\": {\n        \"programs\": [\n          \"string\",\n          \"string\"\n        ],\n        \"platforms\": [\n          \"string\",\n          \"string\"\n        ],\n        \"instrument_types\": [\n          \"string\",\n          \"string\"\n        ],\n        \"ephemeris_metadata_filters\": {\n          \"logical_operator\": \"OR\",\n          \"expressions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"request_id\": \"string\",\n      \"start\": \"2020-01-14T01:04:29.793Z\",\n      \"end\": \"1986-05-29T05:50:23.308Z\"\n    }\n  },\n  {\n    \"conjunction_type\": \"geographic\",\n    \"e1_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"event_list\",\n      \"identifier\": 3019,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1990-04-07T13:12:47.910Z\",\n        \"latest_ephemeris_loaded\": \"2003-09-14T04:07:21.443Z\",\n        \"ephemeris_count\": 2094,\n        \"earliest_data_product_loaded\": \"1967-11-23T09:08:17.931Z\",\n        \"latest_data_product_loaded\": \"1961-12-30T09:28:06.180Z\",\n        \"data_product_count\": 2898\n      },\n      \"metadata\": {}\n    },\n    \"e2_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"event_list\",\n      \"identifier\": 473,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1988-10-20T23:46:56.483Z\",\n        \"latest_ephemeris_loaded\": \"1995-11-05T17:12:35.353Z\",\n        \"ephemeris_count\": 6999,\n        \"earliest_data_product_loaded\": \"2017-08-01T03:40:37.309Z\",\n        \"latest_data_product_loaded\": \"1988-12-02T19:41:52.340Z\",\n        \"data_product_count\": 7696\n      },\n      \"metadata\": {}\n    },\n    \"start\": \"1966-11-19T19:18:15.634Z\",\n    \"end\": \"1969-07-22T09:51:28.632Z\",\n    \"min_distance\": 9815.881389906917,\n    \"max_distance\": 3334.8777567806696,\n    \"generated_e1_ephemeris_query\": {\n      \"data_sources\": {\n        \"programs\": [\n          \"string\",\n          \"string\"\n        ],\n        \"platforms\": [\n          \"string\",\n          \"string\"\n        ],\n        \"instrument_types\": [\n          \"string\",\n          \"string\"\n        ],\n        \"ephemeris_metadata_filters\": {\n          \"logical_operator\": \"AND\",\n          \"expressions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"request_id\": \"string\",\n      \"start\": \"1990-05-07T01:29:15.395Z\",\n      \"end\": \"2006-08-16T04:46:56.298Z\"\n    },\n    \"generated_e2_ephemeris_query\": {\n      \"data_sources\": {\n        \"programs\": [\n          \"string\",\n          \"string\"\n        ],\n        \"platforms\": [\n          \"string\",\n          \"string\"\n        ],\n        \"instrument_types\": [\n          \"string\",\n          \"string\"\n        ],\n        \"ephemeris_metadata_filters\": {\n          \"logical_operator\": \"AND\",\n          \"expressions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"request_id\": \"string\",\n      \"start\": \"1992-05-07T10:18:14.635Z\",\n      \"end\": \"1972-07-01T15:10:39.841Z\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f975c885-b6ed-497c-9692-d6593bdfef81",
+              "name": "No request with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "generate_ephemeris_queries",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "data_source_record_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6d437616-8233-4eb7-a13c-8f9b16e59d4b",
+          "name": "Get the conjunction search result data with a data format specification",
+          "request": {
+            "name": "Get the conjunction search result data with a data format specification",
+            "description": {
+              "content": "Anonymous endpoint. The request ID can be shared with anyone.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "conjunctions",
+                "requests",
+                ":request_id",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conjunction_type\": \"<boolean>\",\n  \"start\": \"<boolean>\",\n  \"end\": \"<boolean>\",\n  \"min_distance\": \"<boolean>\",\n  \"max_distance\": \"<boolean>\",\n  \"closest_epoch\": \"<boolean>\",\n  \"farthest_epoch\": \"<boolean>\",\n  \"data_sources\": {\n    \"identifier\": \"<boolean>\",\n    \"program\": \"<boolean>\",\n    \"platform\": \"<boolean>\",\n    \"instrument_type\": \"<boolean>\",\n    \"source_type\": \"<boolean>\",\n    \"display_name\": \"<boolean>\",\n    \"ephemeris_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"data_product_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"owner\": \"<boolean>\",\n    \"maintainers\": \"<boolean>\",\n    \"metadata\": \"<boolean>\"\n  },\n  \"events\": {\n    \"conjunction_type\": \"<boolean>\",\n    \"e1_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"e2_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"start\": \"<boolean>\",\n    \"end\": \"<boolean>\",\n    \"min_distance\": \"<boolean>\",\n    \"max_distance\": \"<boolean>\",\n    \"generated_e1_ephemeris_query\": {\n      \"request_id\": \"<boolean>\",\n      \"data_sources\": {\n        \"programs\": \"<boolean>\",\n        \"platforms\": \"<boolean>\",\n        \"instrument_types\": \"<boolean>\",\n        \"ephemeris_metadata_filters\": {\n          \"logicalOperator\": \"<boolean>\",\n          \"expressions\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"start\": \"<boolean>\",\n      \"end\": \"<boolean>\"\n    },\n    \"generated_e2_ephemeris_query\": {\n      \"request_id\": \"<boolean>\",\n      \"data_sources\": {\n        \"programs\": \"<boolean>\",\n        \"platforms\": \"<boolean>\",\n        \"instrument_types\": \"<boolean>\",\n        \"ephemeris_metadata_filters\": {\n          \"logicalOperator\": \"<boolean>\",\n          \"expressions\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"start\": \"<boolean>\",\n      \"end\": \"<boolean>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "37877d1b-c7c0-44d1-bf77-e205c99f7448",
+              "name": "Get the search result data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conjunction_type\": \"<boolean>\",\n  \"start\": \"<boolean>\",\n  \"end\": \"<boolean>\",\n  \"min_distance\": \"<boolean>\",\n  \"max_distance\": \"<boolean>\",\n  \"closest_epoch\": \"<boolean>\",\n  \"farthest_epoch\": \"<boolean>\",\n  \"data_sources\": {\n    \"identifier\": \"<boolean>\",\n    \"program\": \"<boolean>\",\n    \"platform\": \"<boolean>\",\n    \"instrument_type\": \"<boolean>\",\n    \"source_type\": \"<boolean>\",\n    \"display_name\": \"<boolean>\",\n    \"ephemeris_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"data_product_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"owner\": \"<boolean>\",\n    \"maintainers\": \"<boolean>\",\n    \"metadata\": \"<boolean>\"\n  },\n  \"events\": {\n    \"conjunction_type\": \"<boolean>\",\n    \"e1_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"e2_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"start\": \"<boolean>\",\n    \"end\": \"<boolean>\",\n    \"min_distance\": \"<boolean>\",\n    \"max_distance\": \"<boolean>\",\n    \"generated_e1_ephemeris_query\": {\n      \"request_id\": \"<boolean>\",\n      \"data_sources\": {\n        \"programs\": \"<boolean>\",\n        \"platforms\": \"<boolean>\",\n        \"instrument_types\": \"<boolean>\",\n        \"ephemeris_metadata_filters\": {\n          \"logicalOperator\": \"<boolean>\",\n          \"expressions\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"start\": \"<boolean>\",\n      \"end\": \"<boolean>\"\n    },\n    \"generated_e2_ephemeris_query\": {\n      \"request_id\": \"<boolean>\",\n      \"data_sources\": {\n        \"programs\": \"<boolean>\",\n        \"platforms\": \"<boolean>\",\n        \"instrument_types\": \"<boolean>\",\n        \"ephemeris_metadata_filters\": {\n          \"logicalOperator\": \"<boolean>\",\n          \"expressions\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"start\": \"<boolean>\",\n      \"end\": \"<boolean>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"conjunction_type\": \"sbtrace\",\n    \"e1_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"not_applicable\",\n      \"identifier\": 1316,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1957-12-02T01:39:27.427Z\",\n        \"latest_ephemeris_loaded\": \"2003-05-14T11:31:51.397Z\",\n        \"ephemeris_count\": 3850,\n        \"earliest_data_product_loaded\": \"1949-07-20T12:48:33.220Z\",\n        \"latest_data_product_loaded\": \"2017-11-18T13:41:09.068Z\",\n        \"data_product_count\": 7930\n      },\n      \"metadata\": {}\n    },\n    \"e2_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"lunar\",\n      \"identifier\": 2568,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"2019-12-10T19:55:31.379Z\",\n        \"latest_ephemeris_loaded\": \"1947-09-08T08:53:01.493Z\",\n        \"ephemeris_count\": 2312,\n        \"earliest_data_product_loaded\": \"1962-09-21T19:34:35.719Z\",\n        \"latest_data_product_loaded\": \"1978-11-07T14:29:44.552Z\",\n        \"data_product_count\": 7198\n      },\n      \"metadata\": {}\n    },\n    \"start\": \"1948-12-31T07:06:10.938Z\",\n    \"end\": \"2024-09-05T08:25:36.481Z\",\n    \"min_distance\": 2449.4952401102146,\n    \"max_distance\": 4515.9146044022,\n    \"generated_e1_ephemeris_query\": {\n      \"data_sources\": {\n        \"programs\": [\n          \"string\",\n          \"string\"\n        ],\n        \"platforms\": [\n          \"string\",\n          \"string\"\n        ],\n        \"instrument_types\": [\n          \"string\",\n          \"string\"\n        ],\n        \"ephemeris_metadata_filters\": {\n          \"logical_operator\": \"OR\",\n          \"expressions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"request_id\": \"string\",\n      \"start\": \"2008-05-24T12:41:42.468Z\",\n      \"end\": \"1994-06-16T23:37:36.465Z\"\n    },\n    \"generated_e2_ephemeris_query\": {\n      \"data_sources\": {\n        \"programs\": [\n          \"string\",\n          \"string\"\n        ],\n        \"platforms\": [\n          \"string\",\n          \"string\"\n        ],\n        \"instrument_types\": [\n          \"string\",\n          \"string\"\n        ],\n        \"ephemeris_metadata_filters\": {\n          \"logical_operator\": \"AND\",\n          \"expressions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"request_id\": \"string\",\n      \"start\": \"2019-06-06T13:59:26.175Z\",\n      \"end\": \"2010-10-29T21:14:05.945Z\"\n    }\n  },\n  {\n    \"conjunction_type\": \"geographic\",\n    \"e1_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"leo\",\n      \"identifier\": 3114,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1964-05-31T08:08:23.278Z\",\n        \"latest_ephemeris_loaded\": \"1958-02-21T10:31:13.332Z\",\n        \"ephemeris_count\": 6605,\n        \"earliest_data_product_loaded\": \"1967-06-26T06:09:42.280Z\",\n        \"latest_data_product_loaded\": \"1979-04-12T18:21:53.355Z\",\n        \"data_product_count\": 2278\n      },\n      \"metadata\": {}\n    },\n    \"e2_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"ground\",\n      \"identifier\": 8531,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"2026-02-10T13:17:42.923Z\",\n        \"latest_ephemeris_loaded\": \"1996-07-28T16:43:46.633Z\",\n        \"ephemeris_count\": 4909,\n        \"earliest_data_product_loaded\": \"2006-03-04T09:39:05.307Z\",\n        \"latest_data_product_loaded\": \"2022-12-16T12:57:54.892Z\",\n        \"data_product_count\": 2870\n      },\n      \"metadata\": {}\n    },\n    \"start\": \"2021-09-02T03:03:16.734Z\",\n    \"end\": \"1950-10-04T22:34:10.166Z\",\n    \"min_distance\": 4635.940248030403,\n    \"max_distance\": 1258.1026605764057,\n    \"generated_e1_ephemeris_query\": {\n      \"data_sources\": {\n        \"programs\": [\n          \"string\",\n          \"string\"\n        ],\n        \"platforms\": [\n          \"string\",\n          \"string\"\n        ],\n        \"instrument_types\": [\n          \"string\",\n          \"string\"\n        ],\n        \"ephemeris_metadata_filters\": {\n          \"logical_operator\": \"OR\",\n          \"expressions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"request_id\": \"string\",\n      \"start\": \"1950-06-25T23:09:47.926Z\",\n      \"end\": \"2004-01-25T01:06:33.502Z\"\n    },\n    \"generated_e2_ephemeris_query\": {\n      \"data_sources\": {\n        \"programs\": [\n          \"string\",\n          \"string\"\n        ],\n        \"platforms\": [\n          \"string\",\n          \"string\"\n        ],\n        \"instrument_types\": [\n          \"string\",\n          \"string\"\n        ],\n        \"ephemeris_metadata_filters\": {\n          \"logical_operator\": \"AND\",\n          \"expressions\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        }\n      },\n      \"request_id\": \"string\",\n      \"start\": \"1972-08-27T06:35:33.918Z\",\n      \"end\": \"1968-03-18T14:32:01.345Z\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a6a939d5-54ad-46dc-a9e5-6d9fae4d1286",
+              "name": "The request is invalid. Please correct it and retry.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conjunction_type\": \"<boolean>\",\n  \"start\": \"<boolean>\",\n  \"end\": \"<boolean>\",\n  \"min_distance\": \"<boolean>\",\n  \"max_distance\": \"<boolean>\",\n  \"closest_epoch\": \"<boolean>\",\n  \"farthest_epoch\": \"<boolean>\",\n  \"data_sources\": {\n    \"identifier\": \"<boolean>\",\n    \"program\": \"<boolean>\",\n    \"platform\": \"<boolean>\",\n    \"instrument_type\": \"<boolean>\",\n    \"source_type\": \"<boolean>\",\n    \"display_name\": \"<boolean>\",\n    \"ephemeris_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"data_product_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"owner\": \"<boolean>\",\n    \"maintainers\": \"<boolean>\",\n    \"metadata\": \"<boolean>\"\n  },\n  \"events\": {\n    \"conjunction_type\": \"<boolean>\",\n    \"e1_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"e2_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"start\": \"<boolean>\",\n    \"end\": \"<boolean>\",\n    \"min_distance\": \"<boolean>\",\n    \"max_distance\": \"<boolean>\",\n    \"generated_e1_ephemeris_query\": {\n      \"request_id\": \"<boolean>\",\n      \"data_sources\": {\n        \"programs\": \"<boolean>\",\n        \"platforms\": \"<boolean>\",\n        \"instrument_types\": \"<boolean>\",\n        \"ephemeris_metadata_filters\": {\n          \"logicalOperator\": \"<boolean>\",\n          \"expressions\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"start\": \"<boolean>\",\n      \"end\": \"<boolean>\"\n    },\n    \"generated_e2_ephemeris_query\": {\n      \"request_id\": \"<boolean>\",\n      \"data_sources\": {\n        \"programs\": \"<boolean>\",\n        \"platforms\": \"<boolean>\",\n        \"instrument_types\": \"<boolean>\",\n        \"ephemeris_metadata_filters\": {\n          \"logicalOperator\": \"<boolean>\",\n          \"expressions\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"start\": \"<boolean>\",\n      \"end\": \"<boolean>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "16d7e325-c90f-40e5-8202-2139976321e5",
+              "name": "No request with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conjunction_type\": \"<boolean>\",\n  \"start\": \"<boolean>\",\n  \"end\": \"<boolean>\",\n  \"min_distance\": \"<boolean>\",\n  \"max_distance\": \"<boolean>\",\n  \"closest_epoch\": \"<boolean>\",\n  \"farthest_epoch\": \"<boolean>\",\n  \"data_sources\": {\n    \"identifier\": \"<boolean>\",\n    \"program\": \"<boolean>\",\n    \"platform\": \"<boolean>\",\n    \"instrument_type\": \"<boolean>\",\n    \"source_type\": \"<boolean>\",\n    \"display_name\": \"<boolean>\",\n    \"ephemeris_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"data_product_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"owner\": \"<boolean>\",\n    \"maintainers\": \"<boolean>\",\n    \"metadata\": \"<boolean>\"\n  },\n  \"events\": {\n    \"conjunction_type\": \"<boolean>\",\n    \"e1_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"e2_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"start\": \"<boolean>\",\n    \"end\": \"<boolean>\",\n    \"min_distance\": \"<boolean>\",\n    \"max_distance\": \"<boolean>\",\n    \"generated_e1_ephemeris_query\": {\n      \"request_id\": \"<boolean>\",\n      \"data_sources\": {\n        \"programs\": \"<boolean>\",\n        \"platforms\": \"<boolean>\",\n        \"instrument_types\": \"<boolean>\",\n        \"ephemeris_metadata_filters\": {\n          \"logicalOperator\": \"<boolean>\",\n          \"expressions\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"start\": \"<boolean>\",\n      \"end\": \"<boolean>\"\n    },\n    \"generated_e2_ephemeris_query\": {\n      \"request_id\": \"<boolean>\",\n      \"data_sources\": {\n        \"programs\": \"<boolean>\",\n        \"platforms\": \"<boolean>\",\n        \"instrument_types\": \"<boolean>\",\n        \"ephemeris_metadata_filters\": {\n          \"logicalOperator\": \"<boolean>\",\n          \"expressions\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"start\": \"<boolean>\",\n      \"end\": \"<boolean>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "25e4be28-57e8-4381-af45-9c56c18786fe",
+          "name": "Delete a search result data file.",
+          "request": {
+            "name": "Delete a search result data file.",
+            "description": {
+              "content": "Deletes the data file containing the search results. If this search is run in the future, the query will re-create the data file.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "conjunctions",
+                "requests",
+                ":request_id",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a1a7f5f6-8f32-4d1e-87da-89c657d3f7df",
+              "name": "The request details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"search_request\": {\n    \"request_id\": \"string\",\n    \"query\": \"string\",\n    \"requested\": \"1966-04-06T08:57:28.115Z\",\n    \"request_type\": \"data_product\"\n  },\n  \"logs\": [\n    {\n      \"timestamp\": \"2005-03-12T05:28:02.794Z\",\n      \"level\": \"warn\",\n      \"summary\": \"string\"\n    },\n    {\n      \"timestamp\": \"1987-07-30T20:29:27.345Z\",\n      \"level\": \"debug\",\n      \"summary\": \"string\"\n    }\n  ],\n  \"search_result\": {\n    \"data_uri\": \"string\",\n    \"result_count\": 2322,\n    \"result_file_deleted_timestamp\": \"1997-08-11T09:06:47.390Z\",\n    \"file_size\": 9256,\n    \"completed_timestamp\": \"1969-04-19T22:48:22.956Z\",\n    \"query_duration\": 911,\n    \"error_condition\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e40bc8ce-328c-490e-b79a-b25ba15d6bb3",
+              "name": "Request did not contain a request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c416a671-05c4-49cc-9e21-0aa486370bb4",
+              "name": "No request with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8d34caf2-9046-42c3-859c-f8d119ae232b",
+          "name": "Search for conjunctions",
+          "request": {
+            "name": "Search for conjunctions",
+            "description": {
+              "content": "Anonymous unless logged in. Conjunctions may occur between satellites, or between satellites and ground instruments.  AuroraX maintains an index of all conjunctions for north and south B-trace footprints (or magnetic location for ground-instruments).  Conjunction queries describe the conjunction relationship between sources you are interested in.\n\n Some examples of conjunction queries are: \n Find all the nbtrace conjunction events that occured in Sep-2019 between any satellite in the swarm program and themisd platform  that were within 200 km of each other.\n\n Find all the nbtrace conjunction events that occured in 2019 between any themis satellite and any themis-asi platform that were  within 450 km of the themis-asi platform but only when the themis satellite was also in a Dayside Magnetosphere (D_Msphere)  region of space.\n\n Data returned when a ground-instrument is involved returns the time ranges for when that instrument was operational.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "conjunctions",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"request_id\": \"<string>\",\n  \"ground\": [\n    {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ]\n      }\n    },\n    {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ]\n      }\n    }\n  ],\n  \"space\": [\n    {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"hemisphere\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ]\n      }\n    },\n    {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"hemisphere\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ]\n      }\n    }\n  ],\n  \"events\": [\n    {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ]\n      }\n    },\n    {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ]\n      }\n    }\n  ],\n  \"adhoc\": [\n    {\n      \"locations\": [\n        {\n          \"lat\": \"<number>\",\n          \"lon\": \"<number>\"\n        },\n        {\n          \"lat\": \"<number>\",\n          \"lon\": \"<number>\"\n        }\n      ]\n    },\n    {\n      \"locations\": [\n        {\n          \"lat\": \"<number>\",\n          \"lon\": \"<number>\"\n        },\n        {\n          \"lat\": \"<number>\",\n          \"lon\": \"<number>\"\n        }\n      ]\n    }\n  ],\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"conjunction_types\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"max_distances\": {\n    \"key_0\": \"<integer>\"\n  },\n  \"epoch_search_precision\": 60\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "659b017f-55ec-4754-9fd6-7c178a93a5ff",
+              "name": "Missing or invalid parameters.\n\nPlease refer to the documentation for correctness of this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "conjunctions",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"request_id\": \"<string>\",\n  \"ground\": [\n    {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ]\n      }\n    },\n    {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ]\n      }\n    }\n  ],\n  \"space\": [\n    {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"hemisphere\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ]\n      }\n    },\n    {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"hemisphere\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ]\n      }\n    }\n  ],\n  \"events\": [\n    {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ]\n      }\n    },\n    {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"ephemeris_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          },\n          {\n            \"key\": \"<string>\",\n            \"operator\": \"<string>\",\n            \"values\": [\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            ]\n          }\n        ]\n      }\n    }\n  ],\n  \"adhoc\": [\n    {\n      \"locations\": [\n        {\n          \"lat\": \"<number>\",\n          \"lon\": \"<number>\"\n        },\n        {\n          \"lat\": \"<number>\",\n          \"lon\": \"<number>\"\n        }\n      ]\n    },\n    {\n      \"locations\": [\n        {\n          \"lat\": \"<number>\",\n          \"lon\": \"<number>\"\n        },\n        {\n          \"lat\": \"<number>\",\n          \"lon\": \"<number>\"\n        }\n      ]\n    }\n  ],\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"conjunction_types\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"max_distances\": {\n    \"key_0\": \"<integer>\",\n    \"key_1\": \"<integer>\",\n    \"key_2\": \"<integer>\"\n  },\n  \"epoch_search_precision\": 60\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.aurorax.space",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b6263a07-8616-41f9-a534-97fc13871047",
+    "name": "AuroraX Application.wadl Conjunction Search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n",
+      "type": "text/plain"
+    }
+  }
+}

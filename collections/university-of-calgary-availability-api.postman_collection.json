@@ -1,0 +1,686 @@
+{
+  "item": [
+    {
+      "id": "9a291375-0d11-4b91-af64-d918cc7a321b",
+      "name": "Availability",
+      "description": {
+        "content": "Retrieve information about data in the database",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7ce51ea9-506e-452c-9e57-d61cbf11efd3",
+          "name": "Get the data_product availability for all Data Sources",
+          "request": {
+            "name": "Get the data_product availability for all Data Sources",
+            "description": {
+              "content": "Returns a count of data by day for each data source. Provide query parameters to filter the results to just the sources you wish, in the time frames you wish",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "availability",
+                "data_products"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<date>",
+                  "description": "Start date (default to Jan 1 of this year"
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<date>",
+                  "description": "End date (default to start + 12 months or today + 1 month if start not provided)"
+                },
+                {
+                  "disabled": false,
+                  "key": "program",
+                  "value": "<string>",
+                  "description": "Filter by Program"
+                },
+                {
+                  "disabled": false,
+                  "key": "platform",
+                  "value": "<string>",
+                  "description": "Filter by Platform"
+                },
+                {
+                  "disabled": false,
+                  "key": "instrument_type",
+                  "value": "<string>",
+                  "description": "Filter by Instrument Type"
+                },
+                {
+                  "disabled": false,
+                  "key": "source_type",
+                  "value": "<string>",
+                  "description": "Filter by Source Type"
+                },
+                {
+                  "disabled": false,
+                  "key": "data_product_type",
+                  "value": "<string>",
+                  "description": "Filter by Data Product Type"
+                },
+                {
+                  "disabled": false,
+                  "key": "owner",
+                  "value": "<string>",
+                  "description": "Filter by Owner"
+                },
+                {
+                  "disabled": false,
+                  "key": "format",
+                  "value": "<string>",
+                  "description": "The format of the Data Source returned. Default is basic_info."
+                },
+                {
+                  "disabled": false,
+                  "key": "slow",
+                  "value": "<boolean>",
+                  "description": "Query the data directly (slower) for more accurate results. Default is false."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "754c3282-6067-49f5-883b-e289458e362a",
+              "name": "List of data_product availability.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "availability",
+                    "data_products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "program",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "platform",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "data_product_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slow",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"leo\",\n      \"identifier\": 1928,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1998-03-24T10:59:45.732Z\",\n        \"latest_ephemeris_loaded\": \"2002-11-27T02:51:34.566Z\",\n        \"ephemeris_count\": 6771,\n        \"earliest_data_product_loaded\": \"1962-09-13T13:27:29.377Z\",\n        \"latest_data_product_loaded\": \"1980-12-26T12:39:33.142Z\",\n        \"data_product_count\": 7516\n      },\n      \"metadata\": {}\n    },\n    \"available_data_products\": {\n      \"key_0\": 3056\n    }\n  },\n  {\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"ground\",\n      \"identifier\": 6266,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1989-09-09T18:49:22.264Z\",\n        \"latest_ephemeris_loaded\": \"2015-06-10T10:33:05.445Z\",\n        \"ephemeris_count\": 7991,\n        \"earliest_data_product_loaded\": \"2015-02-01T11:51:15.199Z\",\n        \"latest_data_product_loaded\": \"1957-11-02T21:16:52.768Z\",\n        \"data_product_count\": 1732\n      },\n      \"metadata\": {}\n    },\n    \"available_data_products\": {\n      \"key_0\": 2623,\n      \"key_1\": 9631\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3745c9f3-dfd9-46db-9b85-4a5b88c4db96",
+              "name": "Not foundThis can occur if start or end is not in the ISO format YYYY-MM-DD.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "availability",
+                    "data_products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "program",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "platform",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "data_product_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slow",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"NotFound\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "844860ec-b88d-4c15-9e70-aa577cb2b61c",
+              "name": "Maintenance Mode\n\nThe API is in maintenance mode. Slow mode is currently not available.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "availability",
+                    "data_products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "program",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "platform",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "data_product_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slow",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"NotFound\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d7a5b18d-1d52-431a-8319-b78750562d80",
+          "name": "Get the ephemeris availability for all Data Sources",
+          "request": {
+            "name": "Get the ephemeris availability for all Data Sources",
+            "description": {
+              "content": "Returns a count of data by day for each data source. Provide query parameters to filter the results to just the sources you wish, in the time frames you wish",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "availability",
+                "ephemeris"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<date>",
+                  "description": "Start date (default to Jan 1 of this year"
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<date>",
+                  "description": "End date (default to start + 12 months or today + 1 month if start not provided)"
+                },
+                {
+                  "disabled": false,
+                  "key": "program",
+                  "value": "<string>",
+                  "description": "Filter by Program"
+                },
+                {
+                  "disabled": false,
+                  "key": "platform",
+                  "value": "<string>",
+                  "description": "Filter by Platform"
+                },
+                {
+                  "disabled": false,
+                  "key": "instrument_type",
+                  "value": "<string>",
+                  "description": "Filter by Instrument Type"
+                },
+                {
+                  "disabled": false,
+                  "key": "source_type",
+                  "value": "<string>",
+                  "description": "Filter by Source Type"
+                },
+                {
+                  "disabled": false,
+                  "key": "owner",
+                  "value": "<string>",
+                  "description": "Filter by Owner"
+                },
+                {
+                  "disabled": false,
+                  "key": "format",
+                  "value": "<string>",
+                  "description": "The format of the Data Source returned. Default is basic_info."
+                },
+                {
+                  "disabled": false,
+                  "key": "slow",
+                  "value": "<boolean>",
+                  "description": "Query the data directly (slower) for more accurate results. Default is false."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b7a8a8a8-3f32-4d5e-af3e-406d6b0f1da0",
+              "name": "List of ephemeris availability.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "availability",
+                    "ephemeris"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "program",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "platform",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slow",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"event_list\",\n      \"identifier\": 6959,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1971-04-16T18:53:21.826Z\",\n        \"latest_ephemeris_loaded\": \"1954-09-23T02:06:47.676Z\",\n        \"ephemeris_count\": 6510,\n        \"earliest_data_product_loaded\": \"1986-05-14T15:29:59.813Z\",\n        \"latest_data_product_loaded\": \"1981-08-31T14:23:55.777Z\",\n        \"data_product_count\": 8293\n      },\n      \"metadata\": {}\n    },\n    \"available_ephemeris\": {\n      \"key_0\": 4921\n    }\n  },\n  {\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"event_list\",\n      \"identifier\": 2830,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"2006-12-23T05:13:10.172Z\",\n        \"latest_ephemeris_loaded\": \"2007-09-28T20:51:24.405Z\",\n        \"ephemeris_count\": 5066,\n        \"earliest_data_product_loaded\": \"2015-08-05T13:59:26.763Z\",\n        \"latest_data_product_loaded\": \"1947-12-01T04:44:43.353Z\",\n        \"data_product_count\": 4656\n      },\n      \"metadata\": {}\n    },\n    \"available_ephemeris\": {\n      \"key_0\": 3145,\n      \"key_1\": 9703\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a7de2a89-6195-49ff-a939-2eaa71e57d69",
+              "name": "Not foundThis can occur if start or end is not in the ISO format YYYY-MM-DD.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "availability",
+                    "ephemeris"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "program",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "platform",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slow",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"NotFound\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ee17c519-d21a-4bab-9d69-df49b7764835",
+              "name": "Maintenance Mode\n\nThe API is in maintenance mode. Slow mode is currently not available.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "availability",
+                    "ephemeris"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "end",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "program",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "platform",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "instrument_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "source_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owner",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slow",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"NotFound\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.aurorax.space",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "4a6afcd8-f2b7-44b5-98f3-7b5b0ccab1ab",
+    "name": "AuroraX Application.wadl Availability API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n",
+      "type": "text/plain"
+    }
+  }
+}

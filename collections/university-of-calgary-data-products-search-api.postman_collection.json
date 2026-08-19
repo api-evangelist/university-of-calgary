@@ -1,0 +1,1134 @@
+{
+  "item": [
+    {
+      "id": "94df9056-f2c0-4f56-a906-3b82c2726184",
+      "name": "Data Products Search",
+      "description": {
+        "content": "Search for data products",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6ba01e90-51bb-4642-8119-331467196a2d",
+          "name": "Get the data_product search request details",
+          "request": {
+            "name": "Get the data_product search request details",
+            "description": {
+              "content": "This endpoint is anonymous. The request ID can be shared with anyone.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_products",
+                "requests",
+                ":request_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d67c620c-7f86-4187-bdb2-1fd864b87bf7",
+              "name": "The request details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"search_request\": {\n    \"request_id\": \"string\",\n    \"query\": \"string\",\n    \"requested\": \"1955-05-03T01:14:58.656Z\",\n    \"request_type\": \"ephemeris\"\n  },\n  \"logs\": [\n    {\n      \"timestamp\": \"1985-01-29T03:54:33.259Z\",\n      \"level\": \"info\",\n      \"summary\": \"string\"\n    },\n    {\n      \"timestamp\": \"2023-05-06T07:06:34.586Z\",\n      \"level\": \"error\",\n      \"summary\": \"string\"\n    }\n  ],\n  \"search_result\": {\n    \"data_uri\": \"string\",\n    \"result_count\": 9686,\n    \"result_file_deleted_timestamp\": \"1951-08-15T00:21:41.212Z\",\n    \"file_size\": 4311,\n    \"completed_timestamp\": \"1969-04-23T13:10:13.397Z\",\n    \"query_duration\": 9109,\n    \"error_condition\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4c98ce00-fbb4-4137-ac2a-030a94fd7fb5",
+              "name": "No request with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"NotAuthenticated\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "175a5b3f-6bfe-443c-8d60-c8ca21b4c93c",
+          "name": "Cancel the data_product search request",
+          "request": {
+            "name": "Cancel the data_product search request",
+            "description": {
+              "content": "Attempts to cancel the search request. The system will log an error against the request noting the cancellation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_products",
+                "requests",
+                ":request_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fb15de0f-bdae-433e-bc23-1c7bb4455118",
+              "name": "The request details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"search_request\": {\n    \"request_id\": \"string\",\n    \"query\": \"string\",\n    \"requested\": \"1954-01-30T22:21:37.172Z\",\n    \"request_type\": \"data_product\"\n  },\n  \"logs\": [\n    {\n      \"timestamp\": \"1976-01-18T19:50:00.431Z\",\n      \"level\": \"debug\",\n      \"summary\": \"string\"\n    },\n    {\n      \"timestamp\": \"1976-08-11T01:21:49.011Z\",\n      \"level\": \"info\",\n      \"summary\": \"string\"\n    }\n  ],\n  \"search_result\": {\n    \"data_uri\": \"string\",\n    \"result_count\": 5327,\n    \"result_file_deleted_timestamp\": \"1959-07-27T15:14:15.581Z\",\n    \"file_size\": 7131,\n    \"completed_timestamp\": \"1956-11-07T05:33:17.339Z\",\n    \"query_duration\": 7455,\n    \"error_condition\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d8b3052-d2bb-4abf-a333-fff7f08ddeec",
+              "name": "Request did not contain a request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"NotAuthenticated\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1037449e-8412-4797-9a5f-3af94758edd5",
+              "name": "No request with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "requests",
+                    ":request_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"NotAuthenticated\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ed754de7-546b-45d3-9b6f-d76d573eb18d",
+          "name": "Get the data_product search result data",
+          "request": {
+            "name": "Get the data_product search result data",
+            "description": {
+              "content": "Get the data returned by the given search request. If the data has expired, then 404 will be returned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_products",
+                "requests",
+                ":request_id",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "data_source_record_format",
+                  "value": "<string>",
+                  "description": "Control which epehermis source data is returned. Default is basic."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0ce1d9e1-5ad1-47f2-b1ab-4bdf3f8088af",
+              "name": "Get the search result data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "data_source_record_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"start\": \"1963-03-13T10:45:10.224Z\",\n    \"end\": \"2012-10-02T15:54:21.604Z\",\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"lunar\",\n      \"identifier\": 5200,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1981-07-25T18:16:08.597Z\",\n        \"latest_ephemeris_loaded\": \"1979-07-02T22:01:11.881Z\",\n        \"ephemeris_count\": 4310,\n        \"earliest_data_product_loaded\": \"1986-07-24T23:52:19.364Z\",\n        \"latest_data_product_loaded\": \"2009-01-31T05:01:16.894Z\",\n        \"data_product_count\": 558\n      },\n      \"metadata\": {}\n    },\n    \"url\": \"string\",\n    \"data_product_type\": \"keogram\",\n    \"metadata\": \"string\"\n  },\n  {\n    \"start\": \"2010-09-07T12:01:16.732Z\",\n    \"end\": \"1994-11-01T11:58:17.709Z\",\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"leo\",\n      \"identifier\": 6308,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1975-11-14T21:23:24.171Z\",\n        \"latest_ephemeris_loaded\": \"1970-05-16T16:50:27.121Z\",\n        \"ephemeris_count\": 8130,\n        \"earliest_data_product_loaded\": \"1953-09-10T10:20:15.450Z\",\n        \"latest_data_product_loaded\": \"1980-12-18T05:11:05.131Z\",\n        \"data_product_count\": 572\n      },\n      \"metadata\": {}\n    },\n    \"url\": \"string\",\n    \"data_product_type\": \"movie\",\n    \"metadata\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6e935fe6-0239-48c7-8872-ffdd12bbafd1",
+              "name": "No request with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "data_source_record_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"NotAuthenticated\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "238234d0-c352-437f-970c-b9eb186f5935",
+          "name": "Get the data_product search result data with a data format specification",
+          "request": {
+            "name": "Get the data_product search result data with a data format specification",
+            "description": {
+              "content": "Get the data returned by the given search request. If the data has expired, then 404 will be returned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_products",
+                "requests",
+                ":request_id",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"start\": \"<boolean>\",\n  \"end\": \"<boolean>\",\n  \"data_source\": {\n    \"identifier\": \"<boolean>\",\n    \"program\": \"<boolean>\",\n    \"platform\": \"<boolean>\",\n    \"instrument_type\": \"<boolean>\",\n    \"source_type\": \"<boolean>\",\n    \"display_name\": \"<boolean>\",\n    \"ephemeris_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"data_product_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"owner\": \"<boolean>\",\n    \"maintainers\": \"<boolean>\",\n    \"metadata\": \"<boolean>\"\n  },\n  \"url\": \"<boolean>\",\n  \"data_product_type\": \"<boolean>\",\n  \"metadata\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0d931f54-eb07-40e1-a663-184c52097abf",
+              "name": "Get the search result data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"start\": \"<boolean>\",\n  \"end\": \"<boolean>\",\n  \"data_source\": {\n    \"identifier\": \"<boolean>\",\n    \"program\": \"<boolean>\",\n    \"platform\": \"<boolean>\",\n    \"instrument_type\": \"<boolean>\",\n    \"source_type\": \"<boolean>\",\n    \"display_name\": \"<boolean>\",\n    \"ephemeris_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"data_product_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"owner\": \"<boolean>\",\n    \"maintainers\": \"<boolean>\",\n    \"metadata\": \"<boolean>\"\n  },\n  \"url\": \"<boolean>\",\n  \"data_product_type\": \"<boolean>\",\n  \"metadata\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"start\": \"1966-08-22T09:58:07.612Z\",\n    \"end\": \"1956-07-30T12:42:02.279Z\",\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"ground\",\n      \"identifier\": 7063,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1979-12-31T02:40:11.241Z\",\n        \"latest_ephemeris_loaded\": \"1979-10-30T17:54:52.469Z\",\n        \"ephemeris_count\": 6111,\n        \"earliest_data_product_loaded\": \"2012-07-27T11:49:23.641Z\",\n        \"latest_data_product_loaded\": \"2001-08-13T10:59:27.680Z\",\n        \"data_product_count\": 2036\n      },\n      \"metadata\": {}\n    },\n    \"url\": \"string\",\n    \"data_product_type\": \"movie\",\n    \"metadata\": \"string\"\n  },\n  {\n    \"start\": \"1985-09-12T23:41:58.452Z\",\n    \"end\": \"1985-04-13T06:20:19.374Z\",\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"lunar\",\n      \"identifier\": 2432,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"2019-04-14T02:00:00.121Z\",\n        \"latest_ephemeris_loaded\": \"1987-02-17T16:00:32.202Z\",\n        \"ephemeris_count\": 3311,\n        \"earliest_data_product_loaded\": \"2006-06-22T23:30:24.151Z\",\n        \"latest_data_product_loaded\": \"1976-04-16T13:40:08.434Z\",\n        \"data_product_count\": 8439\n      },\n      \"metadata\": {}\n    },\n    \"url\": \"string\",\n    \"data_product_type\": \"summary_plot\",\n    \"metadata\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "28997751-f0d5-4714-a2c2-8e5eb4fb73b4",
+              "name": "No request with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"start\": \"<boolean>\",\n  \"end\": \"<boolean>\",\n  \"data_source\": {\n    \"identifier\": \"<boolean>\",\n    \"program\": \"<boolean>\",\n    \"platform\": \"<boolean>\",\n    \"instrument_type\": \"<boolean>\",\n    \"source_type\": \"<boolean>\",\n    \"display_name\": \"<boolean>\",\n    \"ephemeris_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"data_product_metadata_schema\": {\n      \"field_name\": \"<boolean>\",\n      \"description\": \"<boolean>\",\n      \"data_type\": \"<boolean>\",\n      \"allowed_values\": \"<boolean>\",\n      \"additional_description\": \"<boolean>\"\n    },\n    \"owner\": \"<boolean>\",\n    \"maintainers\": \"<boolean>\",\n    \"metadata\": \"<boolean>\"\n  },\n  \"url\": \"<boolean>\",\n  \"data_product_type\": \"<boolean>\",\n  \"metadata\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"NotAuthenticated\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a19a346e-b247-4abd-83ff-f7b6424eb79d",
+          "name": "Delete a search result data file.",
+          "request": {
+            "name": "Delete a search result data file.",
+            "description": {
+              "content": "Deletes the data file containing the search results. If this search is run in the future, the query will re-create the data file.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_products",
+                "requests",
+                ":request_id",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "request_id",
+                  "description": "(Required) The request ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fe359372-f867-4d7b-8e98-cf18a2406b46",
+              "name": "The request details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"search_request\": {\n    \"request_id\": \"string\",\n    \"query\": \"string\",\n    \"requested\": \"1954-01-30T22:21:37.172Z\",\n    \"request_type\": \"data_product\"\n  },\n  \"logs\": [\n    {\n      \"timestamp\": \"1976-01-18T19:50:00.431Z\",\n      \"level\": \"debug\",\n      \"summary\": \"string\"\n    },\n    {\n      \"timestamp\": \"1976-08-11T01:21:49.011Z\",\n      \"level\": \"info\",\n      \"summary\": \"string\"\n    }\n  ],\n  \"search_result\": {\n    \"data_uri\": \"string\",\n    \"result_count\": 5327,\n    \"result_file_deleted_timestamp\": \"1959-07-27T15:14:15.581Z\",\n    \"file_size\": 7131,\n    \"completed_timestamp\": \"1956-11-07T05:33:17.339Z\",\n    \"query_duration\": 7455,\n    \"error_condition\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d95abc6b-3c83-4123-b3b0-367680421891",
+              "name": "Request did not contain a request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"NotAuthenticated\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ee8c00aa-856e-4096-81b3-16806493ee15",
+              "name": "No request with given request id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "requests",
+                    ":request_id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "request_id",
+                      "description": "(Required) The request ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"NotAuthenticated\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a5b60f4b-01cd-4b4f-a347-4e6c82fa4a7a",
+          "name": "Search for data products",
+          "request": {
+            "name": "Search for data products",
+            "description": {
+              "content": "Data products have their own metadata and can be filtered on those. Additionally, because data products are also linked to one or more data sources, they can also be found by adding metadata filters to data source criteria",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_products",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"request_id\": \"<string>\",\n  \"data_sources\": {\n    \"programs\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"platforms\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"instrument_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"data_product_metadata_filters\": {\n      \"logical_operator\": \"<string>\",\n      \"expressions\": [\n        {\n          \"key\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"key\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ]\n    }\n  },\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"data_product_type_filters\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "00f2f64b-d6d1-47a9-a354-299ab5ad05f2",
+              "name": "Missing or invalid parameters.\n\nPlease refer to the documentation for correctness of this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"request_id\": \"<string>\",\n  \"data_sources\": {\n    \"programs\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"platforms\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"instrument_types\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"data_product_metadata_filters\": {\n      \"logical_operator\": \"<string>\",\n      \"expressions\": [\n        {\n          \"key\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"key\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ]\n    }\n  },\n  \"start\": \"<dateTime>\",\n  \"end\": \"<dateTime>\",\n  \"data_product_type_filters\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7b34d101-0722-4d62-86bc-caffe7382290",
+          "name": "Synchronously search for data products",
+          "request": {
+            "name": "Synchronously search for data products",
+            "description": {
+              "content": "Anonymous unless logged in. The same search functionality as asynchronous search, except it is synchronous. Search results are limited to 10 years of data products. These requests are not saved, even if you are logged in.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_products",
+                "search_synchronous"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "data_source_record_format",
+                  "value": "<string>",
+                  "description": "Control how the data product data source data is returned. Default is basic."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": {\n    \"request_id\": \"<string>\",\n    \"data_sources\": {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"data_product_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"values\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"key\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"values\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    },\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\",\n    \"data_product_type_filters\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"response_format\": {\n    \"start\": \"<boolean>\",\n    \"end\": \"<boolean>\",\n    \"data_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"url\": \"<boolean>\",\n    \"data_product_type\": \"<boolean>\",\n    \"metadata\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "991dae5a-8818-43ee-bd97-2308316153ad",
+              "name": "List of data products",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "search_synchronous"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "data_source_record_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": {\n    \"request_id\": \"<string>\",\n    \"data_sources\": {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"data_product_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"values\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"key\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"values\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    },\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\",\n    \"data_product_type_filters\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"response_format\": {\n    \"start\": \"<boolean>\",\n    \"end\": \"<boolean>\",\n    \"data_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"url\": \"<boolean>\",\n    \"data_product_type\": \"<boolean>\",\n    \"metadata\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"start\": \"1966-08-22T09:58:07.612Z\",\n    \"end\": \"1956-07-30T12:42:02.279Z\",\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"ground\",\n      \"identifier\": 7063,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"1979-12-31T02:40:11.241Z\",\n        \"latest_ephemeris_loaded\": \"1979-10-30T17:54:52.469Z\",\n        \"ephemeris_count\": 6111,\n        \"earliest_data_product_loaded\": \"2012-07-27T11:49:23.641Z\",\n        \"latest_data_product_loaded\": \"2001-08-13T10:59:27.680Z\",\n        \"data_product_count\": 2036\n      },\n      \"metadata\": {}\n    },\n    \"url\": \"string\",\n    \"data_product_type\": \"movie\",\n    \"metadata\": \"string\"\n  },\n  {\n    \"start\": \"1985-09-12T23:41:58.452Z\",\n    \"end\": \"1985-04-13T06:20:19.374Z\",\n    \"data_source\": {\n      \"display_name\": \"string\",\n      \"instrument_type\": \"string\",\n      \"platform\": \"string\",\n      \"program\": \"string\",\n      \"source_type\": \"lunar\",\n      \"identifier\": 2432,\n      \"ephemeris_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        }\n      ],\n      \"data_product_metadata_schema\": [\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": false\n        },\n        {\n          \"field_name\": \"string\",\n          \"description\": \"string\",\n          \"data_type\": \"string\",\n          \"allowed_values\": [\n            \"string\",\n            \"string\"\n          ],\n          \"additional_description\": \"string\",\n          \"searchable\": true\n        }\n      ],\n      \"owner\": \"string\",\n      \"maintainers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"stats\": {\n        \"data_source\": {\n          \"value\": \"<Circular reference to #/components/schemas/Data Source detected>\"\n        },\n        \"earliest_ephemeris_loaded\": \"2019-04-14T02:00:00.121Z\",\n        \"latest_ephemeris_loaded\": \"1987-02-17T16:00:32.202Z\",\n        \"ephemeris_count\": 3311,\n        \"earliest_data_product_loaded\": \"2006-06-22T23:30:24.151Z\",\n        \"latest_data_product_loaded\": \"1976-04-16T13:40:08.434Z\",\n        \"data_product_count\": 8439\n      },\n      \"metadata\": {}\n    },\n    \"url\": \"string\",\n    \"data_product_type\": \"summary_plot\",\n    \"metadata\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ea93f1c9-2b38-443a-a04f-8d0ac1ef54dd",
+              "name": "Missing or invalid parameters.\n\nPlease refer to the documentation for correctness of this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_products",
+                    "search_synchronous"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "data_source_record_format",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": {\n    \"request_id\": \"<string>\",\n    \"data_sources\": {\n      \"programs\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"platforms\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"instrument_types\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"data_product_metadata_filters\": {\n        \"logical_operator\": \"<string>\",\n        \"expressions\": [\n          {\n            \"key\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"values\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"key\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"operator\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"values\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ]\n      }\n    },\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\",\n    \"data_product_type_filters\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"response_format\": {\n    \"start\": \"<boolean>\",\n    \"end\": \"<boolean>\",\n    \"data_source\": {\n      \"identifier\": \"<boolean>\",\n      \"program\": \"<boolean>\",\n      \"platform\": \"<boolean>\",\n      \"instrument_type\": \"<boolean>\",\n      \"source_type\": \"<boolean>\",\n      \"display_name\": \"<boolean>\",\n      \"ephemeris_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"data_product_metadata_schema\": {\n        \"field_name\": \"<boolean>\",\n        \"description\": \"<boolean>\",\n        \"data_type\": \"<boolean>\",\n        \"allowed_values\": \"<boolean>\",\n        \"additional_description\": \"<boolean>\"\n      },\n      \"owner\": \"<boolean>\",\n      \"maintainers\": \"<boolean>\",\n      \"metadata\": \"<boolean>\"\n    },\n    \"url\": \"<boolean>\",\n    \"data_product_type\": \"<boolean>\",\n    \"metadata\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"NotAuthenticated\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.aurorax.space",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "3c2901d4-2a57-4003-be0e-e327c80ce8c3",
+    "name": "AuroraX Application.wadl Data Products Search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n",
+      "type": "text/plain"
+    }
+  }
+}

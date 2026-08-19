@@ -1,0 +1,161 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AuroraX Application.wadl Ephemeris Search API",
+    "version": "stable"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Ephemeris Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the ephemeris search request details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/ephemeris/requests/:request_id",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              }
+            ]
+          },
+          "docs": "This endpoint is anonymous. The request ID can be shared with anyone."
+        },
+        {
+          "info": {
+            "name": "Cancel the ephemeris search request",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.aurorax.space/api/v1/ephemeris/requests/:request_id",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              }
+            ]
+          },
+          "docs": "Attempts to cancel the search request. The system will log an error against the request noting the cancellation."
+        },
+        {
+          "info": {
+            "name": "Get the ephemeris search result data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/ephemeris/requests/:request_id/data",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              },
+              {
+                "name": "data_source_record_format",
+                "value": "",
+                "type": "query",
+                "description": "Control which epehermis source data is returned. Default is basic."
+              }
+            ]
+          },
+          "docs": "Get the data returned by the given search request. If the data has expired, then 404 will be returned."
+        },
+        {
+          "info": {
+            "name": "Get the ephemeris search result data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/ephemeris/requests/:request_id/data",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get the data returned by the given search request. If the data has expired, then 404 will be returned."
+        },
+        {
+          "info": {
+            "name": "Delete a search result data file.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.aurorax.space/api/v1/ephemeris/requests/:request_id/data",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              }
+            ]
+          },
+          "docs": "Deletes the data file containing the search results. If this search is run in the future, the query will re-create the data file."
+        },
+        {
+          "info": {
+            "name": "Search for ephemeris",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/ephemeris/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Anonymous unless logged in. Just like a conjunction search, but contains one side of the query. Used to search  for particular ephemeris data of one or more Data Sources. Maximum time span returned is 1 month. Must provide at least one filter parameter. \n ** If you are logged in, your search will be private to only you, otherwise it is public **\n"
+        },
+        {
+          "info": {
+            "name": "Synchronously search for ephemeris",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/ephemeris/search_synchronous",
+            "params": [
+              {
+                "name": "data_source_record_format",
+                "value": "",
+                "type": "query",
+                "description": "Control how the epehermis data source is returned. Default is basic. This option will be used if the advanced format is not present in the request body."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Anonymous unless logged in. The same search functionality as asynchronous search, except it is synchronous. Because of the synchronous nature, the maximum time frame is significantly reduced to a maximum of two days. These requests are not saved, even if you are logged in."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

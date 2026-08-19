@@ -1,0 +1,122 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AuroraX Application.wadl Data Distribution API",
+    "version": "stable"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data Distribution",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve available datasets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/data_distribution/datasets",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "level",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve information about available datasets. Filter based on parameters supplied.\n\nNotes:\n  - filtering is case insensitive\n  - data level description: https://www.earthdata.nasa.gov/engage/open-data-services-and-software/data-information-policy/data-levels"
+        },
+        {
+          "info": {
+            "name": "Retrieve list of URLs for a given dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/data_distribution/urls",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "site_uid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "device_uid",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include_total_bytes",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve list of URLs for a given dataset and timeframe.\n\nNotes:\n  - start and end times are inclusive\n  - start and end time format is YYYY-mm-ddTHH:MM:SS. Excluding values from the right to \n    the left result in default values being used (eg. YYYY-mm-ddTHH results in YYYY-mm-ddTHH:00:00)\n  - dataset matching is case insensitive\n  - site_uid is expected to be the 4-letter site code, and is case insensitive\n  - device_uid is expected to be the instrument identifier such as \"themis02\", \"rego-65"
+        },
+        {
+          "info": {
+            "name": "Retrieve information about observatories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/data_distribution/observatories",
+            "params": [
+              {
+                "name": "instrument_array",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "uid",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve information about observatories. Filter based on parameters supplied.\n\nNotes:\n  - filtering for \"uid\" is case insensitive"
+        },
+        {
+          "info": {
+            "name": "Retrieve imaging start and end times for a set of locations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/data_distribution/imaging_timeframes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Retrieve imaging start and end times for a set of locations. This is specific to the optical \ninstrumentation we provide data for.\n\nThe timestamp is expected to be UTC time.\n\nEach location in the 'locations' array can be specified either by a 4-letter site UID, or by\nproviding geodetic latitude and longitude. If the site_uid is provided, it is resolved to\ncoordinates using the known observatory list.\n\nNotes:\n  - The threshold parameter is the solar zenith angle (in degrees) above which imaging o"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

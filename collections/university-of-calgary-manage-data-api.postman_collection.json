@@ -1,0 +1,2008 @@
+{
+  "item": [
+    {
+      "id": "d9eb011f-b40d-4b7d-8159-a084e3b971a0",
+      "name": "Manage Data",
+      "description": {
+        "content": "Operations relating to managing ephemeris and data products data",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "55787793-cd5f-4c32-bb61-750291801d83",
+          "name": "Add a data product",
+          "request": {
+            "name": "Add a data product",
+            "description": {
+              "content": "Adds one or more Data Product records to the set of Data Products for this Data Source record. Must be an Administrator, Owner of this Data Source or have been assigned Maintainer of this Data Source.\n\nThis end-point will accept very large files or continuous streams containing data product records. Data is processed asynchronously.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_sources",
+                ":identifier",
+                "data_products"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "identifier",
+                  "description": "(Required) The identifier specified in the Data Source record"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-aurorax-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"data_product_type\": \"<string>\",\n    \"end\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"url\": \"<string>\",\n    \"metadata\": \"<object>\"\n  },\n  {\n    \"data_product_type\": \"<string>\",\n    \"end\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"url\": \"<string>\",\n    \"metadata\": \"<object>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d10d4ba9-2527-4ae4-9bc9-9e283d1e32c4",
+              "name": "The data product stream was accepted for processing.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "data_products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier specified in the Data Source record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"data_product_type\": \"<string>\",\n    \"end\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"url\": \"<string>\",\n    \"metadata\": \"<object>\"\n  },\n  {\n    \"data_product_type\": \"<string>\",\n    \"end\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"url\": \"<string>\",\n    \"metadata\": \"<object>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "64968a43-4e87-4a45-8867-bb6b3570eee1",
+              "name": "Errors generated during load.\n\nPlease refer to the documentation for correctness of this operation. Because this operation is  asynchronous, some errors occurring later in the load may not be present in this response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "data_products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier specified in the Data Source record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"data_product_type\": \"<string>\",\n    \"end\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"url\": \"<string>\",\n    \"metadata\": \"<object>\"\n  },\n  {\n    \"data_product_type\": \"<string>\",\n    \"end\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"url\": \"<string>\",\n    \"metadata\": \"<object>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"error_message\": \"string\",\n    \"error_code\": \"ApplicationError\"\n  },\n  {\n    \"error_message\": \"string\",\n    \"error_code\": \"Ok\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c9d0e0e2-e182-4ac3-bea9-537ab866cb27",
+              "name": "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid API key\n * Invalid access token\n * Access token expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "data_products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier specified in the Data Source record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"data_product_type\": \"<string>\",\n    \"end\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"url\": \"<string>\",\n    \"metadata\": \"<object>\"\n  },\n  {\n    \"data_product_type\": \"<string>\",\n    \"end\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"url\": \"<string>\",\n    \"metadata\": \"<object>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4bfabf2b-4060-4150-818c-089e315227ea",
+              "name": "Not Permitted\nOnly the Data Source Owner, a Maintainer, or an Administrator may post new data products.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "data_products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier specified in the Data Source record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"data_product_type\": \"<string>\",\n    \"end\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"url\": \"<string>\",\n    \"metadata\": \"<object>\"\n  },\n  {\n    \"data_product_type\": \"<string>\",\n    \"end\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"url\": \"<string>\",\n    \"metadata\": \"<object>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e1bb04c1-02ce-4c3b-9ed4-cb068af0e337",
+              "name": "Maintenance Mode\n\nThe API is in maintenance mode. This endpoint is currently offline.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "data_products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier specified in the Data Source record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"data_product_type\": \"<string>\",\n    \"end\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"url\": \"<string>\",\n    \"metadata\": \"<object>\"\n  },\n  {\n    \"data_product_type\": \"<string>\",\n    \"end\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"start\": \"<dateTime>\",\n    \"url\": \"<string>\",\n    \"metadata\": \"<object>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0dc81556-037b-401f-af19-02506541e1f2",
+          "name": "Deletes a Data Product record",
+          "request": {
+            "name": "Deletes a Data Product record",
+            "description": {
+              "content": "*Must be the Data Source Maintainer, Owner, or have Administrator access in order to perform this operation* \n\n*Must be authenticated*",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_sources",
+                ":identifier",
+                "data_products"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "identifier",
+                  "description": "(Required) The identifier of the Data Source"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-aurorax-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"instrument_type\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"program\": \"<string>\",\n  \"urls\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5faa608c-bf32-4c18-aa20-777204604992",
+              "name": "Data Product record deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "data_products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"instrument_type\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"program\": \"<string>\",\n  \"urls\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5085a49e-2f6e-4e81-b062-ce626788890d",
+              "name": "Missing parameters. \n\nPlease refer to the documentation for correctness of this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "data_products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"instrument_type\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"program\": \"<string>\",\n  \"urls\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ab74bdef-09f4-48fd-9b5b-4b7ad32f8a14",
+              "name": "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid API key\n * Invalid access token\n * Access token expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "data_products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"instrument_type\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"program\": \"<string>\",\n  \"urls\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eec9812e-2130-4957-bb43-ef20a10b414f",
+              "name": "Not Permitted\nOnly the Data Source Owner, a Maintainer, or an Administrator may delete data products.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "data_products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"instrument_type\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"program\": \"<string>\",\n  \"urls\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d9bfd0e-7d95-4064-82e6-3dda2a950679",
+              "name": "identifier not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "data_products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"instrument_type\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"program\": \"<string>\",\n  \"urls\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc09abb1-baec-4cf1-b88a-8945e47daed2",
+              "name": "Maintenance Mode\n\nThe API is in maintenance mode. This endpoint is currently offline.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "data_products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"instrument_type\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"program\": \"<string>\",\n  \"urls\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7d979a9b-b055-4dac-8013-ef3885ef9d60",
+          "name": "Add ephemeris data",
+          "request": {
+            "name": "Add ephemeris data",
+            "description": {
+              "content": "Adds data to the set of Ephemeris for this Data Source record. Must be an Administrator, Owner of this Data Source or have been assigned Maintainer of this Data Source.\n\nThis end-point will accept very large files or continuous streams containing Ephemeris data. Data is processed asynchronously.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_sources",
+                ":identifier",
+                "ephemeris"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "identifier",
+                  "description": "(Required) The identifier specified in the Data Source record"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-aurorax-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"epoch\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"location_geo\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"metadata\": \"<object>\"\n  },\n  {\n    \"epoch\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"location_geo\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"metadata\": \"<object>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8ef30750-645f-48f0-99a9-e7bd6b4b8736",
+              "name": "The ephemeris stream was accepted for processing.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier specified in the Data Source record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"epoch\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"location_geo\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"metadata\": \"<object>\"\n  },\n  {\n    \"epoch\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"location_geo\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"metadata\": \"<object>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "769ac151-979b-414a-8e84-088b938144fa",
+              "name": "Errors generated during load.\n\nPlease refer to the documentation for correctness of this operation. Because this operation is  asynchronous, some errors occurring later in the load may not be present in this response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier specified in the Data Source record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"epoch\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"location_geo\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"metadata\": \"<object>\"\n  },\n  {\n    \"epoch\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"location_geo\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"metadata\": \"<object>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"error_message\": \"string\",\n    \"error_code\": \"ApplicationError\"\n  },\n  {\n    \"error_message\": \"string\",\n    \"error_code\": \"Ok\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "958a4893-7a9f-4b9f-a61f-7b7ace788770",
+              "name": "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid API key\n * Invalid access token\n * Access token expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier specified in the Data Source record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"epoch\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"location_geo\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"metadata\": \"<object>\"\n  },\n  {\n    \"epoch\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"location_geo\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"metadata\": \"<object>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e0f8aa9d-662a-47f6-8f3d-092413b7a093",
+              "name": "Not Permitted\nOnly the Data Source Owner, a Maintainer, or an Administrator may post new ephemeris data.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier specified in the Data Source record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"epoch\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"location_geo\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"metadata\": \"<object>\"\n  },\n  {\n    \"epoch\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"location_geo\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"metadata\": \"<object>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7b91dfe-4b63-403f-9bce-5f3aa86926f5",
+              "name": "Maintenance Mode\n\nThe API is in maintenance mode. This endpoint is currently offline.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier specified in the Data Source record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"epoch\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"location_geo\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"metadata\": \"<object>\"\n  },\n  {\n    \"epoch\": \"<dateTime>\",\n    \"instrument_type\": \"<string>\",\n    \"platform\": \"<string>\",\n    \"program\": \"<string>\",\n    \"location_geo\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"location_gsm\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"nbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"sbtrace\": {\n      \"lat\": \"<number>\",\n      \"lon\": \"<number>\"\n    },\n    \"metadata\": \"<object>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "107100dd-9fbc-4f61-9540-476be1821c0f",
+          "name": "Delete a range of Ephemeris records. This interface is asynchronous.",
+          "request": {
+            "name": "Delete a range of Ephemeris records. This interface is asynchronous.",
+            "description": {
+              "content": "*Must be the Data Source Maintainer, Owner, or have Administrator access in order to perform this operation* \n\n*Must be authenticated*",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_sources",
+                ":identifier",
+                "ephemeris"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "identifier",
+                  "description": "(Required) The identifier of the Data Source"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-aurorax-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"end\": \"<dateTime>\",\n  \"instrument_type\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"program\": \"<string>\",\n  \"start\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "61a9cd2e-49ab-457c-bfc4-ff251be0af46",
+              "name": "Delete request accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"end\": \"<dateTime>\",\n  \"instrument_type\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"program\": \"<string>\",\n  \"start\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "16e48b6a-141d-47ad-8a15-61e85e1a758b",
+              "name": "Missing parameters. \n\nPlease refer to the documentation for correctness of this operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"end\": \"<dateTime>\",\n  \"instrument_type\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"program\": \"<string>\",\n  \"start\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1672c3a2-e5e6-4180-9288-483bf2cbadf6",
+              "name": "Not Authorized. \nCould be attributable to any of the following:\n\n\n * Invalid API key\n * Invalid access token\n * Access token expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"end\": \"<dateTime>\",\n  \"instrument_type\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"program\": \"<string>\",\n  \"start\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a0f9887b-fc82-4208-af23-35787da8b363",
+              "name": "Not Permitted\nOnly the Data Source Owner, a Maintainer, or an Administrator may delete ephemeris data.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"end\": \"<dateTime>\",\n  \"instrument_type\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"program\": \"<string>\",\n  \"start\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3ae407f8-ff9c-473f-9bbc-470dc3868fc3",
+              "name": "identifier not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"end\": \"<dateTime>\",\n  \"instrument_type\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"program\": \"<string>\",\n  \"start\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "abb91ab7-2d3e-4b05-b1d2-a25bac8991c0",
+              "name": "Maintenance Mode\n\nThe API is in maintenance mode. This endpoint is currently offline.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-aurorax-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"end\": \"<dateTime>\",\n  \"instrument_type\": \"<string>\",\n  \"platform\": \"<string>\",\n  \"program\": \"<string>\",\n  \"start\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1b1abd02-f431-442e-b66d-32fcd33ad0e4",
+          "name": "Get a recent (within 1 hour) delete job details",
+          "request": {
+            "name": "Get a recent (within 1 hour) delete job details",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_sources",
+                ":identifier",
+                "ephemeris",
+                "delete_jobs",
+                ":delete_job_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "identifier",
+                  "description": "(Required) The identifier of the Data Source"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "delete_job_id",
+                  "description": "(Required) The delete job identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "81e0b64a-f086-4daf-b29b-0cde67a6259b",
+              "name": "Delete job details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris",
+                    "delete_jobs",
+                    ":delete_job_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "delete_job_id",
+                      "description": "(Required) The delete job identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  \"string\",\n  \"string\"\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72008bf4-521a-4e8c-8e8d-081319d434aa",
+              "name": "identifier not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris",
+                    "delete_jobs",
+                    ":delete_job_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "delete_job_id",
+                      "description": "(Required) The delete job identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e1e736a4-3936-4a27-add8-3a6d76992930",
+          "name": "List recent (within 1 hour) delete jobs",
+          "request": {
+            "name": "List recent (within 1 hour) delete jobs",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "data_sources",
+                ":identifier",
+                "ephemeris",
+                "delete_jobs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "identifier",
+                  "description": "(Required) The identifier of the Data Source"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7c0fa128-7786-43e2-a46d-8eee86b4ee7e",
+              "name": "List of recent delete jobs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris",
+                    "delete_jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  \"string\",\n  \"string\"\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "080accab-903a-4657-a16f-6ce0dd35396d",
+              "name": "identifier not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "data_sources",
+                    ":identifier",
+                    "ephemeris",
+                    "delete_jobs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "identifier",
+                      "description": "(Required) The identifier of the Data Source"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error_message\": \"string\",\n  \"error_code\": \"Duplicate\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.aurorax.space",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "bab2baa5-48a8-4d19-b6f1-a47f3dc8dc30",
+    "name": "AuroraX Application.wadl Manage Data API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n",
+      "type": "text/plain"
+    }
+  }
+}

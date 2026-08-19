@@ -1,0 +1,161 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "AuroraX Application.wadl Data Products Search API",
+    "version": "stable"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data Products Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the data_product search request details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/data_products/requests/:request_id",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              }
+            ]
+          },
+          "docs": "This endpoint is anonymous. The request ID can be shared with anyone."
+        },
+        {
+          "info": {
+            "name": "Cancel the data_product search request",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.aurorax.space/api/v1/data_products/requests/:request_id",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              }
+            ]
+          },
+          "docs": "Attempts to cancel the search request. The system will log an error against the request noting the cancellation."
+        },
+        {
+          "info": {
+            "name": "Get the data_product search result data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.aurorax.space/api/v1/data_products/requests/:request_id/data",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              },
+              {
+                "name": "data_source_record_format",
+                "value": "",
+                "type": "query",
+                "description": "Control which epehermis source data is returned. Default is basic."
+              }
+            ]
+          },
+          "docs": "Get the data returned by the given search request. If the data has expired, then 404 will be returned."
+        },
+        {
+          "info": {
+            "name": "Get the data_product search result data with a data format specification",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/data_products/requests/:request_id/data",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get the data returned by the given search request. If the data has expired, then 404 will be returned."
+        },
+        {
+          "info": {
+            "name": "Delete a search result data file.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.aurorax.space/api/v1/data_products/requests/:request_id/data",
+            "params": [
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The request ID"
+              }
+            ]
+          },
+          "docs": "Deletes the data file containing the search results. If this search is run in the future, the query will re-create the data file."
+        },
+        {
+          "info": {
+            "name": "Search for data products",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/data_products/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Data products have their own metadata and can be filtered on those. Additionally, because data products are also linked to one or more data sources, they can also be found by adding metadata filters to data source criteria"
+        },
+        {
+          "info": {
+            "name": "Synchronously search for data products",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.aurorax.space/api/v1/data_products/search_synchronous",
+            "params": [
+              {
+                "name": "data_source_record_format",
+                "value": "",
+                "type": "query",
+                "description": "Control how the data product data source data is returned. Default is basic."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Anonymous unless logged in. The same search functionality as asynchronous search, except it is synchronous. Search results are limited to 10 years of data products. These requests are not saved, even if you are logged in."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
