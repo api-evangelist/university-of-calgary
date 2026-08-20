@@ -271,6 +271,8 @@ apis:
   humanURL: https://api.phys.ucalgary.ca/
   baseURL: https://api.phys.ucalgary.ca/
   tags:
+  - Manage data
+  tags_raw:
   - Manage Data
   properties:
   - type: OpenAPI
