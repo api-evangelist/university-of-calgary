@@ -3,9 +3,12 @@
   "feeds": [
     {
       "source": "https://www.ucalgary.ca/news/rss.xml",
-      "error": "ConnectionResetError"
+      "feed_url": "https://www.ucalgary.ca/news/rss.xml",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
     }
   ],
-  "fetched": "2026-08-06T14:08:46Z",
+  "fetched": "2026-08-22T20:20:02Z",
   "post_count": 11
 }
