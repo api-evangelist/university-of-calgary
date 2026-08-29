@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: AuroraX Application.wadl Data Sources API
+  title: AuroraX Data Sources API
   description: "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n"
   version: stable
 servers:
@@ -80,7 +80,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Data Source'
+                  $ref: '#/components/schemas/Data_Source'
     post:
       tags:
       - Data Sources
@@ -92,7 +92,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Data Source'
+              $ref: '#/components/schemas/Data_Source'
         required: true
       responses:
         '200':
@@ -100,7 +100,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Data Source'
+                $ref: '#/components/schemas/Data_Source'
         '400':
           description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this operation."
           content:
@@ -173,7 +173,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Data Source'
+                $ref: '#/components/schemas/Data_Source'
         '400':
           description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this operation."
         '404':
@@ -201,7 +201,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Data Source'
+              $ref: '#/components/schemas/Data_Source'
         required: true
       responses:
         '200':
@@ -209,7 +209,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Data Source'
+                $ref: '#/components/schemas/Data_Source'
         '400':
           description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this operation."
           content:
@@ -334,7 +334,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Data Source'
+              $ref: '#/components/schemas/Data_Source'
         required: true
       responses:
         '200':
@@ -342,7 +342,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Data Source'
+                $ref: '#/components/schemas/Data_Source'
         '400':
           description: "Missing parameters. \n\nPlease refer to the documentation for correctness of this operation."
           content:
@@ -472,7 +472,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Data Source'
+                  $ref: '#/components/schemas/Data_Source'
         '400':
           description: 'Missing or invalid parameters.
 
@@ -484,73 +484,7 @@ paths:
                 $ref: '#/components/schemas/ErrorDocument'
 components:
   schemas:
-    JsonNode:
-      type: object
-    MetadataSchema:
-      type: object
-      properties:
-        field_name:
-          type: string
-          description: The name of the field found in the ephemeris metadata
-        description:
-          type: string
-          description: A brief description of what the metadata field represents
-        data_type:
-          type: string
-          description: An indicator to let you know what filter operations are available. Strings allow for =, !=, and in. Decimals allow for =, !=, <, >, <=, >=, and in.
-        allowed_values:
-          type: array
-          description: An optional list of possible values available in the metadata.
-          items:
-            type: string
-            description: An optional list of possible values available in the metadata.
-        additional_description:
-          type: string
-          description: More details about what this metadata field is about
-        searchable:
-          type: boolean
-          description: Used by UI's to include it in metadata fields exposed as searchable through the conjunction interface. The API allows for all fields to be searchable but some applications may chose to hide any fields marked searchable=false
-      description: Describes the metadata fields found on Ephemeris data.
-    DataSourceStats:
-      type: object
-      properties:
-        data_source:
-          $ref: '#/components/schemas/Data Source'
-        earliest_ephemeris_loaded:
-          type: string
-          format: date-time
-        latest_ephemeris_loaded:
-          type: string
-          format: date-time
-        ephemeris_count:
-          type: integer
-          format: int32
-        earliest_data_product_loaded:
-          type: string
-          format: date-time
-        latest_data_product_loaded:
-          type: string
-          format: date-time
-        data_product_count:
-          type: integer
-          format: int32
-      description: Some basic stats about this data_source, like number of ephemeris records. Read only.
-    DataSourceQuery:
-      type: object
-      properties:
-        programs:
-          type: array
-          items:
-            type: string
-        platforms:
-          type: array
-          items:
-            type: string
-        instrument_types:
-          type: array
-          items:
-            type: string
-    Data Source:
+    Data_Source:
       required:
       - display_name
       - instrument_type
@@ -609,6 +543,48 @@ components:
         metadata:
           $ref: '#/components/schemas/JsonNode'
       description: Things that produce data, like satellites, ground stations/instruments, platforms
+    MetadataSchema:
+      type: object
+      properties:
+        field_name:
+          type: string
+          description: The name of the field found in the ephemeris metadata
+        description:
+          type: string
+          description: A brief description of what the metadata field represents
+        data_type:
+          type: string
+          description: An indicator to let you know what filter operations are available. Strings allow for =, !=, and in. Decimals allow for =, !=, <, >, <=, >=, and in.
+        allowed_values:
+          type: array
+          description: An optional list of possible values available in the metadata.
+          items:
+            type: string
+            description: An optional list of possible values available in the metadata.
+        additional_description:
+          type: string
+          description: More details about what this metadata field is about
+        searchable:
+          type: boolean
+          description: Used by UI's to include it in metadata fields exposed as searchable through the conjunction interface. The API allows for all fields to be searchable but some applications may chose to hide any fields marked searchable=false
+      description: Describes the metadata fields found on Ephemeris data.
+    JsonNode:
+      type: object
+    DataSourceQuery:
+      type: object
+      properties:
+        programs:
+          type: array
+          items:
+            type: string
+        platforms:
+          type: array
+          items:
+            type: string
+        instrument_types:
+          type: array
+          items:
+            type: string
     ErrorDocument:
       type: object
       properties:
@@ -634,6 +610,30 @@ components:
           - NotAuthenticated
           - Unavailable
       description: This model provides additional details about error conditions that can be used for debugging.
+    DataSourceStats:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/Data_Source'
+        earliest_ephemeris_loaded:
+          type: string
+          format: date-time
+        latest_ephemeris_loaded:
+          type: string
+          format: date-time
+        ephemeris_count:
+          type: integer
+          format: int32
+        earliest_data_product_loaded:
+          type: string
+          format: date-time
+        latest_data_product_loaded:
+          type: string
+          format: date-time
+        data_product_count:
+          type: integer
+          format: int32
+      description: Some basic stats about this data_source, like number of ephemeris records. Read only.
   securitySchemes:
     AccessToken:
       type: http

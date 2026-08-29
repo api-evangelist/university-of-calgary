@@ -1,18 +1,11 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: AuroraX Application.wadl Auroral Transport Model (ATM) API
-  description: "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n"
-  version: stable
+  title: UCalgary Space Remote Sensing Auroral Transport Model (ATM) API
+  description: API providing data and tools for UCalgary Space Remote Sensing
+  version: 1.56.0
 servers:
-- url: https://api.aurorax.space
-  description: AuroraX production server
-  variables: {}
-- url: https://api.staging.aurorax.space
-  description: AuroraX staging server
-  variables: {}
-- url: http://localhost:8080/
-  description: Local Development and Debugging
-  variables: {}
+- url: https://api.phys.ucalgary.ca
+  description: UCalgary Space Remote Sensing API
 tags:
 - name: Auroral Transport Model (ATM)
   description: Endpoints to utilize the Auroral Transport Model
@@ -627,501 +620,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ATMForwardCustomNeutralProfile:
-      properties:
-        altitude:
-          items:
-            anyOf:
-            - type: number
-            - type: integer
-          type: array
-          title: Altitude
-        o_density:
-          items:
-            type: number
-          type: array
-          title: O Density
-        o2_density:
-          items:
-            type: number
-          type: array
-          title: O2 Density
-        n2_density:
-          items:
-            type: number
-          type: array
-          title: N2 Density
-        n_density:
-          items:
-            type: number
-          type: array
-          title: N Density
-        no_density:
-          items:
-            type: number
-          type: array
-          title: No Density
-        temperature:
-          items:
-            anyOf:
-            - type: number
-            - type: integer
-          type: array
-          title: Temperature
-      type: object
-      required:
-      - altitude
-      - o_density
-      - o2_density
-      - n2_density
-      - n_density
-      - no_density
-      - temperature
-      title: ATMForwardCustomNeutralProfile
-    src__atm__v2__schemas_inverse__ATMInverseResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/src__atm__v2__schemas_inverse__ATMInverseResponseData'
-        request:
-          $ref: '#/components/schemas/src__atm__v2__schemas_inverse__ATMInverseRequest'
-        calculation_duration_ms:
-          type: number
-          title: Calculation Duration Ms
-      type: object
-      required:
-      - data
-      - request
-      - calculation_duration_ms
-      title: ATMInverseResponse
-    src__atm__v1__schemas_inverse__ATMInverseResponseData:
-      properties:
-        altitudes:
-          items: {}
-          type: array
-          title: Altitudes
-        energy_flux:
-          type: number
-          title: Energy Flux
-        characteristic_energy:
-          type: number
-          title: Characteristic Energy
-        oxygen_correction_factor:
-          type: number
-          title: Oxygen Correction Factor
-        height_integrated_rayleighs_4278:
-          type: number
-          title: Height Integrated Rayleighs 4278
-        height_integrated_rayleighs_5577:
-          type: number
-          title: Height Integrated Rayleighs 5577
-        height_integrated_rayleighs_6300:
-          type: number
-          title: Height Integrated Rayleighs 6300
-        height_integrated_rayleighs_8446:
-          type: number
-          title: Height Integrated Rayleighs 8446
-        emission_4278:
-          items: {}
-          type: array
-          title: Emission 4278
-        emission_5577:
-          items: {}
-          type: array
-          title: Emission 5577
-        emission_6300:
-          items: {}
-          type: array
-          title: Emission 6300
-        emission_8446:
-          items: {}
-          type: array
-          title: Emission 8446
-        plasma_electron_density:
-          items: {}
-          type: array
-          title: Plasma Electron Density
-        plasma_o2plus_density:
-          items: {}
-          type: array
-          title: Plasma O2Plus Density
-        plasma_noplus_density:
-          items: {}
-          type: array
-          title: Plasma Noplus Density
-        plasma_oplus_density:
-          items: {}
-          type: array
-          title: Plasma Oplus Density
-        plasma_ionisation_rate:
-          items: {}
-          type: array
-          title: Plasma Ionisation Rate
-        plasma_electron_temperature:
-          items: {}
-          type: array
-          title: Plasma Electron Temperature
-        plasma_ion_temperature:
-          items: {}
-          type: array
-          title: Plasma Ion Temperature
-        plasma_pederson_conductivity:
-          items: {}
-          type: array
-          title: Plasma Pederson Conductivity
-        plasma_hall_conductivity:
-          items: {}
-          type: array
-          title: Plasma Hall Conductivity
-        neutral_o2_density:
-          items: {}
-          type: array
-          title: Neutral O2 Density
-        neutral_o_density:
-          items: {}
-          type: array
-          title: Neutral O Density
-        neutral_n2_density:
-          items: {}
-          type: array
-          title: Neutral N2 Density
-        neutral_n_density:
-          items: {}
-          type: array
-          title: Neutral N Density
-        neutral_temperature:
-          items: {}
-          type: array
-          title: Neutral Temperature
-      type: object
-      title: ATMInverseResponseData
-    src__atm__v1__schemas_inverse__ATMInverseRequestOutputFlags:
-      properties:
-        altitudes:
-          type: boolean
-          title: Altitudes
-          default: false
-        energy_flux:
-          type: boolean
-          title: Energy Flux
-          default: false
-        characteristic_energy:
-          type: boolean
-          title: Characteristic Energy
-          default: false
-        oxygen_correction_factor:
-          type: boolean
-          title: Oxygen Correction Factor
-          default: false
-        height_integrated_rayleighs_4278:
-          type: boolean
-          title: Height Integrated Rayleighs 4278
-          default: false
-        height_integrated_rayleighs_5577:
-          type: boolean
-          title: Height Integrated Rayleighs 5577
-          default: false
-        height_integrated_rayleighs_6300:
-          type: boolean
-          title: Height Integrated Rayleighs 6300
-          default: false
-        height_integrated_rayleighs_8446:
-          type: boolean
-          title: Height Integrated Rayleighs 8446
-          default: false
-        emission_4278:
-          type: boolean
-          title: Emission 4278
-          default: false
-        emission_5577:
-          type: boolean
-          title: Emission 5577
-          default: false
-        emission_6300:
-          type: boolean
-          title: Emission 6300
-          default: false
-        emission_8446:
-          type: boolean
-          title: Emission 8446
-          default: false
-        plasma_electron_density:
-          type: boolean
-          title: Plasma Electron Density
-          default: false
-        plasma_o2plus_density:
-          type: boolean
-          title: Plasma O2Plus Density
-          default: false
-        plasma_oplus_density:
-          type: boolean
-          title: Plasma Oplus Density
-          default: false
-        plasma_noplus_density:
-          type: boolean
-          title: Plasma Noplus Density
-          default: false
-        plasma_ionisation_rate:
-          type: boolean
-          title: Plasma Ionisation Rate
-          default: false
-        plasma_electron_temperature:
-          type: boolean
-          title: Plasma Electron Temperature
-          default: false
-        plasma_ion_temperature:
-          type: boolean
-          title: Plasma Ion Temperature
-          default: false
-        plasma_pederson_conductivity:
-          type: boolean
-          title: Plasma Pederson Conductivity
-          default: false
-        plasma_hall_conductivity:
-          type: boolean
-          title: Plasma Hall Conductivity
-          default: false
-        neutral_o2_density:
-          type: boolean
-          title: Neutral O2 Density
-          default: false
-        neutral_o_density:
-          type: boolean
-          title: Neutral O Density
-          default: false
-        neutral_n2_density:
-          type: boolean
-          title: Neutral N2 Density
-          default: false
-        neutral_n_density:
-          type: boolean
-          title: Neutral N Density
-          default: false
-        neutral_temperature:
-          type: boolean
-          title: Neutral Temperature
-          default: false
-      type: object
-      title: ATMInverseRequestOutputFlags
-    src__atm__v1__schemas_inverse__ATMInverseRequest:
-      properties:
-        atm_model_version:
-          type: string
-          enum:
-          - '1.0'
-          title: Atm Model Version
-          default: '1.0'
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        geodetic_latitude:
-          type: number
-          title: Geodetic Latitude
-        geodetic_longitude:
-          type: number
-          title: Geodetic Longitude
-        intensity_4278:
-          type: number
-          title: Intensity 4278
-          default: 1000.0
-        intensity_5577:
-          type: number
-          title: Intensity 5577
-          default: 6000.0
-        intensity_6300:
-          type: number
-          title: Intensity 6300
-          default: 600.0
-        intensity_8446:
-          type: number
-          title: Intensity 8446
-          default: 400.0
-        precipitation_flux_spectral_type:
-          type: string
-          enum:
-          - gaussian
-          - maxwellian
-          title: Precipitation Flux Spectral Type
-          default: gaussian
-        nrlmsis_model_version:
-          type: string
-          enum:
-          - '00'
-          - '2.0'
-          title: Nrlmsis Model Version
-          default: '2.0'
-        atmospheric_attenuation_correction:
-          type: boolean
-          title: Atmospheric Attenuation Correction
-          default: false
-        output:
-          $ref: '#/components/schemas/src__atm__v1__schemas_inverse__ATMInverseRequestOutputFlags'
-        no_cache:
-          type: boolean
-          title: No Cache
-          default: false
-      type: object
-      required:
-      - timestamp
-      - geodetic_latitude
-      - geodetic_longitude
-      title: ATMInverseRequest
-    src__atm__v2__schemas_forward__ATMForwardResponseData:
-      properties:
-        height_integrated_rayleighs_4278:
-          type: number
-          title: Height Integrated Rayleighs 4278
-        height_integrated_rayleighs_5577:
-          type: number
-          title: Height Integrated Rayleighs 5577
-        height_integrated_rayleighs_6300:
-          type: number
-          title: Height Integrated Rayleighs 6300
-        height_integrated_rayleighs_8446:
-          type: number
-          title: Height Integrated Rayleighs 8446
-        height_integrated_rayleighs_1304:
-          type: number
-          title: Height Integrated Rayleighs 1304
-        height_integrated_rayleighs_1356:
-          type: number
-          title: Height Integrated Rayleighs 1356
-        height_integrated_rayleighs_smile_uvi_lbh:
-          type: number
-          title: Height Integrated Rayleighs Smile Uvi Lbh
-        height_integrated_rayleighs_lbh:
-          type: number
-          title: Height Integrated Rayleighs Lbh
-        altitudes:
-          items: {}
-          type: array
-          title: Altitudes
-        emission_4278:
-          items: {}
-          type: array
-          title: Emission 4278
-        emission_5577:
-          items: {}
-          type: array
-          title: Emission 5577
-        emission_6300:
-          items: {}
-          type: array
-          title: Emission 6300
-        emission_8446:
-          items: {}
-          type: array
-          title: Emission 8446
-        emission_1304:
-          items: {}
-          type: array
-          title: Emission 1304
-        emission_1356:
-          items: {}
-          type: array
-          title: Emission 1356
-        emission_smile_uvi_lbh:
-          items: {}
-          type: array
-          title: Emission Smile Uvi Lbh
-        emission_lbh:
-          items: {}
-          type: array
-          title: Emission Lbh
-        plasma_electron_density:
-          items: {}
-          type: array
-          title: Plasma Electron Density
-        plasma_o2plus_density:
-          items: {}
-          type: array
-          title: Plasma O2Plus Density
-        plasma_noplus_density:
-          items: {}
-          type: array
-          title: Plasma Noplus Density
-        plasma_oplus_density:
-          items: {}
-          type: array
-          title: Plasma Oplus Density
-        plasma_ionisation_rate:
-          items: {}
-          type: array
-          title: Plasma Ionisation Rate
-        plasma_electron_temperature:
-          items: {}
-          type: array
-          title: Plasma Electron Temperature
-        plasma_ion_temperature:
-          items: {}
-          type: array
-          title: Plasma Ion Temperature
-        plasma_pedersen_conductivity:
-          items: {}
-          type: array
-          title: Plasma Pedersen Conductivity
-        plasma_pederson_conductivity:
-          items: {}
-          type: array
-          title: Plasma Pederson Conductivity
-        plasma_hall_conductivity:
-          items: {}
-          type: array
-          title: Plasma Hall Conductivity
-        neutral_o2_density:
-          items: {}
-          type: array
-          title: Neutral O2 Density
-        neutral_o_density:
-          items: {}
-          type: array
-          title: Neutral O Density
-        neutral_n2_density:
-          items: {}
-          type: array
-          title: Neutral N2 Density
-        neutral_n_density:
-          items: {}
-          type: array
-          title: Neutral N Density
-        neutral_temperature:
-          items: {}
-          type: array
-          title: Neutral Temperature
-        production_rate_o2plus:
-          items: {}
-          type: array
-          title: Production Rate O2Plus
-        production_rate_oplus:
-          items: {}
-          type: array
-          title: Production Rate Oplus
-        production_rate_oneg:
-          items: {}
-          type: array
-          title: Production Rate Oneg
-        production_rate_o:
-          items: {}
-          type: array
-          title: Production Rate O
-        production_rate_nplus:
-          items: {}
-          type: array
-          title: Production Rate Nplus
-        production_rate_n2plus:
-          items: {}
-          type: array
-          title: Production Rate N2Plus
-        production_rate_n:
-          items: {}
-          type: array
-          title: Production Rate N
-        production_rate_n2d:
-          items: {}
-          type: array
-          title: Production Rate N2D
-      type: object
-      title: ATMForwardResponseData
     src__atm__v2__schemas_forward__ATMForwardRequestOutputFlags:
       properties:
         height_integrated_rayleighs_4278:
@@ -1286,23 +784,6 @@ components:
           default: false
       type: object
       title: ATMForwardRequestOutputFlags
-    ATMForwardCustomSpectrum:
-      properties:
-        energy:
-          items:
-            type: number
-          type: array
-          title: Energy
-        flux:
-          items:
-            type: number
-          type: array
-          title: Flux
-      type: object
-      required:
-      - energy
-      - flux
-      title: ATMForwardCustomSpectrum
     src__atm__v1__schemas_forward__ATMForwardResponse:
       properties:
         data:
@@ -1318,50 +799,24 @@ components:
       - request
       - calculation_duration_ms
       title: ATMForwardResponse
-    ATMInverseForwardRequest:
+    ErrorMessage:
       properties:
-        maxwellian_energy_flux:
-          type: number
-          title: Maxwellian Energy Flux
-        gaussian_energy_flux:
-          type: number
-          title: Gaussian Energy Flux
-        maxwellian_characteristic_energy:
-          type: number
-          title: Maxwellian Characteristic Energy
-        gaussian_peak_energy:
-          type: number
-          title: Gaussian Peak Energy
-        gaussian_spectral_width:
-          type: number
-          title: Gaussian Spectral Width
-        nrlmsis_model_version:
+        detail:
           type: string
-          enum:
-          - '00'
-          - '2.0'
-          title: Nrlmsis Model Version
-        oxygen_correction_factor:
-          type: number
-          title: Oxygen Correction Factor
-        timescale_auroral:
-          type: integer
-          title: Timescale Auroral
-        timescale_transport:
-          type: integer
-          title: Timescale Transport
+          title: Detail
       type: object
       required:
-      - maxwellian_energy_flux
-      - gaussian_energy_flux
-      - maxwellian_characteristic_energy
-      - gaussian_peak_energy
-      - gaussian_spectral_width
-      - nrlmsis_model_version
-      - oxygen_correction_factor
-      - timescale_auroral
-      - timescale_transport
-      title: ATMInverseForwardRequest
+      - detail
+      title: ErrorMessage
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     src__atm__v2__schemas_inverse__ATMInverseRequestOutputFlags:
       properties:
         energy_flux:
@@ -1382,6 +837,64 @@ components:
           default: false
       type: object
       title: ATMInverseRequestOutputFlags
+    src__atm__v2__schemas_inverse__ATMInverseRequest:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+        intensity_4278:
+          type: number
+          title: Intensity 4278
+          default: 1000.0
+        intensity_5577:
+          type: number
+          title: Intensity 5577
+          default: 6000.0
+        intensity_6300:
+          type: number
+          title: Intensity 6300
+          default: 600.0
+        intensity_8446:
+          type: number
+          title: Intensity 8446
+          default: 400.0
+        precipitation_flux_spectral_type:
+          type: string
+          enum:
+          - gaussian
+          - maxwellian
+          title: Precipitation Flux Spectral Type
+          default: gaussian
+        nrlmsis_model_version:
+          type: string
+          enum:
+          - '00'
+          - '2.0'
+          title: Nrlmsis Model Version
+          default: '2.0'
+        special_logic_keyword:
+          type: string
+          title: Special Logic Keyword
+          default: not_applicable
+        output:
+          $ref: '#/components/schemas/src__atm__v2__schemas_inverse__ATMInverseRequestOutputFlags'
+        no_cache:
+          type: boolean
+          title: No Cache
+          default: false
+      type: object
+      required:
+      - timestamp
+      - geodetic_latitude
+      - geodetic_longitude
+      title: ATMInverseRequest
     src__atm__v1__schemas_forward__ATMForwardResponseData:
       properties:
         height_integrated_rayleighs_4278:
@@ -1495,23 +1008,56 @@ components:
           title: Neutral Temperature
       type: object
       title: ATMForwardResponseData
-    src__atm__v2__schemas_forward__ATMForwardResponse:
+    ValidationError:
       properties:
-        data:
-          $ref: '#/components/schemas/src__atm__v2__schemas_forward__ATMForwardResponseData'
-        request:
-          $ref: '#/components/schemas/src__atm__v2__schemas_forward__ATMForwardRequest'
-        calculation_duration_ms:
-          type: number
-          title: Calculation Duration Ms
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - data
-      - request
-      - calculation_duration_ms
-      title: ATMForwardResponse
-    src__atm__v2__schemas_inverse__ATMInverseRequest:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    src__atm__v2__schemas_inverse__ATMInverseResponseData:
       properties:
+        energy_flux:
+          type: number
+          title: Energy Flux
+        mean_energy:
+          type: number
+          title: Mean Energy
+        characteristic_energy:
+          type: number
+          title: Characteristic Energy
+        oxygen_correction_factor:
+          type: number
+          title: Oxygen Correction Factor
+      type: object
+      title: ATMInverseResponseData
+    src__atm__v1__schemas_inverse__ATMInverseRequest:
+      properties:
+        atm_model_version:
+          type: string
+          enum:
+          - '1.0'
+          title: Atm Model Version
+          default: '1.0'
         timestamp:
           type: string
           format: date-time
@@ -1552,12 +1098,12 @@ components:
           - '2.0'
           title: Nrlmsis Model Version
           default: '2.0'
-        special_logic_keyword:
-          type: string
-          title: Special Logic Keyword
-          default: not_applicable
+        atmospheric_attenuation_correction:
+          type: boolean
+          title: Atmospheric Attenuation Correction
+          default: false
         output:
-          $ref: '#/components/schemas/src__atm__v2__schemas_inverse__ATMInverseRequestOutputFlags'
+          $ref: '#/components/schemas/src__atm__v1__schemas_inverse__ATMInverseRequestOutputFlags'
         no_cache:
           type: boolean
           title: No Cache
@@ -1568,6 +1114,461 @@ components:
       - geodetic_latitude
       - geodetic_longitude
       title: ATMInverseRequest
+    ATMInverseForwardRequest:
+      properties:
+        maxwellian_energy_flux:
+          type: number
+          title: Maxwellian Energy Flux
+        gaussian_energy_flux:
+          type: number
+          title: Gaussian Energy Flux
+        maxwellian_characteristic_energy:
+          type: number
+          title: Maxwellian Characteristic Energy
+        gaussian_peak_energy:
+          type: number
+          title: Gaussian Peak Energy
+        gaussian_spectral_width:
+          type: number
+          title: Gaussian Spectral Width
+        nrlmsis_model_version:
+          type: string
+          enum:
+          - '00'
+          - '2.0'
+          title: Nrlmsis Model Version
+        oxygen_correction_factor:
+          type: number
+          title: Oxygen Correction Factor
+        timescale_auroral:
+          type: integer
+          title: Timescale Auroral
+        timescale_transport:
+          type: integer
+          title: Timescale Transport
+      type: object
+      required:
+      - maxwellian_energy_flux
+      - gaussian_energy_flux
+      - maxwellian_characteristic_energy
+      - gaussian_peak_energy
+      - gaussian_spectral_width
+      - nrlmsis_model_version
+      - oxygen_correction_factor
+      - timescale_auroral
+      - timescale_transport
+      title: ATMInverseForwardRequest
+    src__atm__v2__schemas_forward__ATMForwardResponseData:
+      properties:
+        height_integrated_rayleighs_4278:
+          type: number
+          title: Height Integrated Rayleighs 4278
+        height_integrated_rayleighs_5577:
+          type: number
+          title: Height Integrated Rayleighs 5577
+        height_integrated_rayleighs_6300:
+          type: number
+          title: Height Integrated Rayleighs 6300
+        height_integrated_rayleighs_8446:
+          type: number
+          title: Height Integrated Rayleighs 8446
+        height_integrated_rayleighs_1304:
+          type: number
+          title: Height Integrated Rayleighs 1304
+        height_integrated_rayleighs_1356:
+          type: number
+          title: Height Integrated Rayleighs 1356
+        height_integrated_rayleighs_smile_uvi_lbh:
+          type: number
+          title: Height Integrated Rayleighs Smile Uvi Lbh
+        height_integrated_rayleighs_lbh:
+          type: number
+          title: Height Integrated Rayleighs Lbh
+        altitudes:
+          items: {}
+          type: array
+          title: Altitudes
+        emission_4278:
+          items: {}
+          type: array
+          title: Emission 4278
+        emission_5577:
+          items: {}
+          type: array
+          title: Emission 5577
+        emission_6300:
+          items: {}
+          type: array
+          title: Emission 6300
+        emission_8446:
+          items: {}
+          type: array
+          title: Emission 8446
+        emission_1304:
+          items: {}
+          type: array
+          title: Emission 1304
+        emission_1356:
+          items: {}
+          type: array
+          title: Emission 1356
+        emission_smile_uvi_lbh:
+          items: {}
+          type: array
+          title: Emission Smile Uvi Lbh
+        emission_lbh:
+          items: {}
+          type: array
+          title: Emission Lbh
+        plasma_electron_density:
+          items: {}
+          type: array
+          title: Plasma Electron Density
+        plasma_o2plus_density:
+          items: {}
+          type: array
+          title: Plasma O2Plus Density
+        plasma_noplus_density:
+          items: {}
+          type: array
+          title: Plasma Noplus Density
+        plasma_oplus_density:
+          items: {}
+          type: array
+          title: Plasma Oplus Density
+        plasma_ionisation_rate:
+          items: {}
+          type: array
+          title: Plasma Ionisation Rate
+        plasma_electron_temperature:
+          items: {}
+          type: array
+          title: Plasma Electron Temperature
+        plasma_ion_temperature:
+          items: {}
+          type: array
+          title: Plasma Ion Temperature
+        plasma_pedersen_conductivity:
+          items: {}
+          type: array
+          title: Plasma Pedersen Conductivity
+        plasma_pederson_conductivity:
+          items: {}
+          type: array
+          title: Plasma Pederson Conductivity
+        plasma_hall_conductivity:
+          items: {}
+          type: array
+          title: Plasma Hall Conductivity
+        neutral_o2_density:
+          items: {}
+          type: array
+          title: Neutral O2 Density
+        neutral_o_density:
+          items: {}
+          type: array
+          title: Neutral O Density
+        neutral_n2_density:
+          items: {}
+          type: array
+          title: Neutral N2 Density
+        neutral_n_density:
+          items: {}
+          type: array
+          title: Neutral N Density
+        neutral_temperature:
+          items: {}
+          type: array
+          title: Neutral Temperature
+        production_rate_o2plus:
+          items: {}
+          type: array
+          title: Production Rate O2Plus
+        production_rate_oplus:
+          items: {}
+          type: array
+          title: Production Rate Oplus
+        production_rate_oneg:
+          items: {}
+          type: array
+          title: Production Rate Oneg
+        production_rate_o:
+          items: {}
+          type: array
+          title: Production Rate O
+        production_rate_nplus:
+          items: {}
+          type: array
+          title: Production Rate Nplus
+        production_rate_n2plus:
+          items: {}
+          type: array
+          title: Production Rate N2Plus
+        production_rate_n:
+          items: {}
+          type: array
+          title: Production Rate N
+        production_rate_n2d:
+          items: {}
+          type: array
+          title: Production Rate N2D
+      type: object
+      title: ATMForwardResponseData
+    ATMForwardCustomNeutralProfile:
+      properties:
+        altitude:
+          items:
+            anyOf:
+            - type: number
+            - type: integer
+          type: array
+          title: Altitude
+        o_density:
+          items:
+            type: number
+          type: array
+          title: O Density
+        o2_density:
+          items:
+            type: number
+          type: array
+          title: O2 Density
+        n2_density:
+          items:
+            type: number
+          type: array
+          title: N2 Density
+        n_density:
+          items:
+            type: number
+          type: array
+          title: N Density
+        no_density:
+          items:
+            type: number
+          type: array
+          title: No Density
+        temperature:
+          items:
+            anyOf:
+            - type: number
+            - type: integer
+          type: array
+          title: Temperature
+      type: object
+      required:
+      - altitude
+      - o_density
+      - o2_density
+      - n2_density
+      - n_density
+      - no_density
+      - temperature
+      title: ATMForwardCustomNeutralProfile
+    src__atm__v1__schemas_forward__ATMForwardRequest:
+      properties:
+        atm_model_version:
+          type: string
+          enum:
+          - '1.0'
+          title: Atm Model Version
+          default: '1.0'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+        maxwellian_energy_flux:
+          type: number
+          title: Maxwellian Energy Flux
+          default: 10.0
+        gaussian_energy_flux:
+          type: number
+          title: Gaussian Energy Flux
+          default: 0.0
+        maxwellian_characteristic_energy:
+          type: number
+          title: Maxwellian Characteristic Energy
+          default: 5000.0
+        gaussian_peak_energy:
+          type: number
+          title: Gaussian Peak Energy
+          default: 1000.0
+        gaussian_spectral_width:
+          type: number
+          title: Gaussian Spectral Width
+          default: 100.0
+        nrlmsis_model_version:
+          type: string
+          enum:
+          - '00'
+          - '2.0'
+          title: Nrlmsis Model Version
+          default: '2.0'
+        oxygen_correction_factor:
+          type: number
+          title: Oxygen Correction Factor
+          default: 1.0
+        timescale_auroral:
+          type: integer
+          title: Timescale Auroral
+          default: 600
+        timescale_transport:
+          type: integer
+          title: Timescale Transport
+          default: 600
+        custom_spectrum:
+          $ref: '#/components/schemas/ATMForwardCustomSpectrum'
+        output:
+          $ref: '#/components/schemas/src__atm__v1__schemas_forward__ATMForwardRequestOutputFlags'
+        no_cache:
+          type: boolean
+          title: No Cache
+          default: false
+      type: object
+      required:
+      - timestamp
+      - geodetic_latitude
+      - geodetic_longitude
+      title: ATMForwardRequest
+    src__atm__v2__schemas_inverse__ATMInverseResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/src__atm__v2__schemas_inverse__ATMInverseResponseData'
+        request:
+          $ref: '#/components/schemas/src__atm__v2__schemas_inverse__ATMInverseRequest'
+        calculation_duration_ms:
+          type: number
+          title: Calculation Duration Ms
+      type: object
+      required:
+      - data
+      - request
+      - calculation_duration_ms
+      title: ATMInverseResponse
+    ATMForwardCustomSpectrum:
+      properties:
+        energy:
+          items:
+            type: number
+          type: array
+          title: Energy
+        flux:
+          items:
+            type: number
+          type: array
+          title: Flux
+      type: object
+      required:
+      - energy
+      - flux
+      title: ATMForwardCustomSpectrum
+    src__atm__v1__schemas_inverse__ATMInverseResponseData:
+      properties:
+        altitudes:
+          items: {}
+          type: array
+          title: Altitudes
+        energy_flux:
+          type: number
+          title: Energy Flux
+        characteristic_energy:
+          type: number
+          title: Characteristic Energy
+        oxygen_correction_factor:
+          type: number
+          title: Oxygen Correction Factor
+        height_integrated_rayleighs_4278:
+          type: number
+          title: Height Integrated Rayleighs 4278
+        height_integrated_rayleighs_5577:
+          type: number
+          title: Height Integrated Rayleighs 5577
+        height_integrated_rayleighs_6300:
+          type: number
+          title: Height Integrated Rayleighs 6300
+        height_integrated_rayleighs_8446:
+          type: number
+          title: Height Integrated Rayleighs 8446
+        emission_4278:
+          items: {}
+          type: array
+          title: Emission 4278
+        emission_5577:
+          items: {}
+          type: array
+          title: Emission 5577
+        emission_6300:
+          items: {}
+          type: array
+          title: Emission 6300
+        emission_8446:
+          items: {}
+          type: array
+          title: Emission 8446
+        plasma_electron_density:
+          items: {}
+          type: array
+          title: Plasma Electron Density
+        plasma_o2plus_density:
+          items: {}
+          type: array
+          title: Plasma O2Plus Density
+        plasma_noplus_density:
+          items: {}
+          type: array
+          title: Plasma Noplus Density
+        plasma_oplus_density:
+          items: {}
+          type: array
+          title: Plasma Oplus Density
+        plasma_ionisation_rate:
+          items: {}
+          type: array
+          title: Plasma Ionisation Rate
+        plasma_electron_temperature:
+          items: {}
+          type: array
+          title: Plasma Electron Temperature
+        plasma_ion_temperature:
+          items: {}
+          type: array
+          title: Plasma Ion Temperature
+        plasma_pederson_conductivity:
+          items: {}
+          type: array
+          title: Plasma Pederson Conductivity
+        plasma_hall_conductivity:
+          items: {}
+          type: array
+          title: Plasma Hall Conductivity
+        neutral_o2_density:
+          items: {}
+          type: array
+          title: Neutral O2 Density
+        neutral_o_density:
+          items: {}
+          type: array
+          title: Neutral O Density
+        neutral_n2_density:
+          items: {}
+          type: array
+          title: Neutral N2 Density
+        neutral_n_density:
+          items: {}
+          type: array
+          title: Neutral N Density
+        neutral_temperature:
+          items: {}
+          type: array
+          title: Neutral Temperature
+      type: object
+      title: ATMInverseResponseData
     src__atm__v1__schemas_forward__ATMForwardRequestOutputFlags:
       properties:
         height_integrated_rayleighs_4278:
@@ -1688,32 +1689,146 @@ components:
           default: false
       type: object
       title: ATMForwardRequestOutputFlags
-    ValidationError:
+    src__atm__v1__schemas_inverse__ATMInverseResponse:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+        data:
+          $ref: '#/components/schemas/src__atm__v1__schemas_inverse__ATMInverseResponseData'
+        request:
+          $ref: '#/components/schemas/src__atm__v1__schemas_inverse__ATMInverseRequest'
+        forward_params:
+          $ref: '#/components/schemas/ATMInverseForwardRequest'
+        calculation_duration_ms:
+          type: number
+          title: Calculation Duration Ms
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - data
+      - request
+      - calculation_duration_ms
+      title: ATMInverseResponse
+    src__atm__v1__schemas_inverse__ATMInverseRequestOutputFlags:
+      properties:
+        altitudes:
+          type: boolean
+          title: Altitudes
+          default: false
+        energy_flux:
+          type: boolean
+          title: Energy Flux
+          default: false
+        characteristic_energy:
+          type: boolean
+          title: Characteristic Energy
+          default: false
+        oxygen_correction_factor:
+          type: boolean
+          title: Oxygen Correction Factor
+          default: false
+        height_integrated_rayleighs_4278:
+          type: boolean
+          title: Height Integrated Rayleighs 4278
+          default: false
+        height_integrated_rayleighs_5577:
+          type: boolean
+          title: Height Integrated Rayleighs 5577
+          default: false
+        height_integrated_rayleighs_6300:
+          type: boolean
+          title: Height Integrated Rayleighs 6300
+          default: false
+        height_integrated_rayleighs_8446:
+          type: boolean
+          title: Height Integrated Rayleighs 8446
+          default: false
+        emission_4278:
+          type: boolean
+          title: Emission 4278
+          default: false
+        emission_5577:
+          type: boolean
+          title: Emission 5577
+          default: false
+        emission_6300:
+          type: boolean
+          title: Emission 6300
+          default: false
+        emission_8446:
+          type: boolean
+          title: Emission 8446
+          default: false
+        plasma_electron_density:
+          type: boolean
+          title: Plasma Electron Density
+          default: false
+        plasma_o2plus_density:
+          type: boolean
+          title: Plasma O2Plus Density
+          default: false
+        plasma_oplus_density:
+          type: boolean
+          title: Plasma Oplus Density
+          default: false
+        plasma_noplus_density:
+          type: boolean
+          title: Plasma Noplus Density
+          default: false
+        plasma_ionisation_rate:
+          type: boolean
+          title: Plasma Ionisation Rate
+          default: false
+        plasma_electron_temperature:
+          type: boolean
+          title: Plasma Electron Temperature
+          default: false
+        plasma_ion_temperature:
+          type: boolean
+          title: Plasma Ion Temperature
+          default: false
+        plasma_pederson_conductivity:
+          type: boolean
+          title: Plasma Pederson Conductivity
+          default: false
+        plasma_hall_conductivity:
+          type: boolean
+          title: Plasma Hall Conductivity
+          default: false
+        neutral_o2_density:
+          type: boolean
+          title: Neutral O2 Density
+          default: false
+        neutral_o_density:
+          type: boolean
+          title: Neutral O Density
+          default: false
+        neutral_n2_density:
+          type: boolean
+          title: Neutral N2 Density
+          default: false
+        neutral_n_density:
+          type: boolean
+          title: Neutral N Density
+          default: false
+        neutral_temperature:
+          type: boolean
+          title: Neutral Temperature
+          default: false
+      type: object
+      title: ATMInverseRequestOutputFlags
+    src__atm__v2__schemas_forward__ATMForwardResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/src__atm__v2__schemas_forward__ATMForwardResponseData'
+        request:
+          $ref: '#/components/schemas/src__atm__v2__schemas_forward__ATMForwardRequest'
+        calculation_duration_ms:
+          type: number
+          title: Calculation Duration Ms
+      type: object
+      required:
+      - data
+      - request
+      - calculation_duration_ms
+      title: ATMForwardResponse
     src__atm__v2__schemas_forward__ATMForwardRequest:
       properties:
         timestamp:
@@ -1817,139 +1932,11 @@ components:
       - geodetic_latitude
       - geodetic_longitude
       title: ATMForwardRequest
-    src__atm__v1__schemas_forward__ATMForwardRequest:
-      properties:
-        atm_model_version:
-          type: string
-          enum:
-          - '1.0'
-          title: Atm Model Version
-          default: '1.0'
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        geodetic_latitude:
-          type: number
-          title: Geodetic Latitude
-        geodetic_longitude:
-          type: number
-          title: Geodetic Longitude
-        maxwellian_energy_flux:
-          type: number
-          title: Maxwellian Energy Flux
-          default: 10.0
-        gaussian_energy_flux:
-          type: number
-          title: Gaussian Energy Flux
-          default: 0.0
-        maxwellian_characteristic_energy:
-          type: number
-          title: Maxwellian Characteristic Energy
-          default: 5000.0
-        gaussian_peak_energy:
-          type: number
-          title: Gaussian Peak Energy
-          default: 1000.0
-        gaussian_spectral_width:
-          type: number
-          title: Gaussian Spectral Width
-          default: 100.0
-        nrlmsis_model_version:
-          type: string
-          enum:
-          - '00'
-          - '2.0'
-          title: Nrlmsis Model Version
-          default: '2.0'
-        oxygen_correction_factor:
-          type: number
-          title: Oxygen Correction Factor
-          default: 1.0
-        timescale_auroral:
-          type: integer
-          title: Timescale Auroral
-          default: 600
-        timescale_transport:
-          type: integer
-          title: Timescale Transport
-          default: 600
-        custom_spectrum:
-          $ref: '#/components/schemas/ATMForwardCustomSpectrum'
-        output:
-          $ref: '#/components/schemas/src__atm__v1__schemas_forward__ATMForwardRequestOutputFlags'
-        no_cache:
-          type: boolean
-          title: No Cache
-          default: false
-      type: object
-      required:
-      - timestamp
-      - geodetic_latitude
-      - geodetic_longitude
-      title: ATMForwardRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ErrorMessage:
-      properties:
-        detail:
-          type: string
-          title: Detail
-      type: object
-      required:
-      - detail
-      title: ErrorMessage
-    src__atm__v1__schemas_inverse__ATMInverseResponse:
-      properties:
-        data:
-          $ref: '#/components/schemas/src__atm__v1__schemas_inverse__ATMInverseResponseData'
-        request:
-          $ref: '#/components/schemas/src__atm__v1__schemas_inverse__ATMInverseRequest'
-        forward_params:
-          nullable: true
-          $ref: '#/components/schemas/ATMInverseForwardRequest'
-        calculation_duration_ms:
-          type: number
-          title: Calculation Duration Ms
-      type: object
-      required:
-      - data
-      - request
-      - calculation_duration_ms
-      title: ATMInverseResponse
-    src__atm__v2__schemas_inverse__ATMInverseResponseData:
-      properties:
-        energy_flux:
-          type: number
-          title: Energy Flux
-        mean_energy:
-          type: number
-          title: Mean Energy
-        characteristic_energy:
-          type: number
-          title: Characteristic Energy
-        oxygen_correction_factor:
-          type: number
-          title: Oxygen Correction Factor
-      type: object
-      title: ATMInverseResponseData
   securitySchemes:
-    AccessToken:
+    HTTPBearer:
       type: http
-      description: Send the Authorization header found in the response of a successful /authentication request on all  secure endpoints. Copy it verbatim to the request header. It is fine to send this header on all requests  to the API. The value in Swagger UI should only include the access token part (leave out 'Bearer').
-      name: Authorization
-      in: header
       scheme: bearer
-      bearerFormat: Generated by server
-    ApiKeyAuth:
+    APIKeyHeader:
       type: apiKey
-      description: API keys are intended to be used by non-interactive software interfacing with the REST API. These can  be used instead of an Access Token approach.
-      name: x-aurorax-api-key
       in: header
+      name: x-srs-api-key

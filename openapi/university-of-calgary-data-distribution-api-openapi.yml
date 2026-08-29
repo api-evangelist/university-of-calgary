@@ -1,18 +1,11 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: AuroraX Application.wadl Data Distribution API
-  description: "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n"
-  version: stable
+  title: UCalgary Space Remote Sensing Data Distribution API
+  description: API providing data and tools for UCalgary Space Remote Sensing
+  version: 1.56.0
 servers:
-- url: https://api.aurorax.space
-  description: AuroraX production server
-  variables: {}
-- url: https://api.staging.aurorax.space
-  description: AuroraX staging server
-  variables: {}
-- url: http://localhost:8080/
-  description: Local Development and Debugging
-  variables: {}
+- url: https://api.phys.ucalgary.ca
+  description: UCalgary Space Remote Sensing API
 tags:
 - name: Data Distribution
   description: Endpoints supporting data distribution
@@ -29,8 +22,9 @@ paths:
         in: query
         required: false
         schema:
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
           title: Name
       - name: level
         in: query
@@ -95,15 +89,17 @@ paths:
         in: query
         required: false
         schema:
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
           title: Site Uid
       - name: device_uid
         in: query
         required: false
         schema:
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
           title: Device Uid
       - name: include_total_bytes
         in: query
@@ -171,8 +167,9 @@ paths:
         in: query
         required: false
         schema:
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
           title: Uid
       responses:
         '200':
@@ -233,117 +230,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ImagingTimeframeResponse:
-      properties:
-        timestamp:
-          type: string
-          title: Timestamp
-        site_uid:
-          nullable: true
-          type: string
-          title: Site Uid
-        geodetic_latitude:
-          type: number
-          title: Geodetic Latitude
-        geodetic_longitude:
-          type: number
-          title: Geodetic Longitude
-        imaging_start:
-          nullable: true
-          type: string
-          format: date-time
-          title: Imaging Start
-        imaging_end:
-          nullable: true
-          type: string
-          format: date-time
-          title: Imaging End
-      type: object
-      required:
-      - timestamp
-      - geodetic_latitude
-      - geodetic_longitude
-      title: ImagingTimeframeResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    DatasetLegacy2:
-      properties:
-        name:
-          type: string
-          title: Name
-        short_description:
-          type: string
-          title: Short Description
-        long_description:
-          type: string
-          title: Long Description
-        data_tree_url:
-          type: string
-          title: Data Tree Url
-        file_listing_supported:
-          type: boolean
-          title: File Listing Supported
-        level:
-          type: string
-          title: Level
-        doi:
-          nullable: true
-          type: string
-          title: Doi
-        doi_details:
-          nullable: true
-          type: string
-          title: Doi Details
-        citation:
-          nullable: true
-          type: string
-          title: Citation
-        supported_libraries:
-          items:
-            type: string
-            enum:
-            - pyaurorax
-            - pyucrio
-            - idl-aurorax
-            - idl-ucrio
-            - pyucalgarysrs
-          type: array
-          title: Supported Libraries
-          default: []
-      type: object
-      required:
-      - name
-      - short_description
-      - long_description
-      - data_tree_url
-      - file_listing_supported
-      - level
-      title: DatasetLegacy2
-      description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
     FileListingResponse:
       properties:
         urls:
@@ -358,8 +244,9 @@ components:
           type: integer
           title: Count
         total_bytes:
-          nullable: true
-          type: integer
+          type:
+          - integer
+          - 'null'
           title: Total Bytes
         dataset:
           anyOf:
@@ -375,107 +262,6 @@ components:
       - total_bytes
       - dataset
       title: FileListingResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    DatasetLegacy1:
-      properties:
-        name:
-          type: string
-          title: Name
-        short_description:
-          type: string
-          title: Short Description
-        long_description:
-          type: string
-          title: Long Description
-        data_tree_url:
-          type: string
-          title: Data Tree Url
-        file_listing_supported:
-          type: boolean
-          title: File Listing Supported
-        level:
-          type: string
-          title: Level
-        doi:
-          nullable: true
-          type: string
-          title: Doi
-        doi_details:
-          nullable: true
-          type: string
-          title: Doi Details
-        citation:
-          nullable: true
-          type: string
-          title: Citation
-      type: object
-      required:
-      - name
-      - short_description
-      - long_description
-      - data_tree_url
-      - file_listing_supported
-      - level
-      title: DatasetLegacy1
-      description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
-    ErrorMessage:
-      properties:
-        detail:
-          type: string
-          title: Detail
-      type: object
-      required:
-      - detail
-      title: ErrorMessage
-    ImagingTimeframesRequest:
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        locations:
-          items:
-            $ref: '#/components/schemas/ImagingTimeframeLocation'
-          type: array
-          title: Locations
-        threshold:
-          type: number
-          title: Threshold
-          default: 102.0
-      type: object
-      required:
-      - timestamp
-      - locations
-      title: ImagingTimeframesRequest
-    Observatory:
-      properties:
-        uid:
-          type: string
-          title: Uid
-        full_name:
-          type: string
-          title: Full Name
-        geodetic_latitude:
-          type: number
-          title: Geodetic Latitude
-        geodetic_longitude:
-          type: number
-          title: Geodetic Longitude
-      type: object
-      required:
-      - uid
-      - full_name
-      - geodetic_latitude
-      - geodetic_longitude
-      title: Observatory
     Dataset:
       properties:
         name:
@@ -497,16 +283,19 @@ components:
           type: string
           title: Level
         doi:
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
           title: Doi
         doi_details:
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
           title: Doi Details
         citation:
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
           title: Citation
         supported_libraries:
           items:
@@ -541,29 +330,248 @@ components:
     ImagingTimeframeLocation:
       properties:
         site_uid:
-          nullable: true
-          type: string
+          type:
+          - string
+          - 'null'
           title: Site Uid
         geodetic_latitude:
-          nullable: true
-          type: number
+          type:
+          - number
+          - 'null'
           title: Geodetic Latitude
         geodetic_longitude:
-          nullable: true
-          type: number
+          type:
+          - number
+          - 'null'
           title: Geodetic Longitude
       type: object
       title: ImagingTimeframeLocation
+    Observatory:
+      properties:
+        uid:
+          type: string
+          title: Uid
+        full_name:
+          type: string
+          title: Full Name
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+      type: object
+      required:
+      - uid
+      - full_name
+      - geodetic_latitude
+      - geodetic_longitude
+      title: Observatory
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ImagingTimeframeResponse:
+      properties:
+        timestamp:
+          type: string
+          title: Timestamp
+        site_uid:
+          type:
+          - string
+          - 'null'
+          title: Site Uid
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+        imaging_start:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          title: Imaging Start
+        imaging_end:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          title: Imaging End
+      type: object
+      required:
+      - timestamp
+      - geodetic_latitude
+      - geodetic_longitude
+      title: ImagingTimeframeResponse
+    DatasetLegacy2:
+      properties:
+        name:
+          type: string
+          title: Name
+        short_description:
+          type: string
+          title: Short Description
+        long_description:
+          type: string
+          title: Long Description
+        data_tree_url:
+          type: string
+          title: Data Tree Url
+        file_listing_supported:
+          type: boolean
+          title: File Listing Supported
+        level:
+          type: string
+          title: Level
+        doi:
+          type:
+          - string
+          - 'null'
+          title: Doi
+        doi_details:
+          type:
+          - string
+          - 'null'
+          title: Doi Details
+        citation:
+          type:
+          - string
+          - 'null'
+          title: Citation
+        supported_libraries:
+          items:
+            type: string
+            enum:
+            - pyaurorax
+            - pyucrio
+            - idl-aurorax
+            - idl-ucrio
+            - pyucalgarysrs
+          type: array
+          title: Supported Libraries
+          default: []
+      type: object
+      required:
+      - name
+      - short_description
+      - long_description
+      - data_tree_url
+      - file_listing_supported
+      - level
+      title: DatasetLegacy2
+      description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ErrorMessage:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: ErrorMessage
+    ImagingTimeframesRequest:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        locations:
+          items:
+            $ref: '#/components/schemas/ImagingTimeframeLocation'
+          type: array
+          title: Locations
+        threshold:
+          type: number
+          title: Threshold
+          default: 102.0
+      type: object
+      required:
+      - timestamp
+      - locations
+      title: ImagingTimeframesRequest
+    DatasetLegacy1:
+      properties:
+        name:
+          type: string
+          title: Name
+        short_description:
+          type: string
+          title: Short Description
+        long_description:
+          type: string
+          title: Long Description
+        data_tree_url:
+          type: string
+          title: Data Tree Url
+        file_listing_supported:
+          type: boolean
+          title: File Listing Supported
+        level:
+          type: string
+          title: Level
+        doi:
+          type:
+          - string
+          - 'null'
+          title: Doi
+        doi_details:
+          type:
+          - string
+          - 'null'
+          title: Doi Details
+        citation:
+          type:
+          - string
+          - 'null'
+          title: Citation
+      type: object
+      required:
+      - name
+      - short_description
+      - long_description
+      - data_tree_url
+      - file_listing_supported
+      - level
+      title: DatasetLegacy1
+      description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
   securitySchemes:
-    AccessToken:
+    HTTPBearer:
       type: http
-      description: Send the Authorization header found in the response of a successful /authentication request on all  secure endpoints. Copy it verbatim to the request header. It is fine to send this header on all requests  to the API. The value in Swagger UI should only include the access token part (leave out 'Bearer').
-      name: Authorization
-      in: header
       scheme: bearer
-      bearerFormat: Generated by server
-    ApiKeyAuth:
+    APIKeyHeader:
       type: apiKey
-      description: API keys are intended to be used by non-interactive software interfacing with the REST API. These can  be used instead of an Access Token approach.
-      name: x-aurorax-api-key
       in: header
+      name: x-srs-api-key

@@ -1,40 +1,50 @@
 {
   "provider": "university-of-calgary",
   "sources": [
-    "university-of-calgary-application-wadl-api-openapi.yml",
-    "university-of-calgary-auroral-transport-model-atm-api-openapi.yml",
-    "university-of-calgary-authenticate-api-openapi.yml",
-    "university-of-calgary-availability-api-openapi.yml",
-    "university-of-calgary-conjunction-search-api-openapi.yml",
-    "university-of-calgary-data-distribution-api-openapi.yml",
-    "university-of-calgary-data-products-search-api-openapi.yml",
-    "university-of-calgary-data-sources-api-openapi.yml",
-    "university-of-calgary-ephemeris-search-api-openapi.yml",
-    "university-of-calgary-manage-data-api-openapi.yml",
-    "university-of-calgary-operations-sitl-api-openapi.yml",
-    "university-of-calgary-real-time-data-api-openapi.yml",
-    "university-of-calgary-utilities-api-openapi.yml",
-    "university-of-calgary-utils-api-openapi.yml"
+    "_original/university-of-calgary-aurorax-api.yaml",
+    "_original/university-of-calgary-srs-api.yaml"
   ],
   "outputs": [
     "university-of-calgary-application-wadl-api-openapi.yml",
-    "university-of-calgary-auroral-transport-model-atm-api-openapi.yml",
     "university-of-calgary-authenticate-api-openapi.yml",
     "university-of-calgary-availability-api-openapi.yml",
     "university-of-calgary-conjunction-search-api-openapi.yml",
-    "university-of-calgary-data-distribution-api-openapi.yml",
     "university-of-calgary-data-products-search-api-openapi.yml",
     "university-of-calgary-data-sources-api-openapi.yml",
     "university-of-calgary-ephemeris-search-api-openapi.yml",
     "university-of-calgary-manage-data-api-openapi.yml",
+    "university-of-calgary-utils-api-openapi.yml",
+    "university-of-calgary-auroral-transport-model-atm-api-openapi.yml",
+    "university-of-calgary-data-distribution-api-openapi.yml",
     "university-of-calgary-operations-sitl-api-openapi.yml",
     "university-of-calgary-real-time-data-api-openapi.yml",
-    "university-of-calgary-utilities-api-openapi.yml",
-    "university-of-calgary-utils-api-openapi.yml"
+    "university-of-calgary-utilities-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "university-of-calgary-aurorax-api.yaml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0; renamed 5 component key(s) illegal in 3.x (e.g. Data Source)",
+    "university-of-calgary-aurorax-api.yaml: tagged paths GET /api/application.wadl/{path} -> Application.wadl",
+    "university-of-calgary-aurorax-api.yaml: tagged paths GET /api/application.wadl -> Application.wadl",
+    "university-of-calgary-aurorax-api.yaml: declared missing tag: Application.wadl",
+    "university-of-calgary-srs-api.yaml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0"
+  ],
+  "skipped": [
+    "university-of-calgary-application-wadl-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "university-of-calgary-auroral-transport-model-atm-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "university-of-calgary-authenticate-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "university-of-calgary-availability-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "university-of-calgary-conjunction-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "university-of-calgary-data-distribution-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "university-of-calgary-data-products-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "university-of-calgary-data-sources-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "university-of-calgary-ephemeris-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "university-of-calgary-manage-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "university-of-calgary-operations-sitl-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "university-of-calgary-real-time-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "university-of-calgary-utilities-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "university-of-calgary-utils-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
