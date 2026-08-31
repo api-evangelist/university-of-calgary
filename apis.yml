@@ -1,18 +1,22 @@
 ---
 aid: university-of-calgary
 name: University of Calgary
-description: >-
-  The University of Calgary is a public research university in Calgary, Alberta,
-  Canada, ranked #198 in the QS World University Rankings 2025. Its public,
-  documented developer footprint centers on research and scholarly
-  infrastructure rather than a single central developer portal: the Space Remote
-  Sensing (SRS) group operates a documented RESTful API at api.phys.ucalgary.ca
-  and the related AuroraX auroral-science API at api.aurorax.space, with Python
-  and IDL client libraries. The institutional repository PRISM runs on DSpace 8.3
-  (REST API plus OAI-PMH) and the PRISM research-data repository is hosted on the
-  Borealis Dataverse platform, which exposes a public Dataverse REST API. The
-  university also maintains a GitHub organization and a library guide cataloging
-  third-party scholarly APIs.
+description: 'The University of Calgary is a public research university in Calgary, Alberta and a member of
+  the U15 group of Canadian research universities. It operates no central developer portal and no campus-wide
+  API programme; what it does operate is a small number of genuinely institution-run scientific and scholarly
+  surfaces, and a larger number of vendor-platform tenancies that carry the university''s name. The real institution-operated
+  APIs both belong to the Space Remote Sensing group in the Department of Physics and Astronomy: the UCalgary
+  Space Remote Sensing API at api.phys.ucalgary.ca, which self-publishes an OpenAPI 3.1 document and includes
+  a conformant HAPI 3.3 Heliophysics time-series server, and the AuroraX auroral-science API at api.aurorax.space,
+  which runs on the same University of Calgary netblock. Alongside them the university runs its own Open Journal
+  Systems installation with a live OAI-PMH endpoint and a keyless MediaWiki Action API for Research Computing
+  Services documentation. Everything else is a tenancy: PRISM, the institutional repository, is a DSpace tenant
+  on the consortial Scholaris service; the research-data collection is a Dataverse collection on Borealis;
+  the academic calendar is on Coursedog; the identity federation is a Microsoft Entra ID tenant. There is
+  no course-catalog, transit, dining or campus-life API, and www.ucalgary.ca serves a soft 404 on every unknown
+  path, so link presence there is never evidence.'
+x-type: university
+x-category: Public Research University
 type: Index
 deliveryModel:
   model: saas
@@ -44,82 +48,82 @@ access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/university-of-calgary.png
 url: https://raw.githubusercontent.com/api-evangelist/university-of-calgary/refs/heads/main/apis.yml
 tags:
-  - Education
-  - Higher Education
-  - University
-  - Research
-  - Open Data
-  - Repository
-  - Space Physics
-  - Canada
+- Education
+- Higher Education
+- University
+- Public Research University
+- Canada
+- Alberta
+- U15
+- Research
+- Research Data
+- Open Access
+- Repository
+- OAI-PMH
+- Identity Federation
+- Research Computing
+- Space Physics
+- Heliophysics
+- Open Data
 created: '2026-06-03'
-modified: '2026-06-03'
+modified: '2026-08-30'
 specificationVersion: '0.23'
+x-coverage:
+  state: covered
+  reason: covered
+  detail: 'Two institution-operated API contracts were found, verified live and saved: the UCalgary Space
+    Remote Sensing API (OpenAPI 3.1 self-published at api.phys.ucalgary.ca/openapi.json, v1.66.0, 22 paths,
+    6 tags) and the AuroraX API (OpenAPI 3.0.1 at api.aurorax.space/api/openapi.json, 33 paths, 8 tags). Both
+    hosts resolve inside the ARIN U-CALGARY netblock 136.159.0.0/16. Two further institution-operated deployments
+    of shared products were recorded without saving the product''s contract: an OJS 3.4.0.10 OAI-PMH endpoint
+    at journalhosting.ucalgary.ca and a MediaWiki 1.43.3 Action API at rcs.ucalgary.ca. Four tenant relationships
+    were recorded: PRISM on Scholaris, the research-data collection on Borealis Dataverse, the academic calendar
+    on Coursedog, and the SAML/OIDC identity federation on Microsoft Entra ID. No course-catalog, library-discovery,
+    transit, dining, room-booking or open-data-portal API is published: api.ucalgary.ca, data.ucalgary.ca,
+    developer.ucalgary.ca, courses.ucalgary.ca and catalog.ucalgary.ca do not resolve, open.ucalgary.ca soft-404s,
+    and the Coursedog catalog API returns 401 Unauthenticated. Nothing was blocked; every verdict here rests
+    on a probe.'
+  evidence:
+  - url: https://api.phys.ucalgary.ca/openapi.json
+    status: 200
+  - url: https://api.phys.ucalgary.ca/hapi/capabilities
+    status: 200
+  - url: https://api.aurorax.space/api/openapi.json
+    status: 200
+  - url: https://journalhosting.ucalgary.ca/index.php/index/oai?verb=Identify
+    status: 200
+  - url: https://rcs.ucalgary.ca/api.php?action=query&meta=siteinfo&format=json
+    status: 200
+  - url: https://prism.ucalgary.ca/server/oai/request?verb=Identify
+    status: 200
+  - url: https://borealisdata.ca/api/dataverses/calgary
+    status: 200
+  - url: https://login.microsoftonline.com/ucalgary.ca/v2.0/.well-known/openid-configuration
+    status: 200
+  - url: https://app.coursedog.com/api/v1/cm/ucalgary/courses/search/$filters
+    status: 401
+  - url: https://www.ucalgary.ca/llms.txt
+    status: 200
+    note: soft-404 — redirects to /system/404 and serves the site 404 body
+  - url: https://www.ucalgary.ca/.well-known/security.txt
+    status: 200
+    note: 'live but EXPIRED — Expires: 2025-12-31T23:00:00Z'
+  - url: https://open.ucalgary.ca/
+    status: 200
+    note: soft-404 — resolves to /system/404
+  - url: https://data.phys.ucalgary.ca/working_with_data/
+    status: 301
+    note: 301 with no Location header — unusable; pointer removed, replaced with the 200 root
 apis:
-- aid: university-of-calgary:prism-dspace
-  name: PRISM Institutional Repository (DSpace)
-  description: >-
-    PRISM is the University of Calgary's institutional repository, running on DSpace 8.3 (now served from
-    ucalgary.scholaris.ca). It exposes the standard DSpace REST API for programmatic access to communities,
-    collections, and items, plus an OAI-PMH endpoint for metadata harvesting.
-  humanURL: https://prism.ucalgary.ca/
-  baseURL: https://prism.ucalgary.ca/server/api
-  tags:
-  - Repository
-  - Scholarly
-  - Open Access
-  - OAI-PMH
-  - DSpace
-  properties:
-  - type: Documentation
-    url: https://prism.ucalgary.ca/server/api
-  - type: Documentation
-    url: https://prism.ucalgary.ca/server/oai/request?verb=Identify
-- aid: university-of-calgary:prism-dataverse
-  name: PRISM Research Data Repository (Borealis Dataverse)
-  description: >-
-    The University of Calgary's PRISM research-data repository is a Dataverse collection hosted on the
-    Borealis (Canadian Dataverse) platform, exposing the public Dataverse REST API (Borealis runs Dataverse
-    v6.8.1) for searching and retrieving dataset and file metadata.
-  humanURL: https://borealisdata.ca/dataverse/calgary
-  baseURL: https://borealisdata.ca/api
-  tags:
-  - Research Data
-  - Repository
-  - Open Data
-  - Dataverse
-  - REST
-  properties:
-  - type: Documentation
-    url: https://borealisdata.ca/dataverse/calgary
-  - type: Documentation
-    url: https://guides.dataverse.org/en/latest/api/
-- aid: university-of-calgary:university-of-calgary-application-wadl-api
-  name: University of Calgary Application.wadl API
-  description: >-
-    The Application.wadl API from University of Calgary — 2 operation(s) for application.wadl.
-  humanURL: https://api.phys.ucalgary.ca/
-  baseURL: https://api.phys.ucalgary.ca/
-  tags:
-  - Application.wadl
-  properties:
-  - type: OpenAPI
-    url: openapi/university-of-calgary-application-wadl-api-openapi.yml
-  - type: Documentation
-    url: https://api.phys.ucalgary.ca/
-  - type: Documentation
-    url: https://data.phys.ucalgary.ca/working_with_data/
-  - type: Documentation
-    url: https://docs.aurorax.space/
-  - type: Documentation
-    url: https://api.aurorax.space/
-  - type: GitHub
-    url: https://github.com/aurorax-space
 - aid: university-of-calgary:university-of-calgary-auroral-transport-model-atm-api
   name: University of Calgary Auroral Transport Model (ATM) API
   description: Endpoints to utilize the Auroral Transport Model
+  x-operator: institution
+  x-operator-evidence: api.phys.ucalgary.ca resolves to core-api-lb.phys.ucalgary.ca / 136.159.28.200, inside
+    the University of Calgary registrable domain and the ARIN U-CALGARY netblock 136.159.0.0/16. info.title
+    is "UCalgary Space Remote Sensing API". Built and run by the university's own Space Remote Sensing group.
   humanURL: https://api.phys.ucalgary.ca/
-  baseURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca
   tags:
   - Auroral Transport Model (ATM)
   properties:
@@ -128,80 +132,18 @@ apis:
   - type: Documentation
     url: https://api.phys.ucalgary.ca/
   - type: Documentation
-    url: https://data.phys.ucalgary.ca/working_with_data/
-  - type: Documentation
-    url: https://docs.aurorax.space/
-  - type: Documentation
-    url: https://api.aurorax.space/
-  - type: GitHub
-    url: https://github.com/aurorax-space
-- aid: university-of-calgary:university-of-calgary-authenticate-api
-  name: University of Calgary Authenticate API
-  description: >-
-    Authenticate via email and password to get an Access Token. Use your API Key if you  are building
-    software without user interaction to run against the API.
-  humanURL: https://api.phys.ucalgary.ca/
-  baseURL: https://api.phys.ucalgary.ca/
-  tags:
-  - Authenticate
-  properties:
+    url: https://data.phys.ucalgary.ca/
   - type: OpenAPI
-    url: openapi/university-of-calgary-authenticate-api-openapi.yml
-  - type: Documentation
-    url: https://api.phys.ucalgary.ca/
-  - type: Documentation
-    url: https://data.phys.ucalgary.ca/working_with_data/
-  - type: Documentation
-    url: https://docs.aurorax.space/
-  - type: Documentation
-    url: https://api.aurorax.space/
-  - type: GitHub
-    url: https://github.com/aurorax-space
-- aid: university-of-calgary:university-of-calgary-availability-api
-  name: University of Calgary Availability API
-  description: Retrieve information about data in the database
-  humanURL: https://api.phys.ucalgary.ca/
-  baseURL: https://api.phys.ucalgary.ca/
-  tags:
-  - Availability
-  properties:
-  - type: OpenAPI
-    url: openapi/university-of-calgary-availability-api-openapi.yml
-  - type: Documentation
-    url: https://api.phys.ucalgary.ca/
-  - type: Documentation
-    url: https://data.phys.ucalgary.ca/working_with_data/
-  - type: Documentation
-    url: https://docs.aurorax.space/
-  - type: Documentation
-    url: https://api.aurorax.space/
-  - type: GitHub
-    url: https://github.com/aurorax-space
-- aid: university-of-calgary:university-of-calgary-conjunction-search-api
-  name: University of Calgary Conjunction Search API
-  description: Search for conjunctions between multiple sets of data sources
-  humanURL: https://api.phys.ucalgary.ca/
-  baseURL: https://api.phys.ucalgary.ca/
-  tags:
-  - Conjunction Search
-  properties:
-  - type: OpenAPI
-    url: openapi/university-of-calgary-conjunction-search-api-openapi.yml
-  - type: Documentation
-    url: https://api.phys.ucalgary.ca/
-  - type: Documentation
-    url: https://data.phys.ucalgary.ca/working_with_data/
-  - type: Documentation
-    url: https://docs.aurorax.space/
-  - type: Documentation
-    url: https://api.aurorax.space/
-  - type: GitHub
-    url: https://github.com/aurorax-space
+    url: https://api.phys.ucalgary.ca/openapi.json
 - aid: university-of-calgary:university-of-calgary-data-distribution-api
   name: University of Calgary Data Distribution API
   description: Endpoints supporting data distribution
+  x-operator: institution
+  x-operator-evidence: api.phys.ucalgary.ca resolves to core-api-lb.phys.ucalgary.ca / 136.159.28.200, inside
+    the University of Calgary registrable domain and the ARIN U-CALGARY netblock 136.159.0.0/16. info.title
+    is "UCalgary Space Remote Sensing API". Built and run by the university's own Space Remote Sensing group.
   humanURL: https://api.phys.ucalgary.ca/
-  baseURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca
   tags:
   - Data Distribution
   properties:
@@ -210,100 +152,41 @@ apis:
   - type: Documentation
     url: https://api.phys.ucalgary.ca/
   - type: Documentation
-    url: https://data.phys.ucalgary.ca/working_with_data/
-  - type: Documentation
-    url: https://docs.aurorax.space/
-  - type: Documentation
-    url: https://api.aurorax.space/
-  - type: GitHub
-    url: https://github.com/aurorax-space
-- aid: university-of-calgary:university-of-calgary-data-products-search-api
-  name: University of Calgary Data Products Search API
-  description: Search for data products
+    url: https://data.phys.ucalgary.ca/
+  - type: OpenAPI
+    url: https://api.phys.ucalgary.ca/openapi.json
+- aid: university-of-calgary:university-of-calgary-hapi-api
+  name: University of Calgary SRS HAPI (Heliophysics API) Server
+  description: 'The HAPI 3.3 interface of the UCalgary Space Remote Sensing API — /hapi, /about, /capabilities,
+    /catalog, /info and /data — serving ground-based instrument time series (NORSTAR riometers and related
+    arrays) in the community Heliophysics Data Application Programmer''s Interface format. Verified live:
+    /hapi/capabilities returns HAPI 3.3 with csv, binary and json output formats.'
+  x-operator: institution
+  x-operator-evidence: api.phys.ucalgary.ca resolves to core-api-lb.phys.ucalgary.ca / 136.159.28.200, inside
+    the University of Calgary registrable domain and the ARIN U-CALGARY netblock 136.159.0.0/16. info.title
+    is "UCalgary Space Remote Sensing API". Built and run by the university's own Space Remote Sensing group.
   humanURL: https://api.phys.ucalgary.ca/
-  baseURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca
   tags:
-  - Data Products Search
+  - HAPI
   properties:
   - type: OpenAPI
-    url: openapi/university-of-calgary-data-products-search-api-openapi.yml
+    url: openapi/university-of-calgary-hapi-api-openapi.yml
   - type: Documentation
     url: https://api.phys.ucalgary.ca/
   - type: Documentation
-    url: https://data.phys.ucalgary.ca/working_with_data/
-  - type: Documentation
-    url: https://docs.aurorax.space/
-  - type: Documentation
-    url: https://api.aurorax.space/
-  - type: GitHub
-    url: https://github.com/aurorax-space
-- aid: university-of-calgary:university-of-calgary-data-sources-api
-  name: University of Calgary Data Sources API
-  description: Interact with data sources
-  humanURL: https://api.phys.ucalgary.ca/
-  baseURL: https://api.phys.ucalgary.ca/
-  tags:
-  - Data Sources
-  properties:
+    url: https://data.phys.ucalgary.ca/
   - type: OpenAPI
-    url: openapi/university-of-calgary-data-sources-api-openapi.yml
-  - type: Documentation
-    url: https://api.phys.ucalgary.ca/
-  - type: Documentation
-    url: https://data.phys.ucalgary.ca/working_with_data/
-  - type: Documentation
-    url: https://docs.aurorax.space/
-  - type: Documentation
-    url: https://api.aurorax.space/
-  - type: GitHub
-    url: https://github.com/aurorax-space
-- aid: university-of-calgary:university-of-calgary-ephemeris-search-api
-  name: University of Calgary Ephemeris Search API
-  description: Search ephemeris records
-  humanURL: https://api.phys.ucalgary.ca/
-  baseURL: https://api.phys.ucalgary.ca/
-  tags:
-  - Ephemeris Search
-  properties:
-  - type: OpenAPI
-    url: openapi/university-of-calgary-ephemeris-search-api-openapi.yml
-  - type: Documentation
-    url: https://api.phys.ucalgary.ca/
-  - type: Documentation
-    url: https://data.phys.ucalgary.ca/working_with_data/
-  - type: Documentation
-    url: https://docs.aurorax.space/
-  - type: Documentation
-    url: https://api.aurorax.space/
-  - type: GitHub
-    url: https://github.com/aurorax-space
-- aid: university-of-calgary:university-of-calgary-manage-data-api
-  name: University of Calgary Manage Data API
-  description: Operations relating to managing ephemeris and data products data
-  humanURL: https://api.phys.ucalgary.ca/
-  baseURL: https://api.phys.ucalgary.ca/
-  tags:
-  - Manage data
-  tags_raw:
-  - Manage Data
-  properties:
-  - type: OpenAPI
-    url: openapi/university-of-calgary-manage-data-api-openapi.yml
-  - type: Documentation
-    url: https://api.phys.ucalgary.ca/
-  - type: Documentation
-    url: https://data.phys.ucalgary.ca/working_with_data/
-  - type: Documentation
-    url: https://docs.aurorax.space/
-  - type: Documentation
-    url: https://api.aurorax.space/
-  - type: GitHub
-    url: https://github.com/aurorax-space
+    url: https://api.phys.ucalgary.ca/openapi.json
 - aid: university-of-calgary:university-of-calgary-operations-sitl-api
   name: University of Calgary Operations - SITL API
   description: Endpoints for Scientist In The Loop (SITL) operations
+  x-operator: institution
+  x-operator-evidence: api.phys.ucalgary.ca resolves to core-api-lb.phys.ucalgary.ca / 136.159.28.200, inside
+    the University of Calgary registrable domain and the ARIN U-CALGARY netblock 136.159.0.0/16. info.title
+    is "UCalgary Space Remote Sensing API". Built and run by the university's own Space Remote Sensing group.
   humanURL: https://api.phys.ucalgary.ca/
-  baseURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca
   tags:
   - Operations - SITL
   properties:
@@ -312,18 +195,18 @@ apis:
   - type: Documentation
     url: https://api.phys.ucalgary.ca/
   - type: Documentation
-    url: https://data.phys.ucalgary.ca/working_with_data/
-  - type: Documentation
-    url: https://docs.aurorax.space/
-  - type: Documentation
-    url: https://api.aurorax.space/
-  - type: GitHub
-    url: https://github.com/aurorax-space
+    url: https://data.phys.ucalgary.ca/
+  - type: OpenAPI
+    url: https://api.phys.ucalgary.ca/openapi.json
 - aid: university-of-calgary:university-of-calgary-real-time-data-api
   name: University of Calgary Real-Time Data API
   description: Endpoints providing real-time data streams
+  x-operator: institution
+  x-operator-evidence: api.phys.ucalgary.ca resolves to core-api-lb.phys.ucalgary.ca / 136.159.28.200, inside
+    the University of Calgary registrable domain and the ARIN U-CALGARY netblock 136.159.0.0/16. info.title
+    is "UCalgary Space Remote Sensing API". Built and run by the university's own Space Remote Sensing group.
   humanURL: https://api.phys.ucalgary.ca/
-  baseURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca
   tags:
   - Real-Time Data
   properties:
@@ -332,18 +215,18 @@ apis:
   - type: Documentation
     url: https://api.phys.ucalgary.ca/
   - type: Documentation
-    url: https://data.phys.ucalgary.ca/working_with_data/
-  - type: Documentation
-    url: https://docs.aurorax.space/
-  - type: Documentation
-    url: https://api.aurorax.space/
-  - type: GitHub
-    url: https://github.com/aurorax-space
+    url: https://data.phys.ucalgary.ca/
+  - type: OpenAPI
+    url: https://api.phys.ucalgary.ca/openapi.json
 - aid: university-of-calgary:university-of-calgary-utilities-api
   name: University of Calgary Utilities API
   description: Various helper endpoints
+  x-operator: institution
+  x-operator-evidence: api.phys.ucalgary.ca resolves to core-api-lb.phys.ucalgary.ca / 136.159.28.200, inside
+    the University of Calgary registrable domain and the ARIN U-CALGARY netblock 136.159.0.0/16. info.title
+    is "UCalgary Space Remote Sensing API". Built and run by the university's own Space Remote Sensing group.
   humanURL: https://api.phys.ucalgary.ca/
-  baseURL: https://api.phys.ucalgary.ca/
+  baseURL: https://api.phys.ucalgary.ca
   tags:
   - Utilities
   properties:
@@ -352,66 +235,421 @@ apis:
   - type: Documentation
     url: https://api.phys.ucalgary.ca/
   - type: Documentation
-    url: https://data.phys.ucalgary.ca/working_with_data/
-  - type: Documentation
-    url: https://docs.aurorax.space/
+    url: https://data.phys.ucalgary.ca/
+  - type: OpenAPI
+    url: https://api.phys.ucalgary.ca/openapi.json
+- aid: university-of-calgary:university-of-calgary-application-wadl-api
+  name: University of Calgary AuroraX Application.wadl API
+  description: The WADL service-description endpoints exposed by the AuroraX API.
+  x-operator: institution
+  x-operator-evidence: api.aurorax.space resolves to 136.159.28.148 — the ARIN U-CALGARY netblock 136.159.0.0/16,
+    one address away from api.phys.ucalgary.ca (136.159.28.200). AuroraX is operated by the University of
+    Calgary Space Remote Sensing group on university infrastructure; aurorax.space is a project domain, not
+    a vendor platform, and every customer does not share it.
+  humanURL: https://api.aurorax.space/
+  baseURL: https://api.aurorax.space
+  tags:
+  - Application.wadl
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-application-wadl-api-openapi.yml
   - type: Documentation
     url: https://api.aurorax.space/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Website
+    url: https://aurorax.space/
+  - type: OpenAPI
+    url: https://api.aurorax.space/api/openapi.json
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-authenticate-api
+  name: University of Calgary AuroraX Authenticate API
+  description: Authenticate via email and password to get an Access Token. Use your API Key if you  are building
+    software without user interaction to run against the API.
+  x-operator: institution
+  x-operator-evidence: api.aurorax.space resolves to 136.159.28.148 — the ARIN U-CALGARY netblock 136.159.0.0/16,
+    one address away from api.phys.ucalgary.ca (136.159.28.200). AuroraX is operated by the University of
+    Calgary Space Remote Sensing group on university infrastructure; aurorax.space is a project domain, not
+    a vendor platform, and every customer does not share it.
+  humanURL: https://api.aurorax.space/
+  baseURL: https://api.aurorax.space
+  tags:
+  - Authenticate
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-authenticate-api-openapi.yml
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Website
+    url: https://aurorax.space/
+  - type: OpenAPI
+    url: https://api.aurorax.space/api/openapi.json
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-availability-api
+  name: University of Calgary AuroraX Availability API
+  description: Retrieve information about data in the database
+  x-operator: institution
+  x-operator-evidence: api.aurorax.space resolves to 136.159.28.148 — the ARIN U-CALGARY netblock 136.159.0.0/16,
+    one address away from api.phys.ucalgary.ca (136.159.28.200). AuroraX is operated by the University of
+    Calgary Space Remote Sensing group on university infrastructure; aurorax.space is a project domain, not
+    a vendor platform, and every customer does not share it.
+  humanURL: https://api.aurorax.space/
+  baseURL: https://api.aurorax.space
+  tags:
+  - Availability
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-availability-api-openapi.yml
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Website
+    url: https://aurorax.space/
+  - type: OpenAPI
+    url: https://api.aurorax.space/api/openapi.json
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-conjunction-search-api
+  name: University of Calgary AuroraX Conjunction Search API
+  description: Search for conjunctions between multiple sets of data sources
+  x-operator: institution
+  x-operator-evidence: api.aurorax.space resolves to 136.159.28.148 — the ARIN U-CALGARY netblock 136.159.0.0/16,
+    one address away from api.phys.ucalgary.ca (136.159.28.200). AuroraX is operated by the University of
+    Calgary Space Remote Sensing group on university infrastructure; aurorax.space is a project domain, not
+    a vendor platform, and every customer does not share it.
+  humanURL: https://api.aurorax.space/
+  baseURL: https://api.aurorax.space
+  tags:
+  - Conjunction Search
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-conjunction-search-api-openapi.yml
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Website
+    url: https://aurorax.space/
+  - type: OpenAPI
+    url: https://api.aurorax.space/api/openapi.json
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-data-products-search-api
+  name: University of Calgary AuroraX Data Products Search API
+  description: Search for data products
+  x-operator: institution
+  x-operator-evidence: api.aurorax.space resolves to 136.159.28.148 — the ARIN U-CALGARY netblock 136.159.0.0/16,
+    one address away from api.phys.ucalgary.ca (136.159.28.200). AuroraX is operated by the University of
+    Calgary Space Remote Sensing group on university infrastructure; aurorax.space is a project domain, not
+    a vendor platform, and every customer does not share it.
+  humanURL: https://api.aurorax.space/
+  baseURL: https://api.aurorax.space
+  tags:
+  - Data Products Search
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-data-products-search-api-openapi.yml
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Website
+    url: https://aurorax.space/
+  - type: OpenAPI
+    url: https://api.aurorax.space/api/openapi.json
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-data-sources-api
+  name: University of Calgary AuroraX Data Sources API
+  description: Interact with data sources
+  x-operator: institution
+  x-operator-evidence: api.aurorax.space resolves to 136.159.28.148 — the ARIN U-CALGARY netblock 136.159.0.0/16,
+    one address away from api.phys.ucalgary.ca (136.159.28.200). AuroraX is operated by the University of
+    Calgary Space Remote Sensing group on university infrastructure; aurorax.space is a project domain, not
+    a vendor platform, and every customer does not share it.
+  humanURL: https://api.aurorax.space/
+  baseURL: https://api.aurorax.space
+  tags:
+  - Data Sources
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-data-sources-api-openapi.yml
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Website
+    url: https://aurorax.space/
+  - type: OpenAPI
+    url: https://api.aurorax.space/api/openapi.json
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-ephemeris-search-api
+  name: University of Calgary AuroraX Ephemeris Search API
+  description: Search ephemeris records
+  x-operator: institution
+  x-operator-evidence: api.aurorax.space resolves to 136.159.28.148 — the ARIN U-CALGARY netblock 136.159.0.0/16,
+    one address away from api.phys.ucalgary.ca (136.159.28.200). AuroraX is operated by the University of
+    Calgary Space Remote Sensing group on university infrastructure; aurorax.space is a project domain, not
+    a vendor platform, and every customer does not share it.
+  humanURL: https://api.aurorax.space/
+  baseURL: https://api.aurorax.space
+  tags:
+  - Ephemeris Search
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-ephemeris-search-api-openapi.yml
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Website
+    url: https://aurorax.space/
+  - type: OpenAPI
+    url: https://api.aurorax.space/api/openapi.json
+  - type: GitHub
+    url: https://github.com/aurorax-space
+- aid: university-of-calgary:university-of-calgary-manage-data-api
+  name: University of Calgary AuroraX Manage Data API
+  description: Operations relating to managing ephemeris and data products data
+  x-operator: institution
+  x-operator-evidence: api.aurorax.space resolves to 136.159.28.148 — the ARIN U-CALGARY netblock 136.159.0.0/16,
+    one address away from api.phys.ucalgary.ca (136.159.28.200). AuroraX is operated by the University of
+    Calgary Space Remote Sensing group on university infrastructure; aurorax.space is a project domain, not
+    a vendor platform, and every customer does not share it.
+  humanURL: https://api.aurorax.space/
+  baseURL: https://api.aurorax.space
+  tags:
+  - Manage Data
+  properties:
+  - type: OpenAPI
+    url: openapi/university-of-calgary-manage-data-api-openapi.yml
+  - type: Documentation
+    url: https://api.aurorax.space/
+  - type: Documentation
+    url: https://docs.aurorax.space/
+  - type: Website
+    url: https://aurorax.space/
+  - type: OpenAPI
+    url: https://api.aurorax.space/api/openapi.json
   - type: GitHub
     url: https://github.com/aurorax-space
 - aid: university-of-calgary:university-of-calgary-utils-api
-  name: University of Calgary Utils API
+  name: University of Calgary AuroraX Utils API
   description: Various utilities
-  humanURL: https://api.phys.ucalgary.ca/
-  baseURL: https://api.phys.ucalgary.ca/
+  x-operator: institution
+  x-operator-evidence: api.aurorax.space resolves to 136.159.28.148 — the ARIN U-CALGARY netblock 136.159.0.0/16,
+    one address away from api.phys.ucalgary.ca (136.159.28.200). AuroraX is operated by the University of
+    Calgary Space Remote Sensing group on university infrastructure; aurorax.space is a project domain, not
+    a vendor platform, and every customer does not share it.
+  humanURL: https://api.aurorax.space/
+  baseURL: https://api.aurorax.space
   tags:
   - Utils
   properties:
   - type: OpenAPI
     url: openapi/university-of-calgary-utils-api-openapi.yml
   - type: Documentation
-    url: https://api.phys.ucalgary.ca/
-  - type: Documentation
-    url: https://data.phys.ucalgary.ca/working_with_data/
+    url: https://api.aurorax.space/
   - type: Documentation
     url: https://docs.aurorax.space/
-  - type: Documentation
-    url: https://api.aurorax.space/
+  - type: Website
+    url: https://aurorax.space/
+  - type: OpenAPI
+    url: https://api.aurorax.space/api/openapi.json
   - type: GitHub
     url: https://github.com/aurorax-space
-common:
-  - type: AgenticAccess
-    url: agentic-access/university-of-calgary-agentic-access.yml
-  - type: VulnerabilityDisclosure
-    url: security/university-of-calgary-vulnerability-disclosure.yml
-  - type: DomainSecurity
-    url: security/university-of-calgary-domain-security.yml
-  - type: Authentication
-    url: authentication/university-of-calgary-authentication.yml
+- aid: university-of-calgary:journal-hosting-oai
+  name: University of Calgary Journal Hosting (OJS) OAI-PMH
+  description: The university's own Open Journal Systems 3.4.0.10 installation, hosting UCalgary scholarly
+    journals and exposing a live OAI-PMH 2.0 harvesting endpoint under repositoryName "University of Calgary
+    Journal Hosting". Institution-operated on institution infrastructure; the contract is PKP's Open Journal
+    Systems, so no product specification is saved here.
+  x-operator: institution
+  x-operator-evidence: journalhosting.ucalgary.ca resolves to 136.159.60.34 — the ARIN U-CALGARY netblock.
+    ?verb=Identify returned 200 with protocolVersion 2.0 and a UCalgary repositoryName. Shared contract (OJS/PKP),
+    institution-run deployment.
+  humanURL: https://journalhosting.ucalgary.ca/
+  baseURL: https://journalhosting.ucalgary.ca/index.php/index/oai
+  tags:
+  - OAI-PMH
+  - Open Access
+  - Journals
+  - Scholarly
+  - Repository
+  properties:
+  - type: Documentation
+    url: https://journalhosting.ucalgary.ca/index.php/index/oai?verb=Identify
   - type: Website
-    url: https://www.ucalgary.ca/
-  - type: GitHub
-    url: https://github.com/ucalgary
-  - type: LinkedIn
-    url: https://ca.linkedin.com/school/ucalgary/
-  - type: DeveloperPortal
-    url: https://libguides.ucalgary.ca/apis
-  - type: Plans
-    url: plans/university-of-calgary-plans-pricing.yml
-  - type: RateLimits
-    url: rate-limits/university-of-calgary-rate-limits.yml
-  - type: FinOps
-    url: finops/university-of-calgary-finops.yml
-  - type: Review
-    url: review.yml
-  - type: Vocabulary
-    url: vocabulary/university-of-calgary-vocabulary.yml
-  - type: Rules
-    url: rules/university-of-calgary-rules.yml
-  - type: JSONLD
-    url: json-ld/university-of-calgary-context.jsonld
-  - url: https://www.ucalgary.ca/news/rss.xml
-    type: Blog
+    url: https://journalhosting.ucalgary.ca/
+- aid: university-of-calgary:rcs-wiki-api
+  name: University of Calgary Research Computing Services Wiki API
+  description: RCSWiki, the documentation platform for University of Calgary Advanced Research Computing,
+    runs MediaWiki 1.43.3 on university infrastructure with the MediaWiki Action API openly reachable at /api.php
+    — a genuinely machine-readable, keyless, institution-operated surface covering the HPC and research-computing
+    service documentation. The contract is MediaWiki's, so no product specification is saved here; the deployment
+    is the institution's.
+  x-operator: institution
+  x-operator-evidence: rcs.ucalgary.ca resolves to 136.159.79.9 — the ARIN U-CALGARY netblock. api.php?action=query&meta=siteinfo
+    returned 200 with sitename "RCSWiki" and generator "MediaWiki 1.43.3". Shared contract (MediaWiki), institution-run
+    deployment.
+  humanURL: https://rcs.ucalgary.ca/Main_Page
+  baseURL: https://rcs.ucalgary.ca/api.php
+  tags:
+  - Research Computing
+  - Documentation
+  - MediaWiki
+  - HPC
+  properties:
+  - type: Documentation
+    url: https://rcs.ucalgary.ca/api.php
+  - type: Website
+    url: https://rcs.ucalgary.ca/Main_Page
+- aid: university-of-calgary:prism-dspace
+  name: PRISM Institutional Repository (DSpace on Scholaris)
+  description: PRISM is the University of Calgary's institutional repository — the university's content, the
+    university's DOIs, the university's open-access mandate — but it is no longer run by the university. It
+    is a DSpace 8.4 tenant on Scholaris, the consortial repository service operated by Scholars Portal / OCUL.
+    It exposes the standard DSpace REST API and an OAI-PMH 2.0 endpoint, and has ORCID integration configured
+    with a registered client id. The DSpace contract is the platform's and is not saved under this institution.
+  x-operator: tenant
+  x-operator-evidence: 'prism.ucalgary.ca is a CNAME to public-proxy.scholaris.ca, which resolves to 142.150.191.62-64
+    — ARIN NetName ERINDALE-NET, University of Toronto (Scholars Portal). Every response self-identifies as
+    https://ucalgary.scholaris.ca: DSpace REST root returns dspaceServer https://ucalgary.scholaris.ca/server,
+    and the OAI Identify returns repositoryIdentifier ucalgary.scholaris.ca. Institution-specific account
+    on a consortial platform — tenant, not institution. The 2026-06 profile recorded this host as institution-owned;
+    that verdict was reached from the vanity hostname alone and is corrected here.'
+  humanURL: https://ucalgary.scholaris.ca/
+  baseURL: https://ucalgary.scholaris.ca/server/api
+  tags:
+  - Repository
+  - Scholarly
+  - Open Access
+  - OAI-PMH
+  - DSpace
+  - ORCID
+  properties:
+  - type: Documentation
+    url: https://ucalgary.scholaris.ca/server/api
+  - type: Documentation
+    url: https://prism.ucalgary.ca/server/oai/request?verb=Identify
+  - type: Website
+    url: https://prism.ucalgary.ca/
+- aid: university-of-calgary:prism-dataverse
+  name: PRISM Research Data Repository (Borealis Dataverse)
+  description: The University of Calgary's research-data collection is a Dataverse collection on Borealis,
+    the national Canadian Dataverse repository operated by Scholars Portal. The data and the collection are
+    the university's; the Dataverse REST API is Borealis's generic contract shared by every Canadian member
+    institution, so it is recorded as a relationship and its specification is not saved under this institution.
+  x-operator: tenant
+  x-operator-evidence: borealisdata.ca is a generic multi-tenant national platform; the institution-specific
+    object is the collection path /dataverse/calgary, which returned 200 at https://borealisdata.ca/api/dataverses/calgary.
+    The API host is shared by every member, so it is a tenant relationship rather than an institution-operated
+    surface.
+  humanURL: https://borealisdata.ca/dataverse/calgary
+  baseURL: https://borealisdata.ca/api/dataverses/calgary
+  tags:
+  - Research Data
+  - Repository
+  - Open Data
+  - Dataverse
+  - REST
+  properties:
+  - type: Documentation
+    url: https://borealisdata.ca/api/dataverses/calgary
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: Website
+    url: https://borealisdata.ca/dataverse/calgary
+- aid: university-of-calgary:identity-federation
+  name: University of Calgary Identity Federation (SAML 2.0 / OpenID Connect)
+  description: The ucalgary.ca single-sign-on identity provider, run as a Microsoft Entra ID tenant. It publishes
+    signed SAML 2.0 federation metadata and an OpenID Connect discovery document, both keyless and machine-readable,
+    and it is what actually answers an SP-initiated login from the university's own services. This is the
+    institution's federation identity on a vendor platform — one of the few genuinely machine-readable surfaces
+    most universities have, and one that is almost never catalogued.
+  x-operator: tenant
+  x-operator-evidence: 'login.microsoftonline.com is Microsoft''s generic host; the institution-specific object
+    is tenant c609a0ec-a5e3-4631-9686-192280bd9151, proven to be ucalgary.ca''s because the domain-form discovery
+    URL https://login.microsoftonline.com/ucalgary.ca/v2.0/.well-known/openid-configuration resolves to that
+    tenant''s issuer. Tenant, not institution: the metadata is theirs, the platform is not.'
+  humanURL: https://www.ucalgary.ca/it/services
+  baseURL: https://login.microsoftonline.com/c609a0ec-a5e3-4631-9686-192280bd9151
+  tags:
+  - Identity Federation
+  - SAML
+  - OpenID Connect
+  - Single Sign-On
+  - Authentication
+  properties:
+  - type: Documentation
+    url: https://login.microsoftonline.com/c609a0ec-a5e3-4631-9686-192280bd9151/federationmetadata/2007-06/federationmetadata.xml
+  - type: Documentation
+    url: https://login.microsoftonline.com/c609a0ec-a5e3-4631-9686-192280bd9151/v2.0/.well-known/openid-configuration
+common:
+- type: Website
+  url: https://www.ucalgary.ca/
+- type: Documentation
+  url: https://libguides.ucalgary.ca/apis
+- type: APIReference
+  url: https://api.phys.ucalgary.ca/docs
+- type: GitHub
+  url: https://github.com/ucalgary
+- type: GitHubOrganization
+  url: https://github.com/aurorax-space
+- type: LinkedIn
+  url: https://ca.linkedin.com/school/ucalgary/
+- type: Blog
+  url: https://www.ucalgary.ca/news/rss.xml
+- type: Support
+  url: https://ucalgary.service-now.com/it
+- type: ResearchRepository
+  url: https://prism.ucalgary.ca/
+- type: ResearchRepository
+  url: https://borealisdata.ca/dataverse/calgary
+- type: OpenData
+  url: https://data.phys.ucalgary.ca/
+- type: LibraryCatalog
+  url: https://library.ucalgary.ca/
+- type: CourseCatalog
+  url: https://calendar.ucalgary.ca/
+- type: IdentityFederation
+  url: https://login.microsoftonline.com/c609a0ec-a5e3-4631-9686-192280bd9151/federationmetadata/2007-06/federationmetadata.xml
+- type: ResearchComputing
+  url: https://rcs.ucalgary.ca/Main_Page
+- type: AIPolicy
+  url: https://grad.ucalgary.ca/current-students/important-resources-and-supports/graduate-ai-guidelines
+- type: AITooling
+  url: https://ai.ucalgary.ca/
+- type: AgenticAccess
+  url: agentic-access/university-of-calgary-agentic-access.yml
+- type: Conformance
+  url: conformance/university-of-calgary-conformance.yml
+- type: VulnerabilityDisclosure
+  url: security/university-of-calgary-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/university-of-calgary-domain-security.yml
+- type: Authentication
+  url: authentication/university-of-calgary-authentication.yml
+- type: Plans
+  url: plans/university-of-calgary-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/university-of-calgary-rate-limits.yml
+- type: FinOps
+  url: finops/university-of-calgary-finops.yml
+- type: Review
+  url: review.yml
+- type: Vocabulary
+  url: vocabulary/university-of-calgary-vocabulary.yml
+- type: Rules
+  url: rules/university-of-calgary-rules.yml
+- type: JSONLD
+  url: json-ld/university-of-calgary-context.jsonld
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
