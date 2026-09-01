@@ -425,6 +425,8 @@ apis:
   humanURL: https://api.aurorax.space/
   baseURL: https://api.aurorax.space
   tags:
+  - Manage data
+  tags_raw:
   - Manage Data
   properties:
   - type: OpenAPI
