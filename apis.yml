@@ -588,6 +588,12 @@ apis:
   - Identity Federation
   - SAML
   - OpenID Connect
+  - SSO
+  - Authentication
+  tags_raw:
+  - Identity Federation
+  - SAML
+  - OpenID Connect
   - Single Sign-On
   - Authentication
   properties:
