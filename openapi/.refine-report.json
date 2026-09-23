@@ -16,6 +16,7 @@
     "university-of-calgary-utils-api-openapi.yml",
     "university-of-calgary-auroral-transport-model-atm-api-openapi.yml",
     "university-of-calgary-data-distribution-api-openapi.yml",
+    "university-of-calgary-hapi-api-openapi.yml",
     "university-of-calgary-operations-sitl-api-openapi.yml",
     "university-of-calgary-real-time-data-api-openapi.yml",
     "university-of-calgary-utilities-api-openapi.yml"
@@ -29,7 +30,8 @@
     "university-of-calgary-aurorax-api.yaml: tagged paths GET /api/application.wadl/{path} -> Application.wadl",
     "university-of-calgary-aurorax-api.yaml: tagged paths GET /api/application.wadl -> Application.wadl",
     "university-of-calgary-aurorax-api.yaml: declared missing tag: Application.wadl",
-    "university-of-calgary-srs-api.yaml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0"
+    "university-of-calgary-srs-api.yaml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "university-of-calgary-application-wadl-api-openapi.yml: previously refined output, superseded by openapi/_original/",
@@ -41,6 +43,7 @@
     "university-of-calgary-data-products-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "university-of-calgary-data-sources-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "university-of-calgary-ephemeris-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "university-of-calgary-hapi-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "university-of-calgary-manage-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "university-of-calgary-operations-sitl-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "university-of-calgary-real-time-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",

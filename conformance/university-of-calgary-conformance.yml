@@ -1,0 +1,161 @@
+generated: '2026-08-30'
+method: derived
+probe: true
+source: >-
+  Live probes run 2026-08-30 against University of Calgary hosts and against the third-party
+  registries that publish the institution's membership records. Every `evidence` value below names
+  the exact URL fetched and the status code returned.
+note: >-
+  Scored against the Kin Score `education` regime standards[]. This is a reward-only record: a
+  standard is marked `conforms: true` only where a live probe returned a conformant response, and
+  `false` where a probe was run and found nothing. Nothing here is inferred from prose or from
+  vendor product documentation. Where the conforming endpoint runs on a vendor platform under a
+  University of Calgary account, the operator is named — the conformance is real, the engineering
+  is not the institution's.
+standards:
+- id: oai-pmh
+  conforms: true
+  operator: institution
+  evidence: >-
+    https://journalhosting.ucalgary.ca/index.php/index/oai?verb=Identify returned 200 with a valid
+    OAI-PMH 2.0 response — protocolVersion 2.0, repositoryName "University of Calgary Journal
+    Hosting", served from Open Journal Systems 3.4.0.10 on 136.159.60.34, inside the University of
+    Calgary registrable domain and the University of Calgary netblock (136.159.0.0/16, ARIN
+    NetName U-CALGARY). Institution-operated harvesting surface.
+- id: oai-pmh
+  conforms: true
+  operator: tenant
+  evidence: >-
+    https://prism.ucalgary.ca/server/oai/request?verb=Identify returned 200 with OAI-PMH 2.0 —
+    repositoryName "PRISM", baseURL https://ucalgary.scholaris.ca/server/oai/request,
+    repositoryIdentifier ucalgary.scholaris.ca, earliestDatestamp 2003-05-05T17:48:43Z,
+    adminEmail openscholarship@ucalgary.libanswers.com. The vanity host prism.ucalgary.ca is a
+    CNAME to public-proxy.scholaris.ca (142.150.191.62-64, ARIN NetName ERINDALE-NET, University
+    of Toronto / Scholars Portal), so the endpoint is a Scholaris tenant, not institution-run.
+- id: saml
+  conforms: true
+  operator: tenant
+  evidence: >-
+    https://login.microsoftonline.com/c609a0ec-a5e3-4631-9686-192280bd9151/federationmetadata/2007-06/federationmetadata.xml
+    returned 200 (28,525 bytes) with a signed SAML 2.0 <EntityDescriptor> for entityID
+    https://sts.windows.net/c609a0ec-a5e3-4631-9686-192280bd9151/. The tenant is proven to be
+    ucalgary.ca's because
+    https://login.microsoftonline.com/ucalgary.ca/v2.0/.well-known/openid-configuration resolves to
+    issuer https://login.microsoftonline.com/c609a0ec-a5e3-4631-9686-192280bd9151/v2.0. Reached in
+    practice by an SP-initiated login at
+    https://ucalgary.scholaris.ca/server/api/authn/shibboleth, which redirects to that tenant's
+    /saml2 endpoint. Microsoft Entra ID is the platform; the tenant and its metadata are the
+    institution's.
+- id: shibboleth
+  conforms: false
+  evidence: >-
+    No Shibboleth IdP metadata was served. idp.ucalgary.ca resolves (136.159.190.199) but presents a
+    certificate for labstats.ucalgary.ca (O=The Governors of the University of Calgary) and
+    https://idp.ucalgary.ca/idp/shibboleth returns an HTML error page, not SAML metadata.
+    shibboleth.ucalgary.ca (136.159.96.31), sso.ucalgary.ca (136.159.96.53) and cas.ucalgary.ca
+    (136.159.96.51) resolve but serve no metadata document. Historic Canadian Access Federation
+    participation is visible at https://github.com/ucalgary/idp-installer-CAF ("the CAF managed
+    version of the idp-installer", last updated 2017-04-18); the live federation is now Entra ID
+    SAML — see the `saml` row.
+- id: datacite
+  conforms: true
+  operator: institution
+  evidence: >-
+    https://api.datacite.org/providers/ucalg returned 200 — name "University of Calgary",
+    memberType consortium_organization, country CA, website https://library.ucalgary.ca.
+    https://api.datacite.org/clients?provider-id=ucalg returned 2 repositories: ucalg.library
+    (University of Calgary) and ucalg.tcg (The Calgary Guide to Understanding Disease,
+    https://calgaryguide.ucalgary.ca/). The institution is the DOI registrant of record.
+- id: crossref
+  conforms: true
+  operator: institution
+  evidence: >-
+    https://api.crossref.org/members?query=University+of+Calgary returned 200 with exactly one
+    match — member id 13844, primary-name "University of Calgary", 5,590 registered DOIs. The
+    university is a Crossref member depositing DOIs, principally through the institution-hosted
+    Open Journal Systems instance at journalhosting.ucalgary.ca.
+- id: orcid
+  conforms: true
+  operator: tenant
+  evidence: >-
+    The PRISM DSpace 8.4 deployment has ORCID integration configured, not merely available:
+    https://prism.ucalgary.ca/server/api/config/properties/orcid.application-client-id returned 200
+    with a real registered client id (APP-JMT55MJUP3VMA7GK), and
+    .../config/properties/orcid.authorize-url returned https://orcid.org/oauth/authorize. Runs on
+    the Scholaris tenant.
+- id: scim
+  conforms: false
+  evidence: >-
+    No SCIM 2.0 service provider configuration was reachable. No public /scim/v2 or
+    /ServiceProviderConfig endpoint was found on any probed University of Calgary host, and none is
+    advertised on the Entra tenant's public discovery documents.
+- id: lti
+  conforms: false
+  evidence: >-
+    No public LTI tool or platform configuration document was found. The university's LMS is D2L
+    Brightspace and the institution's public code (https://github.com/ucalgary — valence-sdk-php,
+    ti-d2l-grades-export-js, d2l-thrive-python) targets the proprietary D2L Valence API rather than
+    LTI Advantage; no /.well-known/lti-platform-configuration or LTI tool JSON was served.
+- id: oneroster
+  conforms: false
+  evidence: >-
+    No OneRoster endpoint found. Student-information integration in the institution's public code
+    (https://github.com/ucalgary/ps-stream, ps-lms-batch-extract) is PeopleSoft sync-message
+    parsing into Kafka, not a OneRoster service.
+- id: ed-fi
+  conforms: false
+  evidence: >-
+    No Ed-Fi ODS/API surface found. Ed-Fi is a K-12 data standard and no probed host exposed an
+    Ed-Fi descriptor, dependency or metadata endpoint.
+- id: caliper
+  conforms: false
+  evidence: No IMS Caliper Analytics endpoint or sensor endpoint was found on any probed host.
+- id: qti
+  conforms: false
+  evidence: No QTI assessment-interoperability surface was found on any probed host.
+extra_standards:
+- id: hapi-3.3
+  name: Heliophysics Data Application Programmer's Interface (HAPI) 3.3
+  conforms: true
+  operator: institution
+  evidence: >-
+    https://api.phys.ucalgary.ca/hapi/capabilities returned 200 with {"HAPI":"3.3","outputFormats":
+    ["csv","binary","json"],"catalogDepthOptions":["dataset","all"],"status":{"code":1200,
+    "message":"OK"}}. https://api.phys.ucalgary.ca/hapi/about returned id "UCalgary/SRS", title
+    "UCalgary Space Remote Sensing HAPI Server", contact "Darren Chaddock (dchaddoc@ucalgary.ca)".
+    https://api.phys.ucalgary.ca/hapi/catalog returned 200 with the NORSTAR riometer dataset
+    catalog. All six HAPI operations are declared in the institution's own OpenAPI 3.1 document at
+    https://api.phys.ucalgary.ca/openapi.json under the HAPI tag. This is the strongest
+    standards-conformance finding in the profile and it is entirely institution-operated — it is
+    outside the Kin Score `education` regime standards[] list, which carries no space-physics or
+    time-series data standard.
+- id: openapi-3.1
+  conforms: true
+  operator: institution
+  evidence: >-
+    https://api.phys.ucalgary.ca/openapi.json returned 200 (102,208 bytes), openapi 3.1.0, 22
+    paths, 6 tags, 50 component schemas, securitySchemes HTTPBearer + APIKeyHeader, info.version
+    1.66.0. Machine-readable and self-published by the institution at a stable path.
+- id: openapi-3.0
+  conforms: true
+  operator: institution
+  evidence: >-
+    https://api.aurorax.space/api/openapi.json returned 200, openapi 3.0.1, 33 paths, 8 tags,
+    servers[0] https://api.aurorax.space. Host resolves to 136.159.28.148 — the University of
+    Calgary netblock, one address off api.phys.ucalgary.ca (136.159.28.200).
+- id: rfc9116-security-txt
+  conforms: partial
+  operator: institution
+  evidence: >-
+    https://www.ucalgary.ca/.well-known/security.txt returned 200 (284 bytes) with Contact,
+    Preferred-Languages, Canonical, Hiring and Expires fields. It is EXPIRED — "Expires:
+    2025-12-31T23:00:00Z", eight months before this probe — which RFC 9116 section 2.5.5 says
+    means the file should not be trusted. Partial, not true, for that reason.
+- id: llms-txt
+  conforms: false
+  evidence: >-
+    https://www.ucalgary.ca/llms.txt returns HTTP 200 but redirects to
+    https://www.ucalgary.ca/system/404 and serves the 83,776-byte site 404 page — a soft-404, not
+    an llms.txt. The same soft-404 body is returned for /privacy, /artificial-intelligence and
+    every other unknown path on www.ucalgary.ca, so a 200 from that host is never on its own
+    evidence that a document exists.

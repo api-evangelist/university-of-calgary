@@ -1,0 +1,33 @@
+{
+  "HAPI": "3.3",
+  "catalog": [
+    {
+      "id": "NORSTAR_RIOMETER_K0@CHUR",
+      "title": "NORSTAR Riometer K0 raw signal - Churchill"
+    },
+    {
+      "id": "NORSTAR_RIOMETER_K0@CONT",
+      "title": "NORSTAR Riometer K0 raw signal - Contwoyto Lake"
+    },
+    {
+      "id": "NORSTAR_RIOMETER_K0@DAWS",
+      "title": "NORSTAR Riometer K0 raw signal - Dawson City"
+    },
+    {
+      "id": "NORSTAR_RIOMETER_K0@FSIM",
+      "title": "NORSTAR Riometer K0 raw signal - Fort Simpson"
+    },
+    {
+      "id": "NORSTAR_RIOMETER_K0@FSMI",
+      "title": "NORSTAR Riometer K0 raw signal - Fort Smith"
+    },
+    {
+      "id": "NORSTAR_RIOMETER_K0@GILL",
+      "title": "NORSTAR Riometer K0 raw signal - Gillam"
+    }
+  ],
+  "status": {
+    "code": 1200,
+    "message": "OK"
+  }
+}

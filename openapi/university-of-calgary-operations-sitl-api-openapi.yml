@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: UCalgary Space Remote Sensing Operations - SITL API
   description: API providing data and tools for UCalgary Space Remote Sensing
-  version: 1.56.0
+  version: 1.66.0
 servers:
 - url: https://api.phys.ucalgary.ca
   description: UCalgary Space Remote Sensing API
@@ -92,25 +92,25 @@ paths:
         in: query
         required: false
         schema:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Site Uid
       - name: device_uid
         in: query
         required: false
         schema:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Device Uid
       - name: instrument_uid
         in: query
         required: false
         schema:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Instrument Uid
       responses:
         '200':
@@ -235,7 +235,14 @@ paths:
       tags:
       - Operations - SITL
       summary: Upload a SITL log event
-      description: "Upload a SITL log message.\n\nNotes:\n  - Possible values for category: arctics, trex_rgb_burst\n  - Possible values for level: debug, info, warning, error"
+      description: 'Upload a SITL log message.
+
+
+        Notes:
+
+        - Possible values for category: arctics, trex_rgb_burst
+
+        - Possible values for level: debug, info, warning, error'
       operationId: upload_log_messages_api_v1_ops_sitl_logging_post
       security:
       - HTTPBearer: []
@@ -280,7 +287,14 @@ paths:
       tags:
       - Operations - SITL
       summary: Retrieve SITL log events
-      description: "Retrieve SITL log messages.\n\nNotes:\n  - ordering key is 'timestamp'\n  - if level parameter is not supplied, it will return log messages from all levels"
+      description: 'Retrieve SITL log messages.
+
+
+        Notes:
+
+        - ordering key is ''timestamp''
+
+        - if level parameter is not supplied, it will return log messages from all levels'
       operationId: get_log_messages_api_v1_ops_sitl_logging_get
       security:
       - HTTPBearer: []
@@ -313,14 +327,14 @@ paths:
         in: query
         required: false
         schema:
-          enum:
-          - debug
-          - info
-          - warning
-          - error
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - enum:
+            - debug
+            - info
+            - warning
+            - error
+            type: string
+          - type: 'null'
           title: Level
       - name: order
         in: query
@@ -368,33 +382,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ARCTICSMontageRecord:
-      properties:
-        url:
-          type: string
-          title: Url
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        modified_time:
-          type: string
-          format: date-time
-          title: Modified Time
-        filesize_bytes:
-          type: integer
-          title: Filesize Bytes
-        filesize_str:
-          type: string
-          title: Filesize Str
-      type: object
-      required:
-      - url
-      - timestamp
-      - modified_time
-      - filesize_bytes
-      - filesize_str
-      title: ARCTICSMontageRecord
     ARCTICSKeogramRecord:
       properties:
         url:
@@ -422,6 +409,138 @@ components:
       - filesize_bytes
       - filesize_str
       title: ARCTICSKeogramRecord
+    ARCTICSMontageRecord:
+      properties:
+        url:
+          type: string
+          title: Url
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        modified_time:
+          type: string
+          format: date-time
+          title: Modified Time
+        filesize_bytes:
+          type: integer
+          title: Filesize Bytes
+        filesize_str:
+          type: string
+          title: Filesize Str
+      type: object
+      required:
+      - url
+      - timestamp
+      - modified_time
+      - filesize_bytes
+      - filesize_str
+      title: ARCTICSMontageRecord
+    ARCTICSDataProductsResponse:
+      properties:
+        date:
+          type: string
+          format: date
+          title: Date
+        site_uid:
+          type: string
+          title: Site Uid
+        device_uid:
+          type: string
+          title: Device Uid
+        dp_daily_keogram:
+          anyOf:
+          - $ref: '#/components/schemas/ARCTICSKeogramRecord'
+          - type: 'null'
+        dp_hourly_keograms:
+          items:
+            $ref: '#/components/schemas/ARCTICSKeogramRecord'
+          type: array
+          title: Dp Hourly Keograms
+          default: []
+        dp_daily_montage:
+          anyOf:
+          - $ref: '#/components/schemas/ARCTICSMontageRecord'
+          - type: 'null'
+        dp_hourly_montages:
+          items:
+            $ref: '#/components/schemas/ARCTICSMontageRecord'
+          type: array
+          title: Dp Hourly Montages
+          default: []
+        dp_daily_movie_lowres:
+          anyOf:
+          - $ref: '#/components/schemas/ARCTICSMovieRecord'
+          - type: 'null'
+      type: object
+      required:
+      - date
+      - site_uid
+      - device_uid
+      title: ARCTICSDataProductsResponse
+    SITLLogMessage:
+      properties:
+        category:
+          type: string
+          enum:
+          - arctics
+          - trex_rgb_burst
+          title: Category
+        level:
+          type: string
+          enum:
+          - debug
+          - info
+          - warning
+          - error
+          title: Level
+        timestamp:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Timestamp
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - category
+      - level
+      - message
+      title: SITLLogMessage
+    ARCTICSUploadTimeframeRequest:
+      properties:
+        start:
+          type: string
+          format: date-time
+          title: Start
+        end:
+          type: string
+          format: date-time
+          title: End
+        instrument_uid:
+          type: string
+          const: smile
+          title: Instrument Uid
+        site_uid:
+          type: string
+          title: Site Uid
+        device_uid:
+          type: string
+          title: Device Uid
+        username:
+          type: string
+          title: Username
+      type: object
+      required:
+      - start
+      - end
+      - instrument_uid
+      - site_uid
+      - device_uid
+      - username
+      title: ARCTICSUploadTimeframeRequest
     ValidationError:
       properties:
         loc:
@@ -448,109 +567,15 @@ components:
       - msg
       - type
       title: ValidationError
-    ARCTICSDeleteTimeframeRequest:
+    ErrorMessage:
       properties:
-        start:
+        detail:
           type: string
-          format: date-time
-          title: Start
-        end:
-          type: string
-          format: date-time
-          title: End
-        instrument_uid:
-          type: string
-          enum:
-          - smile
-          title: Instrument Uid
-        site_uid:
-          type: string
-          title: Site Uid
-        device_uid:
-          type: string
-          title: Device Uid
+          title: Detail
       type: object
       required:
-      - start
-      - end
-      - instrument_uid
-      - site_uid
-      - device_uid
-      title: ARCTICSDeleteTimeframeRequest
-    ARCTICSKeepTimeframe:
-      properties:
-        start:
-          type: string
-          format: date-time
-          title: Start
-        end:
-          type: string
-          format: date-time
-          title: End
-        site_uid:
-          type: string
-          title: Site Uid
-        device_uid:
-          type: string
-          title: Device Uid
-        instrument_uid:
-          type: string
-          enum:
-          - smile
-          title: Instrument Uid
-        last_updated_user:
-          type: string
-          title: Last Updated User
-        last_updated_ts:
-          type: string
-          format: date-time
-          title: Last Updated Ts
-      type: object
-      required:
-      - start
-      - end
-      - site_uid
-      - device_uid
-      - instrument_uid
-      - last_updated_user
-      - last_updated_ts
-      title: ARCTICSKeepTimeframe
-    ARCTICSDataProductsResponse:
-      properties:
-        date:
-          type: string
-          format: date
-          title: Date
-        site_uid:
-          type: string
-          title: Site Uid
-        device_uid:
-          type: string
-          title: Device Uid
-        dp_daily_keogram:
-          $ref: '#/components/schemas/ARCTICSKeogramRecord'
-        dp_hourly_keograms:
-          items:
-            $ref: '#/components/schemas/ARCTICSKeogramRecord'
-          type: array
-          title: Dp Hourly Keograms
-          default: []
-        dp_daily_montage:
-          $ref: '#/components/schemas/ARCTICSMontageRecord'
-        dp_hourly_montages:
-          items:
-            $ref: '#/components/schemas/ARCTICSMontageRecord'
-          type: array
-          title: Dp Hourly Montages
-          default: []
-        dp_daily_movie_lowres:
-          $ref: '#/components/schemas/ARCTICSMovieRecord'
-      type: object
-      required:
-      - date
-      - site_uid
-      - device_uid
-      title: ARCTICSDataProductsResponse
+      - detail
+      title: ErrorMessage
     ARCTICSMovieRecord:
       properties:
         url:
@@ -586,15 +611,43 @@ components:
       - duration_seconds
       - duration_str
       title: ARCTICSMovieRecord
-    ErrorMessage:
+    ARCTICSKeepTimeframe:
       properties:
-        detail:
+        start:
           type: string
-          title: Detail
+          format: date-time
+          title: Start
+        end:
+          type: string
+          format: date-time
+          title: End
+        site_uid:
+          type: string
+          title: Site Uid
+        device_uid:
+          type: string
+          title: Device Uid
+        instrument_uid:
+          type: string
+          const: smile
+          title: Instrument Uid
+        last_updated_user:
+          type: string
+          title: Last Updated User
+        last_updated_ts:
+          type: string
+          format: date-time
+          title: Last Updated Ts
       type: object
       required:
-      - detail
-      title: ErrorMessage
+      - start
+      - end
+      - site_uid
+      - device_uid
+      - instrument_uid
+      - last_updated_user
+      - last_updated_ts
+      title: ARCTICSKeepTimeframe
     HTTPValidationError:
       properties:
         detail:
@@ -604,38 +657,7 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    SITLLogMessage:
-      properties:
-        category:
-          type: string
-          enum:
-          - arctics
-          - trex_rgb_burst
-          title: Category
-        level:
-          type: string
-          enum:
-          - debug
-          - info
-          - warning
-          - error
-          title: Level
-        timestamp:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          title: Timestamp
-        message:
-          type: string
-          title: Message
-      type: object
-      required:
-      - category
-      - level
-      - message
-      title: SITLLogMessage
-    ARCTICSUploadTimeframeRequest:
+    ARCTICSDeleteTimeframeRequest:
       properties:
         start:
           type: string
@@ -647,8 +669,7 @@ components:
           title: End
         instrument_uid:
           type: string
-          enum:
-          - smile
+          const: smile
           title: Instrument Uid
         site_uid:
           type: string
@@ -656,9 +677,6 @@ components:
         device_uid:
           type: string
           title: Device Uid
-        username:
-          type: string
-          title: Username
       type: object
       required:
       - start
@@ -666,8 +684,7 @@ components:
       - instrument_uid
       - site_uid
       - device_uid
-      - username
-      title: ARCTICSUploadTimeframeRequest
+      title: ARCTICSDeleteTimeframeRequest
   securitySchemes:
     HTTPBearer:
       type: http

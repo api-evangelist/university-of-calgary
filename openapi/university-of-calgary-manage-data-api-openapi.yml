@@ -1,7 +1,10 @@
 openapi: 3.2.0
 info:
   title: AuroraX Manage Data API
-  description: "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n"
+  description: '## Overview
+
+
+    This webpage is an interactive documentation interface for the AuroraX RESTful API.'
   version: stable
 servers:
 - url: https://api.aurorax.space
@@ -83,7 +86,10 @@ paths:
       tags:
       - Manage Data
       summary: Deletes a Data Product record
-      description: "*Must be the Data Source Maintainer, Owner, or have Administrator access in order to perform this operation* \n\n*Must be authenticated*"
+      description: '*Must be the Data Source Maintainer, Owner, or have Administrator access in order to perform this operation*
+
+
+        *Must be authenticated*'
       operationId: deleteDataProduct
       parameters:
       - name: identifier
@@ -210,8 +216,11 @@ paths:
     delete:
       tags:
       - Manage Data
-      summary: Delete a range of Ephemeris records. This interface is asynchronous.
-      description: "*Must be the Data Source Maintainer, Owner, or have Administrator access in order to perform this operation* \n\n*Must be authenticated*"
+      summary: Delete a range of Ephemeris records. This interface is asynchronous
+      description: '*Must be the Data Source Maintainer, Owner, or have Administrator access in order to perform this operation*
+
+
+        *Must be authenticated*'
       operationId: deleteEphemeris
       parameters:
       - name: identifier
@@ -335,9 +344,8 @@ paths:
                 $ref: '#/components/schemas/ErrorDocument'
 components:
   schemas:
-    LoadEphemerisSpecification:
+    DeleteDataProductSpecification:
       required:
-      - epoch
       - instrument_type
       - platform
       - program
@@ -349,19 +357,10 @@ components:
           type: string
         instrument_type:
           type: string
-        epoch:
-          type: string
-          format: date-time
-        location_geo:
-          $ref: '#/components/schemas/Location'
-        location_gsm:
-          $ref: '#/components/schemas/Location'
-        nbtrace:
-          $ref: '#/components/schemas/Location'
-        sbtrace:
-          $ref: '#/components/schemas/Location'
-        metadata:
-          $ref: '#/components/schemas/JsonNode'
+        urls:
+          type: array
+          items:
+            type: string
     JsonNode:
       type: object
     DeleteEphemerisSpecification:
@@ -385,58 +384,6 @@ components:
         end:
           type: string
           format: date-time
-    LoadDataProductSpecification:
-      required:
-      - data_product_type
-      - end
-      - instrument_type
-      - platform
-      - program
-      - start
-      - url
-      type: object
-      properties:
-        program:
-          type: string
-        platform:
-          type: string
-        instrument_type:
-          type: string
-        start:
-          type: string
-          format: date-time
-        end:
-          type: string
-          format: date-time
-        url:
-          type: string
-        metadata:
-          $ref: '#/components/schemas/JsonNode'
-        data_product_type:
-          type: string
-          enum:
-          - keogram
-          - montage
-          - movie
-          - summary_plot
-          - data_availability
-    DeleteDataProductSpecification:
-      required:
-      - instrument_type
-      - platform
-      - program
-      type: object
-      properties:
-        program:
-          type: string
-        platform:
-          type: string
-        instrument_type:
-          type: string
-        urls:
-          type: array
-          items:
-            type: string
     ErrorDocument:
       type: object
       properties:
@@ -474,6 +421,68 @@ components:
           minimum: -180
           type: number
       description: A list of latitude and longitude locations of your choice
+    LoadEphemerisSpecification:
+      required:
+      - epoch
+      - instrument_type
+      - platform
+      - program
+      type: object
+      properties:
+        program:
+          type: string
+        platform:
+          type: string
+        instrument_type:
+          type: string
+        epoch:
+          type: string
+          format: date-time
+        location_geo:
+          $ref: '#/components/schemas/Location'
+        location_gsm:
+          $ref: '#/components/schemas/Location'
+        nbtrace:
+          $ref: '#/components/schemas/Location'
+        sbtrace:
+          $ref: '#/components/schemas/Location'
+        metadata:
+          $ref: '#/components/schemas/JsonNode'
+    LoadDataProductSpecification:
+      required:
+      - data_product_type
+      - end
+      - instrument_type
+      - platform
+      - program
+      - start
+      - url
+      type: object
+      properties:
+        program:
+          type: string
+        platform:
+          type: string
+        instrument_type:
+          type: string
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        url:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/JsonNode'
+        data_product_type:
+          type: string
+          enum:
+          - keogram
+          - montage
+          - movie
+          - summary_plot
+          - data_availability
   securitySchemes:
     AccessToken:
       type: http

@@ -1,0 +1,504 @@
+openapi: 3.2.0
+info:
+  title: UCalgary Space Remote Sensing HAPI API
+  description: API providing data and tools for UCalgary Space Remote Sensing
+  version: 1.66.0
+servers:
+- url: https://api.phys.ucalgary.ca
+  description: UCalgary Space Remote Sensing API
+tags:
+- name: HAPI
+  description: Endpoints implementing the HAPI (Heliophysics API) protocol for select time series data
+  externalDocs:
+    description: Explore our HAPI data
+    url: https://data.phys.ucalgary.ca/tools/software/hapi_server.html
+paths:
+  /hapi:
+    get:
+      tags:
+      - HAPI
+      summary: HAPI landing page
+      description: 'Human-readable landing page for the HAPI interface, describing the available
+
+        endpoints and how to use them.'
+      operationId: get_landing_page_hapi_get
+      responses:
+        '200':
+          description: Landing page
+          content:
+            text/html:
+              schema:
+                type: string
+  /hapi/about:
+    get:
+      tags:
+      - HAPI
+      summary: HAPI information about this server
+      description: 'Information about this HAPI server, in the format described by section 3.3 of the
+
+        HAPI specification.'
+      operationId: get_about_hapi_about_get
+      responses:
+        '200':
+          description: Server information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HAPIAbout'
+  /hapi/capabilities:
+    get:
+      tags:
+      - HAPI
+      summary: HAPI capabilities of this server
+      description: 'The output formats supported by this HAPI server, in the format described by
+
+        section 3.4 of the HAPI specification.'
+      operationId: get_capabilities_hapi_capabilities_get
+      responses:
+        '200':
+          description: Server capabilities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HAPICapabilities'
+  /hapi/catalog:
+    get:
+      tags:
+      - HAPI
+      summary: HAPI catalog of available datasets
+      description: 'The catalog of datasets available from this HAPI server, in the format described
+
+        by section 3.5 of the HAPI specification.
+
+
+        Notes:
+
+        - supplying depth=all embeds the full info object for every dataset'
+      operationId: get_catalog_hapi_catalog_get
+      parameters:
+      - name: depth
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Depth
+      - name: resolve_references
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Resolve References
+      responses:
+        '200':
+          description: Dataset catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HAPICatalog'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /hapi/info:
+    get:
+      tags:
+      - HAPI
+      summary: HAPI metadata for a given dataset
+      description: 'Metadata about a given dataset, in the format described by section 3.6 of the
+
+        HAPI specification.
+
+
+        Notes:
+
+        - the HAPI 2.x ''id'' request parameter is supported as an alias of ''dataset''
+
+        - supplying ''parameters'' limits the response to a subset of the dataset''s
+
+        parameters (the time parameter is always included)'
+      operationId: get_info_hapi_info_get
+      parameters:
+      - name: dataset
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dataset
+      - name: parameters
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parameters
+      - name: resolve_references
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Resolve References
+      responses:
+        '200':
+          description: Dataset metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HAPIInfo'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /hapi/data:
+    get:
+      tags:
+      - HAPI
+      summary: HAPI data for a given dataset and timeframe
+      description: 'Data for a given dataset and timeframe, in the format described by section 3.7 of
+
+        the HAPI specification.
+
+
+        Notes:
+
+        - the HAPI 2.x ''id'', ''time.min'', and ''time.max'' request parameters are supported
+
+        as aliases of ''dataset'', ''start'', and ''stop''
+
+        - start and stop times use the HAPI restricted ISO 8601 format, and the timeframe
+
+        is start-inclusive and stop-exclusive
+
+        - supplying ''parameters'' limits the response to a subset of the dataset''s
+
+        parameters (the time parameter is always included)
+
+        - the supported output formats are csv (the default), binary, and json; binary is
+
+        recommended for the large HSR datasets
+
+        - supplying include=header prepends the dataset''s info metadata as ''#''-prefixed
+
+        lines of JSON (csv and binary formats; the json format always includes it)
+
+        - the response is streamed one day of data at a time, so multi-day requests do
+
+        not have to buffer in memory on either side'
+      operationId: get_data_hapi_data_get
+      parameters:
+      - name: dataset
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dataset
+      - name: start
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Start
+      - name: stop
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Stop
+      - name: parameters
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parameters
+      - name: format
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Format
+      - name: include
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Include
+      responses:
+        '200':
+          description: Dataset data
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    HAPIAbout:
+      properties:
+        HAPI:
+          type: string
+          title: Hapi
+        id:
+          type: string
+          title: Id
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+        contact:
+          type: string
+          title: Contact
+        status:
+          $ref: '#/components/schemas/HAPIStatus'
+      type: object
+      required:
+      - HAPI
+      - id
+      - title
+      - description
+      - contact
+      - status
+      title: HAPIAbout
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HAPIInfo:
+      properties:
+        HAPI:
+          type: string
+          title: Hapi
+        description:
+          type: string
+          title: Description
+        resourceURL:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Resourceurl
+        contact:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Contact
+        datasetCitation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Datasetcitation
+        x_dataUsage:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X Datausage
+        startDate:
+          type: string
+          title: Startdate
+        stopDate:
+          type: string
+          title: Stopdate
+        cadence:
+          type: string
+          title: Cadence
+        maxRequestDuration:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Maxrequestduration
+        sampleStartDate:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Samplestartdate
+        sampleStopDate:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Samplestopdate
+        geoLocation:
+          anyOf:
+          - items:
+              type: number
+            type: array
+          - type: 'null'
+          title: Geolocation
+        x_site_uid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X Site Uid
+        x_site_full_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X Site Full Name
+        x_descriptionLong:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X Descriptionlong
+        parameters:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Parameters
+        status:
+          $ref: '#/components/schemas/HAPIStatus'
+      type: object
+      required:
+      - HAPI
+      - description
+      - startDate
+      - stopDate
+      - cadence
+      - parameters
+      - status
+      title: HAPIInfo
+      description: 'Wire format of the /hapi/info response, for API documentation purposes. The
+
+        endpoint builds its response dict directly (via build_info_dict()) since some
+
+        keys are conditionally omitted, but this model reflects the full shape.'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    HAPICapabilities:
+      properties:
+        HAPI:
+          type: string
+          title: Hapi
+        outputFormats:
+          items:
+            type: string
+          type: array
+          title: Outputformats
+        catalogDepthOptions:
+          items:
+            type: string
+          type: array
+          title: Catalogdepthoptions
+        status:
+          $ref: '#/components/schemas/HAPIStatus'
+      type: object
+      required:
+      - HAPI
+      - outputFormats
+      - catalogDepthOptions
+      - status
+      title: HAPICapabilities
+    HAPIStatus:
+      properties:
+        code:
+          type: integer
+          title: Code
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - code
+      - message
+      title: HAPIStatus
+    HAPICatalogDataset:
+      properties:
+        id:
+          type: string
+          title: Id
+        title:
+          type: string
+          title: Title
+        info:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Info
+      type: object
+      required:
+      - id
+      - title
+      title: HAPICatalogDataset
+    HAPICatalog:
+      properties:
+        HAPI:
+          type: string
+          title: Hapi
+        catalog:
+          items:
+            $ref: '#/components/schemas/HAPICatalogDataset'
+          type: array
+          title: Catalog
+        status:
+          $ref: '#/components/schemas/HAPIStatus'
+      type: object
+      required:
+      - HAPI
+      - catalog
+      - status
+      title: HAPICatalog
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: x-srs-api-key

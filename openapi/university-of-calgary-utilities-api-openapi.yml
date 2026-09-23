@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: UCalgary Space Remote Sensing Utilities API
   description: API providing data and tools for UCalgary Space Remote Sensing
-  version: 1.56.0
+  version: 1.66.0
 servers:
 - url: https://api.phys.ucalgary.ca
   description: UCalgary Space Remote Sensing API
@@ -15,7 +15,26 @@ paths:
       tags:
       - Utilities
       summary: Retrieve terminator coordinates
-      description: "Retrieve coordinates for the terminator. \n\nThe timestamp parameter should be supplied in the format \"YYYY-MM-DDTHH:mm:ss\". \nUTC is the expected timezone.\n\nThe angle parameter is used for retrieving the terminator for civil, nautical, \nor astronomical twilight. Use the values -6.0, -12.0, or -18.0 for each of these \nterminators, respectively.\n\nNotes:\n  - The algorithm does not account for altitude at this time\n  - By default requests are cached. Use the 'no_cache' parameter to disable this functionality."
+      description: 'Retrieve coordinates for the terminator.
+
+
+        The timestamp parameter should be supplied in the format "YYYY-MM-DDTHH:mm:ss".
+
+        UTC is the expected timezone.
+
+
+        The angle parameter is used for retrieving the terminator for civil, nautical,
+
+        or astronomical twilight. Use the values -6.0, -12.0, or -18.0 for each of these
+
+        terminators, respectively.
+
+
+        Notes:
+
+        - The algorithm does not account for altitude at this time
+
+        - By default requests are cached. Use the ''no_cache'' parameter to disable this functionality.'
       operationId: get_terminator_api_v1_utils_terminator_get
       parameters:
       - name: timestamp
@@ -57,7 +76,26 @@ paths:
       tags:
       - Utilities
       summary: Retrieve geomagnetic coordinate grid
-      description: "Retrieve a geomagnetic coordinate grid for a given timestamp.\n\nThe timestamp parameter should be supplied in the format \"YYYY-MM-DDTHH:mm:ss\". \nUTC is the expected timezone.\n\nThe grid consists of meridian lines (constant magnetic longitude, \"vertical\") and parallel lines\n(constant magnetic latitude, \"horizontal\") for both northern and southern hemispheres.\n\nNotes\n  - The resolution_lon and resolution_lat parameters control the spacing (in degrees) between\nmagnetic longitude and latitude lines, respectively. Lower values produce a denser grid.\n  - By default requests are cached. Use the 'no_cache' parameter to disable this functionality."
+      description: 'Retrieve a geomagnetic coordinate grid for a given timestamp.
+
+
+        The timestamp parameter should be supplied in the format "YYYY-MM-DDTHH:mm:ss".
+
+        UTC is the expected timezone.
+
+
+        The grid consists of meridian lines (constant magnetic longitude, "vertical") and parallel lines
+
+        (constant magnetic latitude, "horizontal") for both northern and southern hemispheres.
+
+
+        Notes
+
+        - The resolution_lon and resolution_lat parameters control the spacing (in degrees) between
+
+        magnetic longitude and latitude lines, respectively. Lower values produce a denser grid.
+
+        - By default requests are cached. Use the ''no_cache'' parameter to disable this functionality.'
       operationId: get_magnetic_grid_api_v1_utils_magnetic_grid_get
       parameters:
       - name: timestamp
@@ -123,31 +161,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    MagneticGridHemisphere:
-      properties:
-        vertical:
-          items:
-            items:
-              items:
-                type: number
-              type: array
-            type: array
-          type: array
-          title: Vertical
-        horizontal:
-          items:
-            items:
-              items:
-                type: number
-              type: array
-            type: array
-          type: array
-          title: Horizontal
-      type: object
-      required:
-      - vertical
-      - horizontal
-      title: MagneticGridHemisphere
     ValidationError:
       properties:
         loc:
@@ -174,15 +187,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ErrorMessage:
-      properties:
-        detail:
-          type: string
-          title: Detail
-      type: object
-      required:
-      - detail
-      title: ErrorMessage
     HTTPValidationError:
       properties:
         detail:
@@ -208,6 +212,15 @@ components:
       - north
       - south
       title: MagneticGrid
+    ErrorMessage:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: ErrorMessage
     Terminator:
       properties:
         timestamp:
@@ -223,6 +236,31 @@ components:
       - timestamp
       - coords
       title: Terminator
+    MagneticGridHemisphere:
+      properties:
+        vertical:
+          items:
+            items:
+              items:
+                type: number
+              type: array
+            type: array
+          type: array
+          title: Vertical
+        horizontal:
+          items:
+            items:
+              items:
+                type: number
+              type: array
+            type: array
+          type: array
+          title: Horizontal
+      type: object
+      required:
+      - vertical
+      - horizontal
+      title: MagneticGridHemisphere
   securitySchemes:
     HTTPBearer:
       type: http

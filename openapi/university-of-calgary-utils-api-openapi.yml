@@ -1,7 +1,10 @@
 openapi: 3.2.0
 info:
   title: AuroraX Utils API
-  description: "## Overview\n\nThis webpage is an interactive documentation interface for the AuroraX RESTful API. This API\nis used by several applications including the AuroraX Conjunction Search, Event Explorer,\nKeogramist, PyAuroraX, and IDL-AuroraX. You can view these applications and libraries at\n<a href='https://aurorax.space' target='_blank'>https://aurorax.space</a> and\n<a href='https://github.com/aurorax-space' target='_blank'>https://github.com/aurorax-space</a>.\n\nDetailed documentation about the AuroraX platform and examples of using this API can be found at\n<a href='https://docs.aurorax.space' target='_blank'>https://docs.aurorax.space</a>.\n\nBelow, we outline the major categories of endpoints available for use:\n\n| Interface        | Description                                                                 |\n| ---------------- | --------------------------------------------------------------------------- |\n| Accounts         | Operations relating to user accounts, API keys, and saved user data         |\n| Authentication   | Authentication using an email address and password, or an API key           |\n| Availability     | Retrieve information describing what data is in the database                |\n| Data Sources     | Interact with data sources                                                  |\n| Conjunctions     | Search for conjunctions between multiple sets of data sources               |\n| Ephemeris        | Search and manage ephemeris data associated with a data source              |\n| Data Products    | Search and manage data products data associated with a data source          |\n| Utils            | Utilities, such as describing a search query in an SQL-like format          |\n\n## Authentication\n\nAuroraX allows for two methods of authentication:\n\n1. Authenticate via username and password using the /authenticate endpoint to obtain an access\n   token. Access tokens need to be sent on every request for secure resources. Inactive access tokens\n   timeout after 30 minutes.\n\n2. Authenticate using an API key sent in the request header (key called 'x-aurorax-api-key')\n\nMore information can be found\n<a href='https://docs.aurorax.space/code/advanced_usage/authentication' target='_blank'>here</a>.\n\n## Errors\n\nThis API uses standard HTTP status codes to indicate the success or failure of the\nAPI call. When an error occurs, the body of the response will be JSON and contain an error code\nand message. All errors will respond with this format:\n```\n{\n    \"error_code\": \"DUPLICATE\",\n    \"error_message\": \"There was a duplicate record found. No changes were made.\"\n}\n```\n"
+  description: '## Overview
+
+
+    This webpage is an interactive documentation interface for the AuroraX RESTful API.'
   version: stable
 servers:
 - url: https://api.aurorax.space
@@ -49,7 +52,7 @@ paths:
     post:
       tags:
       - Utils
-      summary: Returns a count of cartesian products (tuples of data sources) of the given conjunction search object. This number is the combinations  simple conjunction tuples between each data source found through the criteria block
+      summary: Returns a count of cartesian products (tuples of data sources) of the given…
       operationId: cartesianProduct
       requestBody:
         content:
@@ -67,7 +70,10 @@ paths:
       tags:
       - Utils
       summary: Delete a search request
-      description: "Removes this search request and all associated data. \n\n*Must be authenticated*"
+      description: 'Removes this search request and all associated data.
+
+
+        *Must be authenticated*'
       operationId: deleteSearchRequest
       parameters:
       - name: request_id
@@ -109,7 +115,10 @@ paths:
       tags:
       - Utils
       summary: List search summaries
-      description: "List searches, optionally filtering by: active, type (ephemeris, data_product, conjunction), between start/end, file_size >=, result_count >=, query_duration >=, has error_condition \n\n*Must be authenticated*"
+      description: 'List searches, optionally filtering by: active, type (ephemeris, data_product, conjunction), between start/end, file_size >=, result_count >=, query_duration >=, has error_condition
+
+
+        *Must be authenticated*'
       operationId: findSearchRequests
       parameters:
       - name: active
@@ -276,32 +285,99 @@ paths:
                   type: string
 components:
   schemas:
-    MetadataExpression:
+    EphemerisCriteriaAdhocLatLon:
+      required:
+      - locations
       type: object
       properties:
-        key:
-          type: string
-          description: The metadata key found as described in the data_source metadata schema record
-        operator:
-          type: string
-          description: The filter expression operator
-          enum:
-          - '='
-          - <
-          - <=
-          - '>'
-          - '>='
-          - '!='
-          - in
-          - not in
-          - between
-        values:
+        locations:
           type: array
-          description: The value(s) to test for. Note that 'in' and 'not-in' accept a list of values; 'between' accepts two values; all others accept just one value
+          description: A list of latitude and longitude locations of your choice
+          items:
+            $ref: '#/components/schemas/Location'
+      description: Defines a geographical location (latitude, longitude) on Earth's surface to use as a criterion for calculating distance measurements between other criteria objects
+    EphemerisCriteriaSpace:
+      type: object
+      properties:
+        programs:
+          type: array
+          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
           items:
             type: string
-            description: The value(s) to test for. Note that 'in' and 'not-in' accept a list of values; 'between' accepts two values; all others accept just one value
-      description: An expression like a where clause in SQL
+            description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
+        platforms:
+          type: array
+          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
+          items:
+            type: string
+            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
+        instrument_types:
+          type: array
+          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
+          items:
+            type: string
+            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
+        hemisphere:
+          type: array
+          description: Filter these satellites to the hemisphere they are currently in geographicly
+          items:
+            type: string
+            description: Filter these satellites to the hemisphere they are currently in geographicly
+            enum:
+            - northern
+            - southern
+        ephemeris_metadata_filters:
+          $ref: '#/components/schemas/MetadataExpressionGroup'
+      description: Defines the ephemeris particpants in the conjunction that are satellites. Participants in each of these criteria are OR'd while participants  in different criteria are AND'd.
+    DataSourceCriteriaForEphemeris:
+      type: object
+      properties:
+        programs:
+          type: array
+          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
+          items:
+            type: string
+            description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
+        platforms:
+          type: array
+          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
+          items:
+            type: string
+            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
+        instrument_types:
+          type: array
+          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
+          items:
+            type: string
+            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
+        ephemeris_metadata_filters:
+          $ref: '#/components/schemas/MetadataExpressionGroup'
+      description: Find Ephemeris data for these Data Sources. This could be a single platform (e.g., gillam;  or swarma), or an entire program containing a group of platforms (e.g., all locations in the themis-asi program;  or all satellites in the themis program).
+    ErrorDocument:
+      type: object
+      properties:
+        error_message:
+          type: string
+          description: If an error code exists, this will have contextual information for debugging
+        error_code:
+          type: string
+          description: The error code
+          enum:
+          - Nil
+          - Ok
+          - NotPermitted
+          - NotAuthorized
+          - Duplicate
+          - AssertionError
+          - NotFound
+          - ApplicationError
+          - NotImplemented
+          - ToManyRequests
+          - Other
+          - Conflict
+          - NotAuthenticated
+          - Unavailable
+      description: This model provides additional details about error conditions that can be used for debugging.
     SuperConjunctionQuery:
       type: object
       properties:
@@ -368,62 +444,34 @@ components:
           - 30
           - 60
       description: There must be at least 2 Ephemeris Criteria in order to calculate the distance between them in a conjunction.
-    EphemerisCriteriaAdhocLatLon:
-      required:
-      - locations
-      type: object
-      properties:
-        locations:
-          type: array
-          description: A list of latitude and longitude locations of your choice
-          items:
-            $ref: '#/components/schemas/Location'
-      description: Defines a geographical location (latitude, longitude) on Earth's surface to use as a criterion for calculating distance measurements between other criteria objects
-    MetadataExpressionGroup:
-      type: object
-      properties:
-        logical_operator:
-          type: string
-          description: Specifies if these filters should be OR'd or AND'd. If omitted, the default is to AND the expressions together
-          enum:
-          - AND
-          - OR
-        expressions:
-          type: array
-          description: The list of filter expressions
-          items:
-            $ref: '#/components/schemas/MetadataExpression'
-      description: An expression group to allow for OR'd or AND'd expression filters
-    EphemerisQuery:
-      required:
-      - data_sources
+    DataProductQuery:
       type: object
       properties:
         request_id:
           type: string
           description: An optional request_id to be used for this query. Ommit to have the API generate one for you. If you are using websockets, this id can be used establish a websocket before sending the search request to avoid a race condition of the query finishing before websocket is established. This technique is used by the AuroraX website
         data_sources:
-          $ref: '#/components/schemas/DataSourceCriteriaForEphemeris'
+          $ref: '#/components/schemas/DataSourcesCriteriaForDataProducts'
         start:
           type: string
-          description: Return ephemeris data that occured after this timestamp.  Optional. Large time windows may take a long time for results to return.
+          description: Return data products that have a start date equal or after this this timestamp.  Optional. Large time windows may take a long time for results to return.
           format: date-time
         end:
           type: string
-          description: Return ephemeris data that occured before this timestamp.  Optional. Large time windows may take a long time for results to return.
+          description: Return data products that have an end date equal of before this timestamp.  Optional. Large time windows may take a long time for results to return.
           format: date-time
-    Location:
-      type: object
-      properties:
-        lat:
-          maximum: 90
-          minimum: -90
-          type: number
-        lon:
-          maximum: 180
-          minimum: -180
-          type: number
-      description: A list of latitude and longitude locations of your choice
+        data_product_type_filters:
+          type: array
+          description: Filter the data products to return only these data product types.
+          items:
+            type: string
+            description: Filter the data products to return only these data product types.
+            enum:
+            - keogram
+            - montage
+            - movie
+            - summary_plot
+            - data_availability
     DataSourcesCriteriaForDataProducts:
       type: object
       properties:
@@ -448,87 +496,18 @@ components:
         data_product_metadata_filters:
           $ref: '#/components/schemas/MetadataExpressionGroup'
       description: Find data products generated from data of these Data Sources. This could be a single platform (e.g., gillam;  or swarma), or an entire program containing a group of platforms (e.g., all locations in the themis-asi program;  or all satellites in the themis program).
-    EphemerisCriteriaEvent:
+    Location:
       type: object
       properties:
-        programs:
-          type: array
-          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
-          items:
-            type: string
-            description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
-        platforms:
-          type: array
-          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
-          items:
-            type: string
-            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
-        instrument_types:
-          type: array
-          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
-          items:
-            type: string
-            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
-        ephemeris_metadata_filters:
-          $ref: '#/components/schemas/MetadataExpressionGroup'
-      description: Defines the particpants in the conjunction that are events. Participants in each of these criteria are OR'd while participants  in different criteria are AND'd.
-    EphemerisCriteriaSpace:
-      type: object
-      properties:
-        programs:
-          type: array
-          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
-          items:
-            type: string
-            description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
-        platforms:
-          type: array
-          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
-          items:
-            type: string
-            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
-        instrument_types:
-          type: array
-          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
-          items:
-            type: string
-            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
-        hemisphere:
-          type: array
-          description: Filter these satellites to the hemisphere they are currently in geographicly
-          items:
-            type: string
-            description: Filter these satellites to the hemisphere they are currently in geographicly
-            enum:
-            - northern
-            - southern
-        ephemeris_metadata_filters:
-          $ref: '#/components/schemas/MetadataExpressionGroup'
-      description: Defines the ephemeris particpants in the conjunction that are satellites. Participants in each of these criteria are OR'd while participants  in different criteria are AND'd.
-    DataSourceCriteriaForEphemeris:
-      type: object
-      properties:
-        programs:
-          type: array
-          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
-          items:
-            type: string
-            description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
-        platforms:
-          type: array
-          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
-          items:
-            type: string
-            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
-        instrument_types:
-          type: array
-          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
-          items:
-            type: string
-            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
-        ephemeris_metadata_filters:
-          $ref: '#/components/schemas/MetadataExpressionGroup'
-      description: Find Ephemeris data for these Data Sources. This could be a single platform (e.g., gillam;  or swarma), or an entire program containing a group of platforms (e.g., all locations in the themis-asi program;  or all satellites in the themis program).
+        lat:
+          maximum: 90
+          minimum: -90
+          type: number
+        lon:
+          maximum: 180
+          minimum: -180
+          type: number
+      description: A list of latitude and longitude locations of your choice
     SearchRequestListing:
       type: object
       properties:
@@ -571,31 +550,74 @@ components:
           type: boolean
           description: If the search ended with an error condition
       description: Search request listing
-    ErrorDocument:
+    EphemerisCriteriaEvent:
       type: object
       properties:
-        error_message:
+        programs:
+          type: array
+          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
+          items:
+            type: string
+            description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
+        platforms:
+          type: array
+          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
+          items:
+            type: string
+            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
+        instrument_types:
+          type: array
+          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
+          items:
+            type: string
+            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
+        ephemeris_metadata_filters:
+          $ref: '#/components/schemas/MetadataExpressionGroup'
+      description: Defines the particpants in the conjunction that are events. Participants in each of these criteria are OR'd while participants  in different criteria are AND'd.
+    EphemerisQuery:
+      required:
+      - data_sources
+      type: object
+      properties:
+        request_id:
           type: string
-          description: If an error code exists, this will have contextual information for debugging
-        error_code:
+          description: An optional request_id to be used for this query. Ommit to have the API generate one for you. If you are using websockets, this id can be used establish a websocket before sending the search request to avoid a race condition of the query finishing before websocket is established. This technique is used by the AuroraX website
+        data_sources:
+          $ref: '#/components/schemas/DataSourceCriteriaForEphemeris'
+        start:
           type: string
-          description: The error code
+          description: Return ephemeris data that occured after this timestamp.  Optional. Large time windows may take a long time for results to return.
+          format: date-time
+        end:
+          type: string
+          description: Return ephemeris data that occured before this timestamp.  Optional. Large time windows may take a long time for results to return.
+          format: date-time
+    MetadataExpression:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The metadata key found as described in the data_source metadata schema record
+        operator:
+          type: string
+          description: The filter expression operator
           enum:
-          - Nil
-          - Ok
-          - NotPermitted
-          - NotAuthorized
-          - Duplicate
-          - AssertionError
-          - NotFound
-          - ApplicationError
-          - NotImplemented
-          - ToManyRequests
-          - Other
-          - Conflict
-          - NotAuthenticated
-          - Unavailable
-      description: This model provides additional details about error conditions that can be used for debugging.
+          - '='
+          - <
+          - <=
+          - '>'
+          - '>='
+          - '!='
+          - in
+          - not in
+          - between
+        values:
+          type: array
+          description: The value(s) to test for. Note that 'in' and 'not-in' accept a list of values; 'between' accepts two values; all others accept just one value
+          items:
+            type: string
+            description: The value(s) to test for. Note that 'in' and 'not-in' accept a list of values; 'between' accepts two values; all others accept just one value
+      description: An expression like a where clause in SQL
     EphemerisCriteriaGround:
       type: object
       properties:
@@ -620,34 +642,21 @@ components:
         ephemeris_metadata_filters:
           $ref: '#/components/schemas/MetadataExpressionGroup'
       description: Defines the ephemeris particpants in the conjunction that are ground stations. Participants in each these criteria are OR'd while participants  in different criteria are AND'd.
-    DataProductQuery:
+    MetadataExpressionGroup:
       type: object
       properties:
-        request_id:
+        logical_operator:
           type: string
-          description: An optional request_id to be used for this query. Ommit to have the API generate one for you. If you are using websockets, this id can be used establish a websocket before sending the search request to avoid a race condition of the query finishing before websocket is established. This technique is used by the AuroraX website
-        data_sources:
-          $ref: '#/components/schemas/DataSourcesCriteriaForDataProducts'
-        start:
-          type: string
-          description: Return data products that have a start date equal or after this this timestamp.  Optional. Large time windows may take a long time for results to return.
-          format: date-time
-        end:
-          type: string
-          description: Return data products that have an end date equal of before this timestamp.  Optional. Large time windows may take a long time for results to return.
-          format: date-time
-        data_product_type_filters:
+          description: Specifies if these filters should be OR'd or AND'd. If omitted, the default is to AND the expressions together
+          enum:
+          - AND
+          - OR
+        expressions:
           type: array
-          description: Filter the data products to return only these data product types.
+          description: The list of filter expressions
           items:
-            type: string
-            description: Filter the data products to return only these data product types.
-            enum:
-            - keogram
-            - montage
-            - movie
-            - summary_plot
-            - data_availability
+            $ref: '#/components/schemas/MetadataExpression'
+      description: An expression group to allow for OR'd or AND'd expression filters
   securitySchemes:
     AccessToken:
       type: http

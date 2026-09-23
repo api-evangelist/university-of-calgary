@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: UCalgary Space Remote Sensing Real-Time Data API
   description: API providing data and tools for UCalgary Space Remote Sensing
-  version: 1.56.0
+  version: 1.66.0
 servers:
 - url: https://api.phys.ucalgary.ca
   description: UCalgary Space Remote Sensing API
@@ -27,25 +27,25 @@ paths:
         in: query
         required: false
         schema:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Network
       - name: site_uid
         in: query
         required: false
         schema:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Site Uid
       - name: id
         in: query
         required: false
         schema:
-          type:
-          - string
-          - 'null'
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Id
       responses:
         '200':
@@ -100,7 +100,18 @@ paths:
       tags:
       - Real-Time Data
       summary: Retrieve latest data for a real-time stream
-      description: "Retrieve the latest data for a given real-time data stream.\n\nNotes:\n  - The `id` can be determined by using the stream listing endpoint.\n  - The response content type depends on the stream's mimetype (e.g., image/jpeg).\n  - Data is sourced from the database, populated by the RT ingester services.\n  - The response includes an `x-rt-stream-last-updated-utc` header with the ISO 8601 UTC timestamp of when the stream data was last updated."
+      description: 'Retrieve the latest data for a given real-time data stream.
+
+
+        Notes:
+
+        - The `id` can be determined by using the stream listing endpoint.
+
+        - The response content type depends on the stream''s mimetype (e.g., image/jpeg).
+
+        - Data is sourced from the database, populated by the RT ingester services.
+
+        - The response includes an `x-rt-stream-last-updated-utc` header with the ISO 8601 UTC timestamp of when the stream data was last updated.'
       operationId: get_rt_stream_latest_api_v1_rt__id__latest_get
       parameters:
       - name: id
@@ -141,35 +152,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    RTStreamListItem:
-      properties:
-        name:
-          type: string
-          title: Name
-        id:
-          type: string
-          title: Id
-        description:
-          type: string
-          title: Description
-        site_uid:
-          type: string
-          title: Site Uid
-        network:
-          type: string
-          title: Network
-        mimetype:
-          type: string
-          title: Mimetype
-      type: object
-      required:
-      - name
-      - id
-      - description
-      - site_uid
-      - network
-      - mimetype
-      title: RTStreamListItem
     ValidationError:
       properties:
         loc:
@@ -196,24 +178,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ErrorMessage:
-      properties:
-        detail:
-          type: string
-          title: Detail
-      type: object
-      required:
-      - detail
-      title: ErrorMessage
     RTWebSocketInfo:
       properties:
         url:
@@ -250,6 +214,15 @@ components:
       - binary_format
       - json_format
       title: RTWebSocketInfo
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     RTStreamListing:
       properties:
         streams:
@@ -261,6 +234,44 @@ components:
       required:
       - streams
       title: RTStreamListing
+    RTStreamListItem:
+      properties:
+        name:
+          type: string
+          title: Name
+        id:
+          type: string
+          title: Id
+        description:
+          type: string
+          title: Description
+        site_uid:
+          type: string
+          title: Site Uid
+        network:
+          type: string
+          title: Network
+        mimetype:
+          type: string
+          title: Mimetype
+      type: object
+      required:
+      - name
+      - id
+      - description
+      - site_uid
+      - network
+      - mimetype
+      title: RTStreamListItem
+    ErrorMessage:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: ErrorMessage
   securitySchemes:
     HTTPBearer:
       type: http
