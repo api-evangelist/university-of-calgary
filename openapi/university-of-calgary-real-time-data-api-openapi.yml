@@ -152,6 +152,55 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ErrorMessage:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: ErrorMessage
+    RTStreamListItem:
+      properties:
+        name:
+          type: string
+          title: Name
+        id:
+          type: string
+          title: Id
+        description:
+          type: string
+          title: Description
+        site_uid:
+          type: string
+          title: Site Uid
+        network:
+          type: string
+          title: Network
+        mimetype:
+          type: string
+          title: Mimetype
+      type: object
+      required:
+      - name
+      - id
+      - description
+      - site_uid
+      - network
+      - mimetype
+      title: RTStreamListItem
+    RTStreamListing:
+      properties:
+        streams:
+          items:
+            $ref: '#/components/schemas/RTStreamListItem'
+          type: array
+          title: Streams
+      type: object
+      required:
+      - streams
+      title: RTStreamListing
     ValidationError:
       properties:
         loc:
@@ -223,55 +272,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    RTStreamListing:
-      properties:
-        streams:
-          items:
-            $ref: '#/components/schemas/RTStreamListItem'
-          type: array
-          title: Streams
-      type: object
-      required:
-      - streams
-      title: RTStreamListing
-    RTStreamListItem:
-      properties:
-        name:
-          type: string
-          title: Name
-        id:
-          type: string
-          title: Id
-        description:
-          type: string
-          title: Description
-        site_uid:
-          type: string
-          title: Site Uid
-        network:
-          type: string
-          title: Network
-        mimetype:
-          type: string
-          title: Mimetype
-      type: object
-      required:
-      - name
-      - id
-      - description
-      - site_uid
-      - network
-      - mimetype
-      title: RTStreamListItem
-    ErrorMessage:
-      properties:
-        detail:
-          type: string
-          title: Detail
-      type: object
-      required:
-      - detail
-      title: ErrorMessage
   securitySchemes:
     HTTPBearer:
       type: http

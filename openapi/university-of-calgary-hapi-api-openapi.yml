@@ -260,60 +260,19 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HAPIAbout:
+    HAPIStatus:
       properties:
-        HAPI:
-          type: string
-          title: Hapi
-        id:
-          type: string
-          title: Id
-        title:
-          type: string
-          title: Title
-        description:
-          type: string
-          title: Description
-        contact:
-          type: string
-          title: Contact
-        status:
-          $ref: '#/components/schemas/HAPIStatus'
-      type: object
-      required:
-      - HAPI
-      - id
-      - title
-      - description
-      - contact
-      - status
-      title: HAPIAbout
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        code:
+          type: integer
+          title: Code
+        message:
           type: string
           title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - code
+      - message
+      title: HAPIStatus
     HAPIInfo:
       properties:
         HAPI:
@@ -411,52 +370,60 @@ components:
         endpoint builds its response dict directly (via build_info_dict()) since some
 
         keys are conditionally omitted, but this model reflects the full shape.'
-    HTTPValidationError:
+    ValidationError:
       properties:
-        detail:
+        loc:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Detail
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
-      title: HTTPValidationError
-    HAPICapabilities:
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HAPIAbout:
       properties:
         HAPI:
           type: string
           title: Hapi
-        outputFormats:
-          items:
-            type: string
-          type: array
-          title: Outputformats
-        catalogDepthOptions:
-          items:
-            type: string
-          type: array
-          title: Catalogdepthoptions
+        id:
+          type: string
+          title: Id
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+        contact:
+          type: string
+          title: Contact
         status:
           $ref: '#/components/schemas/HAPIStatus'
       type: object
       required:
       - HAPI
-      - outputFormats
-      - catalogDepthOptions
+      - id
+      - title
+      - description
+      - contact
       - status
-      title: HAPICapabilities
-    HAPIStatus:
-      properties:
-        code:
-          type: integer
-          title: Code
-        message:
-          type: string
-          title: Message
-      type: object
-      required:
-      - code
-      - message
-      title: HAPIStatus
+      title: HAPIAbout
     HAPICatalogDataset:
       properties:
         id:
@@ -494,6 +461,39 @@ components:
       - catalog
       - status
       title: HAPICatalog
+    HAPICapabilities:
+      properties:
+        HAPI:
+          type: string
+          title: Hapi
+        outputFormats:
+          items:
+            type: string
+          type: array
+          title: Outputformats
+        catalogDepthOptions:
+          items:
+            type: string
+          type: array
+          title: Catalogdepthoptions
+        status:
+          $ref: '#/components/schemas/HAPIStatus'
+      type: object
+      required:
+      - HAPI
+      - outputFormats
+      - catalogDepthOptions
+      - status
+      title: HAPICapabilities
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
   securitySchemes:
     HTTPBearer:
       type: http

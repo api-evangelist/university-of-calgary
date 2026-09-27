@@ -161,6 +161,55 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ErrorMessage:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: ErrorMessage
+    MagneticGridHemisphere:
+      properties:
+        vertical:
+          items:
+            items:
+              items:
+                type: number
+              type: array
+            type: array
+          type: array
+          title: Vertical
+        horizontal:
+          items:
+            items:
+              items:
+                type: number
+              type: array
+            type: array
+          type: array
+          title: Horizontal
+      type: object
+      required:
+      - vertical
+      - horizontal
+      title: MagneticGridHemisphere
+    Terminator:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        coords:
+          items: {}
+          type: array
+          title: Coords
+      type: object
+      required:
+      - timestamp
+      - coords
+      title: Terminator
     ValidationError:
       properties:
         loc:
@@ -187,15 +236,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     MagneticGrid:
       properties:
         timestamp:
@@ -212,55 +252,15 @@ components:
       - north
       - south
       title: MagneticGrid
-    ErrorMessage:
+    HTTPValidationError:
       properties:
         detail:
-          type: string
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
           title: Detail
       type: object
-      required:
-      - detail
-      title: ErrorMessage
-    Terminator:
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        coords:
-          items: {}
-          type: array
-          title: Coords
-      type: object
-      required:
-      - timestamp
-      - coords
-      title: Terminator
-    MagneticGridHemisphere:
-      properties:
-        vertical:
-          items:
-            items:
-              items:
-                type: number
-              type: array
-            type: array
-          type: array
-          title: Vertical
-        horizontal:
-          items:
-            items:
-              items:
-                type: number
-              type: array
-            type: array
-          type: array
-          title: Horizontal
-      type: object
-      required:
-      - vertical
-      - horizontal
-      title: MagneticGridHemisphere
+      title: HTTPValidationError
   securitySchemes:
     HTTPBearer:
       type: http

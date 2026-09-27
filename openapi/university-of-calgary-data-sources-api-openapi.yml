@@ -499,8 +499,73 @@ paths:
                 $ref: '#/components/schemas/ErrorDocument'
 components:
   schemas:
+    ErrorDocument:
+      type: object
+      properties:
+        error_message:
+          type: string
+          description: If an error code exists, this will have contextual information for debugging
+        error_code:
+          type: string
+          description: The error code
+          enum:
+          - Nil
+          - Ok
+          - NotPermitted
+          - NotAuthorized
+          - Duplicate
+          - AssertionError
+          - NotFound
+          - ApplicationError
+          - NotImplemented
+          - ToManyRequests
+          - Other
+          - Conflict
+          - NotAuthenticated
+          - Unavailable
+      description: This model provides additional details about error conditions that can be used for debugging.
+    MetadataSchema:
+      type: object
+      properties:
+        field_name:
+          type: string
+          description: The name of the field found in the ephemeris metadata
+        description:
+          type: string
+          description: A brief description of what the metadata field represents
+        data_type:
+          type: string
+          description: An indicator to let you know what filter operations are available. Strings allow for =, !=, and in. Decimals allow for =, !=, <, >, <=, >=, and in.
+        allowed_values:
+          type: array
+          description: An optional list of possible values available in the metadata.
+          items:
+            type: string
+            description: An optional list of possible values available in the metadata.
+        additional_description:
+          type: string
+          description: More details about what this metadata field is about
+        searchable:
+          type: boolean
+          description: Used by UI's to include it in metadata fields exposed as searchable through the conjunction interface. The API allows for all fields to be searchable but some applications may chose to hide any fields marked searchable=false
+      description: Describes the metadata fields found on Ephemeris data.
     JsonNode:
       type: object
+    DataSourceQuery:
+      type: object
+      properties:
+        programs:
+          type: array
+          items:
+            type: string
+        platforms:
+          type: array
+          items:
+            type: string
+        instrument_types:
+          type: array
+          items:
+            type: string
     Data_Source:
       required:
       - display_name
@@ -560,31 +625,6 @@ components:
         metadata:
           $ref: '#/components/schemas/JsonNode'
       description: Things that produce data, like satellites, ground stations/instruments, platforms
-    ErrorDocument:
-      type: object
-      properties:
-        error_message:
-          type: string
-          description: If an error code exists, this will have contextual information for debugging
-        error_code:
-          type: string
-          description: The error code
-          enum:
-          - Nil
-          - Ok
-          - NotPermitted
-          - NotAuthorized
-          - Duplicate
-          - AssertionError
-          - NotFound
-          - ApplicationError
-          - NotImplemented
-          - ToManyRequests
-          - Other
-          - Conflict
-          - NotAuthenticated
-          - Unavailable
-      description: This model provides additional details about error conditions that can be used for debugging.
     DataSourceStats:
       type: object
       properties:
@@ -609,46 +649,6 @@ components:
           type: integer
           format: int32
       description: Some basic stats about this data_source, like number of ephemeris records. Read only.
-    MetadataSchema:
-      type: object
-      properties:
-        field_name:
-          type: string
-          description: The name of the field found in the ephemeris metadata
-        description:
-          type: string
-          description: A brief description of what the metadata field represents
-        data_type:
-          type: string
-          description: An indicator to let you know what filter operations are available. Strings allow for =, !=, and in. Decimals allow for =, !=, <, >, <=, >=, and in.
-        allowed_values:
-          type: array
-          description: An optional list of possible values available in the metadata.
-          items:
-            type: string
-            description: An optional list of possible values available in the metadata.
-        additional_description:
-          type: string
-          description: More details about what this metadata field is about
-        searchable:
-          type: boolean
-          description: Used by UI's to include it in metadata fields exposed as searchable through the conjunction interface. The API allows for all fields to be searchable but some applications may chose to hide any fields marked searchable=false
-      description: Describes the metadata fields found on Ephemeris data.
-    DataSourceQuery:
-      type: object
-      properties:
-        programs:
-          type: array
-          items:
-            type: string
-        platforms:
-          type: array
-          items:
-            type: string
-        instrument_types:
-          type: array
-          items:
-            type: string
   securitySchemes:
     AccessToken:
       type: http

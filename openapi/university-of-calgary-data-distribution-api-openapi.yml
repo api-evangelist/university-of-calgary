@@ -282,51 +282,70 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    DatasetLegacy1:
+    ErrorMessage:
       properties:
-        name:
+        detail:
           type: string
-          title: Name
-        short_description:
-          type: string
-          title: Short Description
-        long_description:
-          type: string
-          title: Long Description
-        data_tree_url:
-          type: string
-          title: Data Tree Url
-        file_listing_supported:
-          type: boolean
-          title: File Listing Supported
-        level:
-          type: string
-          title: Level
-        doi:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Doi
-        doi_details:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Doi Details
-        citation:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Citation
+          title: Detail
       type: object
       required:
-      - name
-      - short_description
-      - long_description
-      - data_tree_url
-      - file_listing_supported
-      - level
-      title: DatasetLegacy1
-      description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
+      - detail
+      title: ErrorMessage
+    Observatory:
+      properties:
+        uid:
+          type: string
+          title: Uid
+        full_name:
+          type: string
+          title: Full Name
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+      type: object
+      required:
+      - uid
+      - full_name
+      - geodetic_latitude
+      - geodetic_longitude
+      title: Observatory
+    ImagingTimeframeResponse:
+      properties:
+        timestamp:
+          type: string
+          title: Timestamp
+        site_uid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Site Uid
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+        imaging_start:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Imaging Start
+        imaging_end:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Imaging End
+      type: object
+      required:
+      - timestamp
+      - geodetic_latitude
+      - geodetic_longitude
+      title: ImagingTimeframeResponse
     ImagingTimeframesRequest:
       properties:
         timestamp:
@@ -373,27 +392,108 @@ components:
       - msg
       - type
       title: ValidationError
-    Observatory:
+    DatasetLegacy2:
       properties:
-        uid:
+        name:
           type: string
-          title: Uid
-        full_name:
+          title: Name
+        short_description:
           type: string
-          title: Full Name
-        geodetic_latitude:
-          type: number
-          title: Geodetic Latitude
-        geodetic_longitude:
-          type: number
-          title: Geodetic Longitude
+          title: Short Description
+        long_description:
+          type: string
+          title: Long Description
+        data_tree_url:
+          type: string
+          title: Data Tree Url
+        file_listing_supported:
+          type: boolean
+          title: File Listing Supported
+        level:
+          type: string
+          title: Level
+        doi:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doi
+        doi_details:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doi Details
+        citation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Citation
+        supported_libraries:
+          items:
+            type: string
+            enum:
+            - pyaurorax
+            - pyucrio
+            - idl-aurorax
+            - idl-ucrio
+            - pyucalgarysrs
+          type: array
+          title: Supported Libraries
+          default: []
       type: object
       required:
-      - uid
-      - full_name
-      - geodetic_latitude
-      - geodetic_longitude
-      title: Observatory
+      - name
+      - short_description
+      - long_description
+      - data_tree_url
+      - file_listing_supported
+      - level
+      title: DatasetLegacy2
+      description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
+    DatasetLegacy1:
+      properties:
+        name:
+          type: string
+          title: Name
+        short_description:
+          type: string
+          title: Short Description
+        long_description:
+          type: string
+          title: Long Description
+        data_tree_url:
+          type: string
+          title: Data Tree Url
+        file_listing_supported:
+          type: boolean
+          title: File Listing Supported
+        level:
+          type: string
+          title: Level
+        doi:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doi
+        doi_details:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doi Details
+        citation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Citation
+      type: object
+      required:
+      - name
+      - short_description
+      - long_description
+      - data_tree_url
+      - file_listing_supported
+      - level
+      title: DatasetLegacy1
+      description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
     HTTPValidationError:
       properties:
         detail:
@@ -403,40 +503,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ImagingTimeframeResponse:
-      properties:
-        timestamp:
-          type: string
-          title: Timestamp
-        site_uid:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Site Uid
-        geodetic_latitude:
-          type: number
-          title: Geodetic Latitude
-        geodetic_longitude:
-          type: number
-          title: Geodetic Longitude
-        imaging_start:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Imaging Start
-        imaging_end:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Imaging End
-      type: object
-      required:
-      - timestamp
-      - geodetic_latitude
-      - geodetic_longitude
-      title: ImagingTimeframeResponse
     Dataset:
       properties:
         name:
@@ -502,6 +568,25 @@ components:
       - level
       - file_time_resolution
       title: Dataset
+    ImagingTimeframeLocation:
+      properties:
+        site_uid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Site Uid
+        geodetic_latitude:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Geodetic Latitude
+        geodetic_longitude:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Geodetic Longitude
+      type: object
+      title: ImagingTimeframeLocation
     FileListingResponse:
       properties:
         urls:
@@ -534,91 +619,6 @@ components:
       - total_bytes
       - dataset
       title: FileListingResponse
-    ErrorMessage:
-      properties:
-        detail:
-          type: string
-          title: Detail
-      type: object
-      required:
-      - detail
-      title: ErrorMessage
-    DatasetLegacy2:
-      properties:
-        name:
-          type: string
-          title: Name
-        short_description:
-          type: string
-          title: Short Description
-        long_description:
-          type: string
-          title: Long Description
-        data_tree_url:
-          type: string
-          title: Data Tree Url
-        file_listing_supported:
-          type: boolean
-          title: File Listing Supported
-        level:
-          type: string
-          title: Level
-        doi:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Doi
-        doi_details:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Doi Details
-        citation:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Citation
-        supported_libraries:
-          items:
-            type: string
-            enum:
-            - pyaurorax
-            - pyucrio
-            - idl-aurorax
-            - idl-ucrio
-            - pyucalgarysrs
-          type: array
-          title: Supported Libraries
-          default: []
-      type: object
-      required:
-      - name
-      - short_description
-      - long_description
-      - data_tree_url
-      - file_listing_supported
-      - level
-      title: DatasetLegacy2
-      description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
-    ImagingTimeframeLocation:
-      properties:
-        site_uid:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Site Uid
-        geodetic_latitude:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Geodetic Latitude
-        geodetic_longitude:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Geodetic Longitude
-      type: object
-      title: ImagingTimeframeLocation
   securitySchemes:
     HTTPBearer:
       type: http
