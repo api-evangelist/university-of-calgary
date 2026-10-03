@@ -161,6 +161,46 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Terminator:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        coords:
+          items: {}
+          type: array
+          title: Coords
+      type: object
+      required:
+      - timestamp
+      - coords
+      title: Terminator
+    MagneticGrid:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        north:
+          $ref: '#/components/schemas/MagneticGridHemisphere'
+        south:
+          $ref: '#/components/schemas/MagneticGridHemisphere'
+      type: object
+      required:
+      - timestamp
+      - north
+      - south
+      title: MagneticGrid
     ErrorMessage:
       properties:
         detail:
@@ -195,21 +235,6 @@ components:
       - vertical
       - horizontal
       title: MagneticGridHemisphere
-    Terminator:
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        coords:
-          items: {}
-          type: array
-          title: Coords
-      type: object
-      required:
-      - timestamp
-      - coords
-      title: Terminator
     ValidationError:
       properties:
         loc:
@@ -236,31 +261,6 @@ components:
       - msg
       - type
       title: ValidationError
-    MagneticGrid:
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        north:
-          $ref: '#/components/schemas/MagneticGridHemisphere'
-        south:
-          $ref: '#/components/schemas/MagneticGridHemisphere'
-      type: object
-      required:
-      - timestamp
-      - north
-      - south
-      title: MagneticGrid
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     HTTPBearer:
       type: http

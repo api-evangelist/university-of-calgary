@@ -282,70 +282,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ErrorMessage:
+    HTTPValidationError:
       properties:
         detail:
-          type: string
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
           title: Detail
       type: object
-      required:
-      - detail
-      title: ErrorMessage
-    Observatory:
-      properties:
-        uid:
-          type: string
-          title: Uid
-        full_name:
-          type: string
-          title: Full Name
-        geodetic_latitude:
-          type: number
-          title: Geodetic Latitude
-        geodetic_longitude:
-          type: number
-          title: Geodetic Longitude
-      type: object
-      required:
-      - uid
-      - full_name
-      - geodetic_latitude
-      - geodetic_longitude
-      title: Observatory
-    ImagingTimeframeResponse:
-      properties:
-        timestamp:
-          type: string
-          title: Timestamp
-        site_uid:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Site Uid
-        geodetic_latitude:
-          type: number
-          title: Geodetic Latitude
-        geodetic_longitude:
-          type: number
-          title: Geodetic Longitude
-        imaging_start:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Imaging Start
-        imaging_end:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Imaging End
-      type: object
-      required:
-      - timestamp
-      - geodetic_latitude
-      - geodetic_longitude
-      title: ImagingTimeframeResponse
+      title: HTTPValidationError
     ImagingTimeframesRequest:
       properties:
         timestamp:
@@ -366,32 +311,34 @@ components:
       - timestamp
       - locations
       title: ImagingTimeframesRequest
-    ValidationError:
+    ErrorMessage:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        detail:
           type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Detail
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - detail
+      title: ErrorMessage
+    ImagingTimeframeLocation:
+      properties:
+        site_uid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Site Uid
+        geodetic_latitude:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Geodetic Latitude
+        geodetic_longitude:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Geodetic Longitude
+      type: object
+      title: ImagingTimeframeLocation
     DatasetLegacy2:
       properties:
         name:
@@ -449,6 +396,93 @@ components:
       - level
       title: DatasetLegacy2
       description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
+    ImagingTimeframeResponse:
+      properties:
+        timestamp:
+          type: string
+          title: Timestamp
+        site_uid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Site Uid
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+        imaging_start:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Imaging Start
+        imaging_end:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Imaging End
+      type: object
+      required:
+      - timestamp
+      - geodetic_latitude
+      - geodetic_longitude
+      title: ImagingTimeframeResponse
+    FileListingResponse:
+      properties:
+        urls:
+          items:
+            type: string
+          type: array
+          title: Urls
+        path_prefix:
+          type: string
+          title: Path Prefix
+        count:
+          type: integer
+          title: Count
+        total_bytes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Bytes
+        dataset:
+          anyOf:
+          - $ref: '#/components/schemas/Dataset'
+          - $ref: '#/components/schemas/DatasetLegacy1'
+          - $ref: '#/components/schemas/DatasetLegacy2'
+          title: Dataset
+      type: object
+      required:
+      - urls
+      - path_prefix
+      - count
+      - total_bytes
+      - dataset
+      title: FileListingResponse
+    Observatory:
+      properties:
+        uid:
+          type: string
+          title: Uid
+        full_name:
+          type: string
+          title: Full Name
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+      type: object
+      required:
+      - uid
+      - full_name
+      - geodetic_latitude
+      - geodetic_longitude
+      title: Observatory
     DatasetLegacy1:
       properties:
         name:
@@ -494,15 +528,6 @@ components:
       - level
       title: DatasetLegacy1
       description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     Dataset:
       properties:
         name:
@@ -568,57 +593,32 @@ components:
       - level
       - file_time_resolution
       title: Dataset
-    ImagingTimeframeLocation:
+    ValidationError:
       properties:
-        site_uid:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Site Uid
-        geodetic_latitude:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Geodetic Latitude
-        geodetic_longitude:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Geodetic Longitude
-      type: object
-      title: ImagingTimeframeLocation
-    FileListingResponse:
-      properties:
-        urls:
+        loc:
           items:
-            type: string
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Urls
-        path_prefix:
+          title: Location
+        msg:
           type: string
-          title: Path Prefix
-        count:
-          type: integer
-          title: Count
-        total_bytes:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Total Bytes
-        dataset:
-          anyOf:
-          - $ref: '#/components/schemas/Dataset'
-          - $ref: '#/components/schemas/DatasetLegacy1'
-          - $ref: '#/components/schemas/DatasetLegacy2'
-          title: Dataset
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - urls
-      - path_prefix
-      - count
-      - total_bytes
-      - dataset
-      title: FileListingResponse
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

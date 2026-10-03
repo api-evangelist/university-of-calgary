@@ -79,6 +79,40 @@ paths:
       - AccessToken: []
 components:
   schemas:
+    UserAccount:
+      type: object
+      properties:
+        account_id:
+          type: string
+        upload_username:
+          type: string
+        email_address:
+          type: string
+        email_confirmed:
+          type: string
+          format: date-time
+        first_name:
+          type: string
+        last_name:
+          type: string
+        role:
+          type: string
+          enum:
+          - Administrator
+          - Owner
+          - Maintainer
+          - User
+        agree_terms:
+          type: string
+          format: date-time
+        this_login:
+          type: string
+          format: date-time
+        last_login:
+          type: string
+          format: date-time
+        disabled:
+          type: boolean
     ErrorDocument:
       type: object
       properties:
@@ -117,40 +151,6 @@ components:
           type: string
           description: This users password
       description: A container for authenticating a user by email address and password
-    UserAccount:
-      type: object
-      properties:
-        account_id:
-          type: string
-        upload_username:
-          type: string
-        email_address:
-          type: string
-        email_confirmed:
-          type: string
-          format: date-time
-        first_name:
-          type: string
-        last_name:
-          type: string
-        role:
-          type: string
-          enum:
-          - Administrator
-          - Owner
-          - Maintainer
-          - User
-        agree_terms:
-          type: string
-          format: date-time
-        this_login:
-          type: string
-          format: date-time
-        last_login:
-          type: string
-          format: date-time
-        disabled:
-          type: boolean
   securitySchemes:
     AccessToken:
       type: http

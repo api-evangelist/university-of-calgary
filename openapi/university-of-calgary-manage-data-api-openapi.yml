@@ -344,54 +344,18 @@ paths:
                 $ref: '#/components/schemas/ErrorDocument'
 components:
   schemas:
-    ErrorDocument:
+    Location:
       type: object
       properties:
-        error_message:
-          type: string
-          description: If an error code exists, this will have contextual information for debugging
-        error_code:
-          type: string
-          description: The error code
-          enum:
-          - Nil
-          - Ok
-          - NotPermitted
-          - NotAuthorized
-          - Duplicate
-          - AssertionError
-          - NotFound
-          - ApplicationError
-          - NotImplemented
-          - ToManyRequests
-          - Other
-          - Conflict
-          - NotAuthenticated
-          - Unavailable
-      description: This model provides additional details about error conditions that can be used for debugging.
-    DeleteEphemerisSpecification:
-      required:
-      - end
-      - instrument_type
-      - platform
-      - program
-      - start
-      type: object
-      properties:
-        program:
-          type: string
-        platform:
-          type: string
-        instrument_type:
-          type: string
-        start:
-          type: string
-          format: date-time
-        end:
-          type: string
-          format: date-time
-    JsonNode:
-      type: object
+        lat:
+          maximum: 90
+          minimum: -90
+          type: number
+        lon:
+          maximum: 180
+          minimum: -180
+          type: number
+      description: A list of latitude and longitude locations of your choice
     DeleteDataProductSpecification:
       required:
       - instrument_type
@@ -409,18 +373,6 @@ components:
           type: array
           items:
             type: string
-    Location:
-      type: object
-      properties:
-        lat:
-          maximum: 90
-          minimum: -90
-          type: number
-        lon:
-          maximum: 180
-          minimum: -180
-          type: number
-      description: A list of latitude and longitude locations of your choice
     LoadDataProductSpecification:
       required:
       - data_product_type
@@ -456,6 +408,31 @@ components:
           - movie
           - summary_plot
           - data_availability
+    ErrorDocument:
+      type: object
+      properties:
+        error_message:
+          type: string
+          description: If an error code exists, this will have contextual information for debugging
+        error_code:
+          type: string
+          description: The error code
+          enum:
+          - Nil
+          - Ok
+          - NotPermitted
+          - NotAuthorized
+          - Duplicate
+          - AssertionError
+          - NotFound
+          - ApplicationError
+          - NotImplemented
+          - ToManyRequests
+          - Other
+          - Conflict
+          - NotAuthenticated
+          - Unavailable
+      description: This model provides additional details about error conditions that can be used for debugging.
     LoadEphemerisSpecification:
       required:
       - epoch
@@ -483,6 +460,29 @@ components:
           $ref: '#/components/schemas/Location'
         metadata:
           $ref: '#/components/schemas/JsonNode'
+    DeleteEphemerisSpecification:
+      required:
+      - end
+      - instrument_type
+      - platform
+      - program
+      - start
+      type: object
+      properties:
+        program:
+          type: string
+        platform:
+          type: string
+        instrument_type:
+          type: string
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+    JsonNode:
+      type: object
   securitySchemes:
     AccessToken:
       type: http

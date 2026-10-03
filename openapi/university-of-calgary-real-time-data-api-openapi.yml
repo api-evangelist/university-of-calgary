@@ -152,15 +152,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ErrorMessage:
+    HTTPValidationError:
       properties:
         detail:
-          type: string
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
           title: Detail
       type: object
-      required:
-      - detail
-      title: ErrorMessage
+      title: HTTPValidationError
     RTStreamListItem:
       properties:
         name:
@@ -190,43 +190,6 @@ components:
       - network
       - mimetype
       title: RTStreamListItem
-    RTStreamListing:
-      properties:
-        streams:
-          items:
-            $ref: '#/components/schemas/RTStreamListItem'
-          type: array
-          title: Streams
-      type: object
-      required:
-      - streams
-      title: RTStreamListing
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     RTWebSocketInfo:
       properties:
         url:
@@ -263,15 +226,52 @@ components:
       - binary_format
       - json_format
       title: RTWebSocketInfo
-    HTTPValidationError:
+    RTStreamListing:
+      properties:
+        streams:
+          items:
+            $ref: '#/components/schemas/RTStreamListItem'
+          type: array
+          title: Streams
+      type: object
+      required:
+      - streams
+      title: RTStreamListing
+    ErrorMessage:
       properties:
         detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
+          type: string
           title: Detail
       type: object
-      title: HTTPValidationError
+      required:
+      - detail
+      title: ErrorMessage
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

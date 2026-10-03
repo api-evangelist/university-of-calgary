@@ -273,89 +273,39 @@ paths:
                 $ref: '#/components/schemas/ErrorDocument'
 components:
   schemas:
-    DataSourceFormat:
+    MetadataExpressionGroup:
       type: object
       properties:
-        identifier:
-          type: boolean
-        program:
-          type: boolean
-        platform:
-          type: boolean
-        instrument_type:
-          type: boolean
-        source_type:
-          type: boolean
-        display_name:
-          type: boolean
-        ephemeris_metadata_schema:
-          $ref: '#/components/schemas/MetadataSchemaFormat'
-        data_product_metadata_schema:
-          $ref: '#/components/schemas/MetadataSchemaFormat'
-        owner:
-          type: boolean
-        maintainers:
-          type: boolean
-        metadata:
-          type: boolean
-    ErrorDocument:
-      type: object
-      properties:
-        error_message:
+        logical_operator:
           type: string
-          description: If an error code exists, this will have contextual information for debugging
-        error_code:
-          type: string
-          description: The error code
+          description: Specifies if these filters should be OR'd or AND'd. If omitted, the default is to AND the expressions together
           enum:
-          - Nil
-          - Ok
-          - NotPermitted
-          - NotAuthorized
-          - Duplicate
-          - AssertionError
-          - NotFound
-          - ApplicationError
-          - NotImplemented
-          - ToManyRequests
-          - Other
-          - Conflict
-          - NotAuthenticated
-          - Unavailable
-      description: This model provides additional details about error conditions that can be used for debugging.
-    JsonNode:
-      type: object
-    MetadataSchemaFormat:
-      type: object
-      properties:
-        field_name:
-          type: boolean
-        description:
-          type: boolean
-        data_type:
-          type: boolean
-        allowed_values:
-          type: boolean
-        additional_description:
-          type: boolean
-    EphemerisFormat:
+          - AND
+          - OR
+        expressions:
+          type: array
+          description: The list of filter expressions
+          items:
+            $ref: '#/components/schemas/MetadataExpression'
+      description: An expression group to allow for OR'd or AND'd expression filters
+    Ephemeris:
       type: object
       properties:
         data_source:
-          $ref: '#/components/schemas/DataSourceFormat'
+          $ref: '#/components/schemas/Data_Source'
         epoch:
-          type: boolean
+          type: string
+          format: date-time
         location_geo:
-          $ref: '#/components/schemas/LocationFormat'
+          $ref: '#/components/schemas/Location'
         location_gsm:
-          $ref: '#/components/schemas/LocationFormat'
+          $ref: '#/components/schemas/Location'
         nbtrace:
-          $ref: '#/components/schemas/LocationFormat'
+          $ref: '#/components/schemas/Location'
         sbtrace:
-          $ref: '#/components/schemas/LocationFormat'
+          $ref: '#/components/schemas/Location'
         metadata:
-          type: boolean
-      description: Optional advanced formatting of the response data
+          type: string
     MetadataExpression:
       type: object
       properties:
@@ -382,29 +332,53 @@ components:
             type: string
             description: The value(s) to test for. Note that 'in' and 'not-in' accept a list of values; 'between' accepts two values; all others accept just one value
       description: An expression like a where clause in SQL
-    SearchResult:
+    SearchQueryResponse:
       type: object
       properties:
-        data_uri:
+        search_request:
+          $ref: '#/components/schemas/SearchRequest'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchRequestLog'
+        search_result:
+          $ref: '#/components/schemas/SearchResult'
+      description: Search query response details
+    EphemerisQueryWithResponseFormat:
+      required:
+      - query
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/EphemerisQuery'
+        response_format:
+          $ref: '#/components/schemas/EphemerisFormat'
+      description: Ephemeris Query with Response Format
+    ErrorDocument:
+      type: object
+      properties:
+        error_message:
           type: string
-        result_count:
-          type: integer
-          format: int32
-        result_file_deleted_timestamp:
+          description: If an error code exists, this will have contextual information for debugging
+        error_code:
           type: string
-          format: date-time
-        file_size:
-          type: integer
-          format: int64
-        completed_timestamp:
-          type: string
-          format: date-time
-        query_duration:
-          type: integer
-          format: int64
-        error_condition:
-          type: boolean
-      description: Search result
+          description: The error code
+          enum:
+          - Nil
+          - Ok
+          - NotPermitted
+          - NotAuthorized
+          - Duplicate
+          - AssertionError
+          - NotFound
+          - ApplicationError
+          - NotImplemented
+          - ToManyRequests
+          - Other
+          - Conflict
+          - NotAuthenticated
+          - Unavailable
+      description: This model provides additional details about error conditions that can be used for debugging.
     DataSourceCriteriaForEphemeris:
       type: object
       properties:
@@ -429,16 +403,55 @@ components:
         ephemeris_metadata_filters:
           $ref: '#/components/schemas/MetadataExpressionGroup'
       description: Find Ephemeris data for these Data Sources. This could be a single platform (e.g., gillam;  or swarma), or an entire program containing a group of platforms (e.g., all locations in the themis-asi program;  or all satellites in the themis program).
-    EphemerisQueryWithResponseFormat:
-      required:
-      - query
+    DataSourceFormat:
       type: object
       properties:
-        query:
-          $ref: '#/components/schemas/EphemerisQuery'
-        response_format:
-          $ref: '#/components/schemas/EphemerisFormat'
-      description: Ephemeris Query with Response Format
+        identifier:
+          type: boolean
+        program:
+          type: boolean
+        platform:
+          type: boolean
+        instrument_type:
+          type: boolean
+        source_type:
+          type: boolean
+        display_name:
+          type: boolean
+        ephemeris_metadata_schema:
+          $ref: '#/components/schemas/MetadataSchemaFormat'
+        data_product_metadata_schema:
+          $ref: '#/components/schemas/MetadataSchemaFormat'
+        owner:
+          type: boolean
+        maintainers:
+          type: boolean
+        metadata:
+          type: boolean
+    DataSourceStats:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/Data_Source'
+        earliest_ephemeris_loaded:
+          type: string
+          format: date-time
+        latest_ephemeris_loaded:
+          type: string
+          format: date-time
+        ephemeris_count:
+          type: integer
+          format: int32
+        earliest_data_product_loaded:
+          type: string
+          format: date-time
+        latest_data_product_loaded:
+          type: string
+          format: date-time
+        data_product_count:
+          type: integer
+          format: int32
+      description: Some basic stats about this data_source, like number of ephemeris records. Read only.
     Data_Source:
       required:
       - display_name
@@ -498,144 +511,29 @@ components:
         metadata:
           $ref: '#/components/schemas/JsonNode'
       description: Things that produce data, like satellites, ground stations/instruments, platforms
-    SearchRequest:
+    SearchResult:
       type: object
       properties:
-        request_id:
+        data_uri:
           type: string
-        query:
-          type: string
-        requested:
-          type: string
-          format: date-time
-        request_type:
-          type: string
-          enum:
-          - conjunction
-          - ephemeris
-          - data_product
-      description: The original search request
-    DataSourceStats:
-      type: object
-      properties:
-        data_source:
-          $ref: '#/components/schemas/Data_Source'
-        earliest_ephemeris_loaded:
-          type: string
-          format: date-time
-        latest_ephemeris_loaded:
-          type: string
-          format: date-time
-        ephemeris_count:
+        result_count:
           type: integer
           format: int32
-        earliest_data_product_loaded:
+        result_file_deleted_timestamp:
           type: string
           format: date-time
-        latest_data_product_loaded:
-          type: string
-          format: date-time
-        data_product_count:
+        file_size:
           type: integer
-          format: int32
-      description: Some basic stats about this data_source, like number of ephemeris records. Read only.
-    LocationFormat:
-      type: object
-      properties:
-        lat:
+          format: int64
+        completed_timestamp:
+          type: string
+          format: date-time
+        query_duration:
+          type: integer
+          format: int64
+        error_condition:
           type: boolean
-        lon:
-          type: boolean
-    EphemerisQuery:
-      required:
-      - data_sources
-      type: object
-      properties:
-        request_id:
-          type: string
-          description: An optional request_id to be used for this query. Ommit to have the API generate one for you. If you are using websockets, this id can be used establish a websocket before sending the search request to avoid a race condition of the query finishing before websocket is established. This technique is used by the AuroraX website
-        data_sources:
-          $ref: '#/components/schemas/DataSourceCriteriaForEphemeris'
-        start:
-          type: string
-          description: Return ephemeris data that occured after this timestamp.  Optional. Large time windows may take a long time for results to return.
-          format: date-time
-        end:
-          type: string
-          description: Return ephemeris data that occured before this timestamp.  Optional. Large time windows may take a long time for results to return.
-          format: date-time
-    MetadataExpressionGroup:
-      type: object
-      properties:
-        logical_operator:
-          type: string
-          description: Specifies if these filters should be OR'd or AND'd. If omitted, the default is to AND the expressions together
-          enum:
-          - AND
-          - OR
-        expressions:
-          type: array
-          description: The list of filter expressions
-          items:
-            $ref: '#/components/schemas/MetadataExpression'
-      description: An expression group to allow for OR'd or AND'd expression filters
-    Location:
-      type: object
-      properties:
-        lat:
-          maximum: 90
-          minimum: -90
-          type: number
-        lon:
-          maximum: 180
-          minimum: -180
-          type: number
-      description: A list of latitude and longitude locations of your choice
-    SearchQueryResponse:
-      type: object
-      properties:
-        search_request:
-          $ref: '#/components/schemas/SearchRequest'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchRequestLog'
-        search_result:
-          $ref: '#/components/schemas/SearchResult'
-      description: Search query response details
-    Ephemeris:
-      type: object
-      properties:
-        data_source:
-          $ref: '#/components/schemas/Data_Source'
-        epoch:
-          type: string
-          format: date-time
-        location_geo:
-          $ref: '#/components/schemas/Location'
-        location_gsm:
-          $ref: '#/components/schemas/Location'
-        nbtrace:
-          $ref: '#/components/schemas/Location'
-        sbtrace:
-          $ref: '#/components/schemas/Location'
-        metadata:
-          type: string
-    SearchRequestLog:
-      type: object
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-        level:
-          type: string
-          enum:
-          - debug
-          - info
-          - warn
-          - error
-        summary:
-          type: string
+      description: Search result
     MetadataSchema:
       type: object
       properties:
@@ -661,6 +559,108 @@ components:
           type: boolean
           description: Used by UI's to include it in metadata fields exposed as searchable through the conjunction interface. The API allows for all fields to be searchable but some applications may chose to hide any fields marked searchable=false
       description: Describes the metadata fields found on Ephemeris data.
+    SearchRequest:
+      type: object
+      properties:
+        request_id:
+          type: string
+        query:
+          type: string
+        requested:
+          type: string
+          format: date-time
+        request_type:
+          type: string
+          enum:
+          - conjunction
+          - ephemeris
+          - data_product
+      description: The original search request
+    JsonNode:
+      type: object
+    Location:
+      type: object
+      properties:
+        lat:
+          maximum: 90
+          minimum: -90
+          type: number
+        lon:
+          maximum: 180
+          minimum: -180
+          type: number
+      description: A list of latitude and longitude locations of your choice
+    SearchRequestLog:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        level:
+          type: string
+          enum:
+          - debug
+          - info
+          - warn
+          - error
+        summary:
+          type: string
+    LocationFormat:
+      type: object
+      properties:
+        lat:
+          type: boolean
+        lon:
+          type: boolean
+    EphemerisFormat:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/DataSourceFormat'
+        epoch:
+          type: boolean
+        location_geo:
+          $ref: '#/components/schemas/LocationFormat'
+        location_gsm:
+          $ref: '#/components/schemas/LocationFormat'
+        nbtrace:
+          $ref: '#/components/schemas/LocationFormat'
+        sbtrace:
+          $ref: '#/components/schemas/LocationFormat'
+        metadata:
+          type: boolean
+      description: Optional advanced formatting of the response data
+    EphemerisQuery:
+      required:
+      - data_sources
+      type: object
+      properties:
+        request_id:
+          type: string
+          description: An optional request_id to be used for this query. Ommit to have the API generate one for you. If you are using websockets, this id can be used establish a websocket before sending the search request to avoid a race condition of the query finishing before websocket is established. This technique is used by the AuroraX website
+        data_sources:
+          $ref: '#/components/schemas/DataSourceCriteriaForEphemeris'
+        start:
+          type: string
+          description: Return ephemeris data that occured after this timestamp.  Optional. Large time windows may take a long time for results to return.
+          format: date-time
+        end:
+          type: string
+          description: Return ephemeris data that occured before this timestamp.  Optional. Large time windows may take a long time for results to return.
+          format: date-time
+    MetadataSchemaFormat:
+      type: object
+      properties:
+        field_name:
+          type: boolean
+        description:
+          type: boolean
+        data_type:
+          type: boolean
+        allowed_values:
+          type: boolean
+        additional_description:
+          type: boolean
   securitySchemes:
     AccessToken:
       type: http
