@@ -282,44 +282,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ImagingTimeframesRequest:
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        locations:
-          items:
-            $ref: '#/components/schemas/ImagingTimeframeLocation'
-          type: array
-          title: Locations
-        threshold:
-          type: number
-          title: Threshold
-          default: 102.0
-      type: object
-      required:
-      - timestamp
-      - locations
-      title: ImagingTimeframesRequest
-    ErrorMessage:
-      properties:
-        detail:
-          type: string
-          title: Detail
-      type: object
-      required:
-      - detail
-      title: ErrorMessage
     ImagingTimeframeLocation:
       properties:
         site_uid:
@@ -339,6 +301,51 @@ components:
           title: Geodetic Longitude
       type: object
       title: ImagingTimeframeLocation
+    DatasetLegacy1:
+      properties:
+        name:
+          type: string
+          title: Name
+        short_description:
+          type: string
+          title: Short Description
+        long_description:
+          type: string
+          title: Long Description
+        data_tree_url:
+          type: string
+          title: Data Tree Url
+        file_listing_supported:
+          type: boolean
+          title: File Listing Supported
+        level:
+          type: string
+          title: Level
+        doi:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doi
+        doi_details:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doi Details
+        citation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Citation
+      type: object
+      required:
+      - name
+      - short_description
+      - long_description
+      - data_tree_url
+      - file_listing_supported
+      - level
+      title: DatasetLegacy1
+      description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
     DatasetLegacy2:
       properties:
         name:
@@ -395,138 +402,6 @@ components:
       - file_listing_supported
       - level
       title: DatasetLegacy2
-      description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
-    ImagingTimeframeResponse:
-      properties:
-        timestamp:
-          type: string
-          title: Timestamp
-        site_uid:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Site Uid
-        geodetic_latitude:
-          type: number
-          title: Geodetic Latitude
-        geodetic_longitude:
-          type: number
-          title: Geodetic Longitude
-        imaging_start:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Imaging Start
-        imaging_end:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Imaging End
-      type: object
-      required:
-      - timestamp
-      - geodetic_latitude
-      - geodetic_longitude
-      title: ImagingTimeframeResponse
-    FileListingResponse:
-      properties:
-        urls:
-          items:
-            type: string
-          type: array
-          title: Urls
-        path_prefix:
-          type: string
-          title: Path Prefix
-        count:
-          type: integer
-          title: Count
-        total_bytes:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Total Bytes
-        dataset:
-          anyOf:
-          - $ref: '#/components/schemas/Dataset'
-          - $ref: '#/components/schemas/DatasetLegacy1'
-          - $ref: '#/components/schemas/DatasetLegacy2'
-          title: Dataset
-      type: object
-      required:
-      - urls
-      - path_prefix
-      - count
-      - total_bytes
-      - dataset
-      title: FileListingResponse
-    Observatory:
-      properties:
-        uid:
-          type: string
-          title: Uid
-        full_name:
-          type: string
-          title: Full Name
-        geodetic_latitude:
-          type: number
-          title: Geodetic Latitude
-        geodetic_longitude:
-          type: number
-          title: Geodetic Longitude
-      type: object
-      required:
-      - uid
-      - full_name
-      - geodetic_latitude
-      - geodetic_longitude
-      title: Observatory
-    DatasetLegacy1:
-      properties:
-        name:
-          type: string
-          title: Name
-        short_description:
-          type: string
-          title: Short Description
-        long_description:
-          type: string
-          title: Long Description
-        data_tree_url:
-          type: string
-          title: Data Tree Url
-        file_listing_supported:
-          type: boolean
-          title: File Listing Supported
-        level:
-          type: string
-          title: Level
-        doi:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Doi
-        doi_details:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Doi Details
-        citation:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Citation
-      type: object
-      required:
-      - name
-      - short_description
-      - long_description
-      - data_tree_url
-      - file_listing_supported
-      - level
-      title: DatasetLegacy1
       description: Dataset object for queries from PyAuroraX v1.3.3 or earlier
     Dataset:
       properties:
@@ -593,6 +468,131 @@ components:
       - level
       - file_time_resolution
       title: Dataset
+    ImagingTimeframeResponse:
+      properties:
+        timestamp:
+          type: string
+          title: Timestamp
+        site_uid:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Site Uid
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+        imaging_start:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Imaging Start
+        imaging_end:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Imaging End
+      type: object
+      required:
+      - timestamp
+      - geodetic_latitude
+      - geodetic_longitude
+      title: ImagingTimeframeResponse
+    Observatory:
+      properties:
+        uid:
+          type: string
+          title: Uid
+        full_name:
+          type: string
+          title: Full Name
+        geodetic_latitude:
+          type: number
+          title: Geodetic Latitude
+        geodetic_longitude:
+          type: number
+          title: Geodetic Longitude
+      type: object
+      required:
+      - uid
+      - full_name
+      - geodetic_latitude
+      - geodetic_longitude
+      title: Observatory
+    ImagingTimeframesRequest:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        locations:
+          items:
+            $ref: '#/components/schemas/ImagingTimeframeLocation'
+          type: array
+          title: Locations
+        threshold:
+          type: number
+          title: Threshold
+          default: 102.0
+      type: object
+      required:
+      - timestamp
+      - locations
+      title: ImagingTimeframesRequest
+    FileListingResponse:
+      properties:
+        urls:
+          items:
+            type: string
+          type: array
+          title: Urls
+        path_prefix:
+          type: string
+          title: Path Prefix
+        count:
+          type: integer
+          title: Count
+        total_bytes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Bytes
+        dataset:
+          anyOf:
+          - $ref: '#/components/schemas/Dataset'
+          - $ref: '#/components/schemas/DatasetLegacy1'
+          - $ref: '#/components/schemas/DatasetLegacy2'
+          title: Dataset
+      type: object
+      required:
+      - urls
+      - path_prefix
+      - count
+      - total_bytes
+      - dataset
+      title: FileListingResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ErrorMessage:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: ErrorMessage
     ValidationError:
       properties:
         loc:

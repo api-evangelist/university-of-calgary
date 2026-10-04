@@ -201,15 +201,6 @@ components:
       - north
       - south
       title: MagneticGrid
-    ErrorMessage:
-      properties:
-        detail:
-          type: string
-          title: Detail
-      type: object
-      required:
-      - detail
-      title: ErrorMessage
     MagneticGridHemisphere:
       properties:
         vertical:
@@ -235,6 +226,15 @@ components:
       - vertical
       - horizontal
       title: MagneticGridHemisphere
+    ErrorMessage:
+      properties:
+        detail:
+          type: string
+          title: Detail
+      type: object
+      required:
+      - detail
+      title: ErrorMessage
     ValidationError:
       properties:
         loc:

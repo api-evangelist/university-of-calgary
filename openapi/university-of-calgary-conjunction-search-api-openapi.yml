@@ -229,6 +229,96 @@ paths:
             Please refer to the documentation for correctness of this operation.'
 components:
   schemas:
+    EphemerisCriteriaSpace:
+      type: object
+      properties:
+        programs:
+          type: array
+          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
+          items:
+            type: string
+            description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
+        platforms:
+          type: array
+          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
+          items:
+            type: string
+            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
+        instrument_types:
+          type: array
+          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
+          items:
+            type: string
+            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
+        hemisphere:
+          type: array
+          description: Filter these satellites to the hemisphere they are currently in geographicly
+          items:
+            type: string
+            description: Filter these satellites to the hemisphere they are currently in geographicly
+            enum:
+            - northern
+            - southern
+        ephemeris_metadata_filters:
+          $ref: '#/components/schemas/MetadataExpressionGroup'
+      description: Defines the ephemeris particpants in the conjunction that are satellites. Participants in each of these criteria are OR'd while participants  in different criteria are AND'd.
+    MetadataSchemaFormat:
+      type: object
+      properties:
+        field_name:
+          type: boolean
+        description:
+          type: boolean
+        data_type:
+          type: boolean
+        allowed_values:
+          type: boolean
+        additional_description:
+          type: boolean
+    MetadataExpressionGroupFormat:
+      type: object
+      properties:
+        logicalOperator:
+          type: boolean
+        expressions:
+          $ref: '#/components/schemas/MetadataExpressionFormat'
+    ErrorDocument:
+      type: object
+      properties:
+        error_message:
+          type: string
+          description: If an error code exists, this will have contextual information for debugging
+        error_code:
+          type: string
+          description: The error code
+          enum:
+          - Nil
+          - Ok
+          - NotPermitted
+          - NotAuthorized
+          - Duplicate
+          - AssertionError
+          - NotFound
+          - ApplicationError
+          - NotImplemented
+          - ToManyRequests
+          - Other
+          - Conflict
+          - NotAuthenticated
+          - Unavailable
+      description: This model provides additional details about error conditions that can be used for debugging.
+    Location:
+      type: object
+      properties:
+        lat:
+          maximum: 90
+          minimum: -90
+          type: number
+        lon:
+          maximum: 180
+          minimum: -180
+          type: number
+      description: A list of latitude and longitude locations of your choice
     ConjunctionEvent:
       type: object
       properties:
@@ -262,39 +352,77 @@ components:
         generated_e2_ephemeris_query:
           $ref: '#/components/schemas/EphemerisQuery'
       description: Conjunction events occur between data sources e1 and e2. The labels e1 and e2 simply define the program, platform, and instrument_type.  This document contains the sources involved along with the start and end time frame as well as the minimum and maximum distance  between e1 and e2 during the conjunction.
-    MetadataExpressionGroup:
+    MetadataExpressionFormat:
       type: object
       properties:
-        logical_operator:
-          type: string
-          description: Specifies if these filters should be OR'd or AND'd. If omitted, the default is to AND the expressions together
-          enum:
-          - AND
-          - OR
-        expressions:
-          type: array
-          description: The list of filter expressions
-          items:
-            $ref: '#/components/schemas/MetadataExpression'
-      description: An expression group to allow for OR'd or AND'd expression filters
-    DataSourceCriteriaForEphemerisFormat:
+        key:
+          type: boolean
+        operator:
+          type: boolean
+        values:
+          type: boolean
+    DataSourceCriteriaForEphemeris:
       type: object
       properties:
         programs:
-          type: boolean
+          type: array
+          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
+          items:
+            type: string
+            description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
         platforms:
-          type: boolean
+          type: array
+          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
+          items:
+            type: string
+            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
         instrument_types:
-          type: boolean
+          type: array
+          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
+          items:
+            type: string
+            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
         ephemeris_metadata_filters:
-          $ref: '#/components/schemas/MetadataExpressionGroupFormat'
-    MetadataExpressionGroupFormat:
+          $ref: '#/components/schemas/MetadataExpressionGroup'
+      description: Find Ephemeris data for these Data Sources. This could be a single platform (e.g., gillam;  or swarma), or an entire program containing a group of platforms (e.g., all locations in the themis-asi program;  or all satellites in the themis program).
+    SearchQueryResponse:
       type: object
       properties:
-        logicalOperator:
-          type: boolean
-        expressions:
-          $ref: '#/components/schemas/MetadataExpressionFormat'
+        search_request:
+          $ref: '#/components/schemas/SearchRequest'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchRequestLog'
+        search_result:
+          $ref: '#/components/schemas/SearchResult'
+      description: Search query response details
+    MetadataExpression:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The metadata key found as described in the data_source metadata schema record
+        operator:
+          type: string
+          description: The filter expression operator
+          enum:
+          - '='
+          - <
+          - <=
+          - '>'
+          - '>='
+          - '!='
+          - in
+          - not in
+          - between
+        values:
+          type: array
+          description: The value(s) to test for. Note that 'in' and 'not-in' accept a list of values; 'between' accepts two values; all others accept just one value
+          items:
+            type: string
+            description: The value(s) to test for. Note that 'in' and 'not-in' accept a list of values; 'between' accepts two values; all others accept just one value
+      description: An expression like a where clause in SQL
     SuperConjunctionQuery:
       type: object
       properties:
@@ -361,111 +489,7 @@ components:
           - 30
           - 60
       description: There must be at least 2 Ephemeris Criteria in order to calculate the distance between them in a conjunction.
-    MetadataExpression:
-      type: object
-      properties:
-        key:
-          type: string
-          description: The metadata key found as described in the data_source metadata schema record
-        operator:
-          type: string
-          description: The filter expression operator
-          enum:
-          - '='
-          - <
-          - <=
-          - '>'
-          - '>='
-          - '!='
-          - in
-          - not in
-          - between
-        values:
-          type: array
-          description: The value(s) to test for. Note that 'in' and 'not-in' accept a list of values; 'between' accepts two values; all others accept just one value
-          items:
-            type: string
-            description: The value(s) to test for. Note that 'in' and 'not-in' accept a list of values; 'between' accepts two values; all others accept just one value
-      description: An expression like a where clause in SQL
-    EphemerisCriteriaAdhocLatLon:
-      required:
-      - locations
-      type: object
-      properties:
-        locations:
-          type: array
-          description: A list of latitude and longitude locations of your choice
-          items:
-            $ref: '#/components/schemas/Location'
-      description: Defines a geographical location (latitude, longitude) on Earth's surface to use as a criterion for calculating distance measurements between other criteria objects
-    SearchQueryResponse:
-      type: object
-      properties:
-        search_request:
-          $ref: '#/components/schemas/SearchRequest'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchRequestLog'
-        search_result:
-          $ref: '#/components/schemas/SearchResult'
-      description: Search query response details
-    MetadataExpressionFormat:
-      type: object
-      properties:
-        key:
-          type: boolean
-        operator:
-          type: boolean
-        values:
-          type: boolean
-    ConjunctionEventFormat:
-      type: object
-      properties:
-        conjunction_type:
-          type: boolean
-        e1_source:
-          $ref: '#/components/schemas/DataSourceFormat'
-        e2_source:
-          $ref: '#/components/schemas/DataSourceFormat'
-        start:
-          type: boolean
-        end:
-          type: boolean
-        min_distance:
-          type: boolean
-        max_distance:
-          type: boolean
-        generated_e1_ephemeris_query:
-          $ref: '#/components/schemas/EphemerisQueryFormat'
-        generated_e2_ephemeris_query:
-          $ref: '#/components/schemas/EphemerisQueryFormat'
-    ErrorDocument:
-      type: object
-      properties:
-        error_message:
-          type: string
-          description: If an error code exists, this will have contextual information for debugging
-        error_code:
-          type: string
-          description: The error code
-          enum:
-          - Nil
-          - Ok
-          - NotPermitted
-          - NotAuthorized
-          - Duplicate
-          - AssertionError
-          - NotFound
-          - ApplicationError
-          - NotImplemented
-          - ToManyRequests
-          - Other
-          - Conflict
-          - NotAuthenticated
-          - Unavailable
-      description: This model provides additional details about error conditions that can be used for debugging.
-    DataSourceCriteriaForEphemeris:
+    EphemerisCriteriaEvent:
       type: object
       properties:
         programs:
@@ -488,56 +512,32 @@ components:
             description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
         ephemeris_metadata_filters:
           $ref: '#/components/schemas/MetadataExpressionGroup'
-      description: Find Ephemeris data for these Data Sources. This could be a single platform (e.g., gillam;  or swarma), or an entire program containing a group of platforms (e.g., all locations in the themis-asi program;  or all satellites in the themis program).
-    DataSourceFormat:
+      description: Defines the particpants in the conjunction that are events. Participants in each of these criteria are OR'd while participants  in different criteria are AND'd.
+    MetadataSchema:
       type: object
       properties:
-        identifier:
-          type: boolean
-        program:
-          type: boolean
-        platform:
-          type: boolean
-        instrument_type:
-          type: boolean
-        source_type:
-          type: boolean
-        display_name:
-          type: boolean
-        ephemeris_metadata_schema:
-          $ref: '#/components/schemas/MetadataSchemaFormat'
-        data_product_metadata_schema:
-          $ref: '#/components/schemas/MetadataSchemaFormat'
-        owner:
-          type: boolean
-        maintainers:
-          type: boolean
-        metadata:
-          type: boolean
-    DataSourceStats:
-      type: object
-      properties:
-        data_source:
-          $ref: '#/components/schemas/Data_Source'
-        earliest_ephemeris_loaded:
+        field_name:
           type: string
-          format: date-time
-        latest_ephemeris_loaded:
+          description: The name of the field found in the ephemeris metadata
+        description:
           type: string
-          format: date-time
-        ephemeris_count:
-          type: integer
-          format: int32
-        earliest_data_product_loaded:
+          description: A brief description of what the metadata field represents
+        data_type:
           type: string
-          format: date-time
-        latest_data_product_loaded:
+          description: An indicator to let you know what filter operations are available. Strings allow for =, !=, and in. Decimals allow for =, !=, <, >, <=, >=, and in.
+        allowed_values:
+          type: array
+          description: An optional list of possible values available in the metadata.
+          items:
+            type: string
+            description: An optional list of possible values available in the metadata.
+        additional_description:
           type: string
-          format: date-time
-        data_product_count:
-          type: integer
-          format: int32
-      description: Some basic stats about this data_source, like number of ephemeris records. Read only.
+          description: More details about what this metadata field is about
+        searchable:
+          type: boolean
+          description: Used by UI's to include it in metadata fields exposed as searchable through the conjunction interface. The API allows for all fields to be searchable but some applications may chose to hide any fields marked searchable=false
+      description: Describes the metadata fields found on Ephemeris data.
     Data_Source:
       required:
       - display_name
@@ -597,29 +597,6 @@ components:
         metadata:
           $ref: '#/components/schemas/JsonNode'
       description: Things that produce data, like satellites, ground stations/instruments, platforms
-    SearchResult:
-      type: object
-      properties:
-        data_uri:
-          type: string
-        result_count:
-          type: integer
-          format: int32
-        result_file_deleted_timestamp:
-          type: string
-          format: date-time
-        file_size:
-          type: integer
-          format: int64
-        completed_timestamp:
-          type: string
-          format: date-time
-        query_duration:
-          type: integer
-          format: int64
-        error_condition:
-          type: boolean
-      description: Search result
     EphemerisCriteriaGround:
       type: object
       properties:
@@ -644,66 +621,6 @@ components:
         ephemeris_metadata_filters:
           $ref: '#/components/schemas/MetadataExpressionGroup'
       description: Defines the ephemeris particpants in the conjunction that are ground stations. Participants in each these criteria are OR'd while participants  in different criteria are AND'd.
-    MetadataSchema:
-      type: object
-      properties:
-        field_name:
-          type: string
-          description: The name of the field found in the ephemeris metadata
-        description:
-          type: string
-          description: A brief description of what the metadata field represents
-        data_type:
-          type: string
-          description: An indicator to let you know what filter operations are available. Strings allow for =, !=, and in. Decimals allow for =, !=, <, >, <=, >=, and in.
-        allowed_values:
-          type: array
-          description: An optional list of possible values available in the metadata.
-          items:
-            type: string
-            description: An optional list of possible values available in the metadata.
-        additional_description:
-          type: string
-          description: More details about what this metadata field is about
-        searchable:
-          type: boolean
-          description: Used by UI's to include it in metadata fields exposed as searchable through the conjunction interface. The API allows for all fields to be searchable but some applications may chose to hide any fields marked searchable=false
-      description: Describes the metadata fields found on Ephemeris data.
-    EphemerisCriteriaSpace:
-      type: object
-      properties:
-        programs:
-          type: array
-          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
-          items:
-            type: string
-            description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
-        platforms:
-          type: array
-          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
-          items:
-            type: string
-            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
-        instrument_types:
-          type: array
-          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
-          items:
-            type: string
-            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
-        hemisphere:
-          type: array
-          description: Filter these satellites to the hemisphere they are currently in geographicly
-          items:
-            type: string
-            description: Filter these satellites to the hemisphere they are currently in geographicly
-            enum:
-            - northern
-            - southern
-        ephemeris_metadata_filters:
-          $ref: '#/components/schemas/MetadataExpressionGroup'
-      description: Defines the ephemeris particpants in the conjunction that are satellites. Participants in each of these criteria are OR'd while participants  in different criteria are AND'd.
-    JsonNode:
-      type: object
     SearchRequest:
       type: object
       properties:
@@ -721,18 +638,98 @@ components:
           - ephemeris
           - data_product
       description: The original search request
-    Location:
+    EphemerisCriteriaAdhocLatLon:
+      required:
+      - locations
       type: object
       properties:
-        lat:
-          maximum: 90
-          minimum: -90
-          type: number
-        lon:
-          maximum: 180
-          minimum: -180
-          type: number
-      description: A list of latitude and longitude locations of your choice
+        locations:
+          type: array
+          description: A list of latitude and longitude locations of your choice
+          items:
+            $ref: '#/components/schemas/Location'
+      description: Defines a geographical location (latitude, longitude) on Earth's surface to use as a criterion for calculating distance measurements between other criteria objects
+    MetadataExpressionGroup:
+      type: object
+      properties:
+        logical_operator:
+          type: string
+          description: Specifies if these filters should be OR'd or AND'd. If omitted, the default is to AND the expressions together
+          enum:
+          - AND
+          - OR
+        expressions:
+          type: array
+          description: The list of filter expressions
+          items:
+            $ref: '#/components/schemas/MetadataExpression'
+      description: An expression group to allow for OR'd or AND'd expression filters
+    SearchResult:
+      type: object
+      properties:
+        data_uri:
+          type: string
+        result_count:
+          type: integer
+          format: int32
+        result_file_deleted_timestamp:
+          type: string
+          format: date-time
+        file_size:
+          type: integer
+          format: int64
+        completed_timestamp:
+          type: string
+          format: date-time
+        query_duration:
+          type: integer
+          format: int64
+        error_condition:
+          type: boolean
+      description: Search result
+    ConjunctionEventFormat:
+      type: object
+      properties:
+        conjunction_type:
+          type: boolean
+        e1_source:
+          $ref: '#/components/schemas/DataSourceFormat'
+        e2_source:
+          $ref: '#/components/schemas/DataSourceFormat'
+        start:
+          type: boolean
+        end:
+          type: boolean
+        min_distance:
+          type: boolean
+        max_distance:
+          type: boolean
+        generated_e1_ephemeris_query:
+          $ref: '#/components/schemas/EphemerisQueryFormat'
+        generated_e2_ephemeris_query:
+          $ref: '#/components/schemas/EphemerisQueryFormat'
+    SuperConjunctionEventFormat:
+      type: object
+      properties:
+        conjunction_type:
+          type: boolean
+        start:
+          type: boolean
+        end:
+          type: boolean
+        min_distance:
+          type: boolean
+        max_distance:
+          type: boolean
+        closest_epoch:
+          type: boolean
+        farthest_epoch:
+          type: boolean
+        data_sources:
+          $ref: '#/components/schemas/DataSourceFormat'
+        events:
+          $ref: '#/components/schemas/ConjunctionEventFormat'
+      description: Specify false for any data field you do not wish to be returned. All fields are optional. If omitted, the data won't be returned.
     SearchRequestLog:
       type: object
       properties:
@@ -748,43 +745,17 @@ components:
           - error
         summary:
           type: string
-    EphemerisCriteriaEvent:
+    DataSourceCriteriaForEphemerisFormat:
       type: object
       properties:
         programs:
-          type: array
-          description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
-          items:
-            type: string
-            description: The list of programs in e1 or e2. Programs group platforms. Programs are like 'themis', 'swarm', 'themis-asi', 'TRex'
+          type: boolean
         platforms:
-          type: array
-          description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
-          items:
-            type: string
-            description: The list of platforms in e1 or e2. Platforms are like 'themis-asi gill' or 'swarma'. Use this to narrow the set of sources within the programs listed.
+          type: boolean
         instrument_types:
-          type: array
-          description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
-          items:
-            type: string
-            description: The list of instrument-types in e1 or e2. Instrument types are like 'panchromatic-asi'. A platform may have zero or more instrument types.
+          type: boolean
         ephemeris_metadata_filters:
-          $ref: '#/components/schemas/MetadataExpressionGroup'
-      description: Defines the particpants in the conjunction that are events. Participants in each of these criteria are OR'd while participants  in different criteria are AND'd.
-    MetadataSchemaFormat:
-      type: object
-      properties:
-        field_name:
-          type: boolean
-        description:
-          type: boolean
-        data_type:
-          type: boolean
-        allowed_values:
-          type: boolean
-        additional_description:
-          type: boolean
+          $ref: '#/components/schemas/MetadataExpressionGroupFormat'
     EphemerisQuery:
       required:
       - data_sources
@@ -814,28 +785,57 @@ components:
           type: boolean
         end:
           type: boolean
-    SuperConjunctionEventFormat:
+    DataSourceFormat:
       type: object
       properties:
-        conjunction_type:
+        identifier:
           type: boolean
-        start:
+        program:
           type: boolean
-        end:
+        platform:
           type: boolean
-        min_distance:
+        instrument_type:
           type: boolean
-        max_distance:
+        source_type:
           type: boolean
-        closest_epoch:
+        display_name:
           type: boolean
-        farthest_epoch:
+        ephemeris_metadata_schema:
+          $ref: '#/components/schemas/MetadataSchemaFormat'
+        data_product_metadata_schema:
+          $ref: '#/components/schemas/MetadataSchemaFormat'
+        owner:
           type: boolean
-        data_sources:
-          $ref: '#/components/schemas/DataSourceFormat'
-        events:
-          $ref: '#/components/schemas/ConjunctionEventFormat'
-      description: Specify false for any data field you do not wish to be returned. All fields are optional. If omitted, the data won't be returned.
+        maintainers:
+          type: boolean
+        metadata:
+          type: boolean
+    JsonNode:
+      type: object
+    DataSourceStats:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/Data_Source'
+        earliest_ephemeris_loaded:
+          type: string
+          format: date-time
+        latest_ephemeris_loaded:
+          type: string
+          format: date-time
+        ephemeris_count:
+          type: integer
+          format: int32
+        earliest_data_product_loaded:
+          type: string
+          format: date-time
+        latest_data_product_loaded:
+          type: string
+          format: date-time
+        data_product_count:
+          type: integer
+          format: int32
+      description: Some basic stats about this data_source, like number of ephemeris records. Read only.
   securitySchemes:
     AccessToken:
       type: http

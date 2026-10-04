@@ -152,15 +152,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     RTStreamListItem:
       properties:
         name:
@@ -190,6 +181,17 @@ components:
       - network
       - mimetype
       title: RTStreamListItem
+    RTStreamListing:
+      properties:
+        streams:
+          items:
+            $ref: '#/components/schemas/RTStreamListItem'
+          type: array
+          title: Streams
+      type: object
+      required:
+      - streams
+      title: RTStreamListing
     RTWebSocketInfo:
       properties:
         url:
@@ -226,17 +228,15 @@ components:
       - binary_format
       - json_format
       title: RTWebSocketInfo
-    RTStreamListing:
+    HTTPValidationError:
       properties:
-        streams:
+        detail:
           items:
-            $ref: '#/components/schemas/RTStreamListItem'
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Streams
+          title: Detail
       type: object
-      required:
-      - streams
-      title: RTStreamListing
+      title: HTTPValidationError
     ErrorMessage:
       properties:
         detail:

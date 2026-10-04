@@ -382,68 +382,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ARCTICSMontageRecord:
-      properties:
-        url:
-          type: string
-          title: Url
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        modified_time:
-          type: string
-          format: date-time
-          title: Modified Time
-        filesize_bytes:
-          type: integer
-          title: Filesize Bytes
-        filesize_str:
-          type: string
-          title: Filesize Str
-      type: object
-      required:
-      - url
-      - timestamp
-      - modified_time
-      - filesize_bytes
-      - filesize_str
-      title: ARCTICSMontageRecord
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     SITLLogMessage:
       properties:
         category:
@@ -475,6 +413,206 @@ components:
       - level
       - message
       title: SITLLogMessage
+    ARCTICSMontageRecord:
+      properties:
+        url:
+          type: string
+          title: Url
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        modified_time:
+          type: string
+          format: date-time
+          title: Modified Time
+        filesize_bytes:
+          type: integer
+          title: Filesize Bytes
+        filesize_str:
+          type: string
+          title: Filesize Str
+      type: object
+      required:
+      - url
+      - timestamp
+      - modified_time
+      - filesize_bytes
+      - filesize_str
+      title: ARCTICSMontageRecord
+    ARCTICSMovieRecord:
+      properties:
+        url:
+          type: string
+          title: Url
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        modified_time:
+          type: string
+          format: date-time
+          title: Modified Time
+        filesize_bytes:
+          type: integer
+          title: Filesize Bytes
+        filesize_str:
+          type: string
+          title: Filesize Str
+        duration_seconds:
+          type: number
+          title: Duration Seconds
+        duration_str:
+          type: string
+          title: Duration Str
+      type: object
+      required:
+      - url
+      - timestamp
+      - modified_time
+      - filesize_bytes
+      - filesize_str
+      - duration_seconds
+      - duration_str
+      title: ARCTICSMovieRecord
+    ARCTICSDataProductsResponse:
+      properties:
+        date:
+          type: string
+          format: date
+          title: Date
+        site_uid:
+          type: string
+          title: Site Uid
+        device_uid:
+          type: string
+          title: Device Uid
+        dp_daily_keogram:
+          anyOf:
+          - $ref: '#/components/schemas/ARCTICSKeogramRecord'
+          - type: 'null'
+        dp_hourly_keograms:
+          items:
+            $ref: '#/components/schemas/ARCTICSKeogramRecord'
+          type: array
+          title: Dp Hourly Keograms
+          default: []
+        dp_daily_montage:
+          anyOf:
+          - $ref: '#/components/schemas/ARCTICSMontageRecord'
+          - type: 'null'
+        dp_hourly_montages:
+          items:
+            $ref: '#/components/schemas/ARCTICSMontageRecord'
+          type: array
+          title: Dp Hourly Montages
+          default: []
+        dp_daily_movie_lowres:
+          anyOf:
+          - $ref: '#/components/schemas/ARCTICSMovieRecord'
+          - type: 'null'
+      type: object
+      required:
+      - date
+      - site_uid
+      - device_uid
+      title: ARCTICSDataProductsResponse
+    ARCTICSUploadTimeframeRequest:
+      properties:
+        start:
+          type: string
+          format: date-time
+          title: Start
+        end:
+          type: string
+          format: date-time
+          title: End
+        instrument_uid:
+          type: string
+          const: smile
+          title: Instrument Uid
+        site_uid:
+          type: string
+          title: Site Uid
+        device_uid:
+          type: string
+          title: Device Uid
+        username:
+          type: string
+          title: Username
+      type: object
+      required:
+      - start
+      - end
+      - instrument_uid
+      - site_uid
+      - device_uid
+      - username
+      title: ARCTICSUploadTimeframeRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ARCTICSKeogramRecord:
+      properties:
+        url:
+          type: string
+          title: Url
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        modified_time:
+          type: string
+          format: date-time
+          title: Modified Time
+        filesize_bytes:
+          type: integer
+          title: Filesize Bytes
+        filesize_str:
+          type: string
+          title: Filesize Str
+      type: object
+      required:
+      - url
+      - timestamp
+      - modified_time
+      - filesize_bytes
+      - filesize_str
+      title: ARCTICSKeogramRecord
+    ARCTICSDeleteTimeframeRequest:
+      properties:
+        start:
+          type: string
+          format: date-time
+          title: Start
+        end:
+          type: string
+          format: date-time
+          title: End
+        instrument_uid:
+          type: string
+          const: smile
+          title: Instrument Uid
+        site_uid:
+          type: string
+          title: Site Uid
+        device_uid:
+          type: string
+          title: Device Uid
+      type: object
+      required:
+      - start
+      - end
+      - instrument_uid
+      - site_uid
+      - device_uid
+      title: ARCTICSDeleteTimeframeRequest
     ARCTICSKeepTimeframe:
       properties:
         start:
@@ -521,170 +659,32 @@ components:
       required:
       - detail
       title: ErrorMessage
-    ARCTICSDeleteTimeframeRequest:
+    ValidationError:
       properties:
-        start:
-          type: string
-          format: date-time
-          title: Start
-        end:
-          type: string
-          format: date-time
-          title: End
-        instrument_uid:
-          type: string
-          const: smile
-          title: Instrument Uid
-        site_uid:
-          type: string
-          title: Site Uid
-        device_uid:
-          type: string
-          title: Device Uid
-      type: object
-      required:
-      - start
-      - end
-      - instrument_uid
-      - site_uid
-      - device_uid
-      title: ARCTICSDeleteTimeframeRequest
-    ARCTICSUploadTimeframeRequest:
-      properties:
-        start:
-          type: string
-          format: date-time
-          title: Start
-        end:
-          type: string
-          format: date-time
-          title: End
-        instrument_uid:
-          type: string
-          const: smile
-          title: Instrument Uid
-        site_uid:
-          type: string
-          title: Site Uid
-        device_uid:
-          type: string
-          title: Device Uid
-        username:
-          type: string
-          title: Username
-      type: object
-      required:
-      - start
-      - end
-      - instrument_uid
-      - site_uid
-      - device_uid
-      - username
-      title: ARCTICSUploadTimeframeRequest
-    ARCTICSDataProductsResponse:
-      properties:
-        date:
-          type: string
-          format: date
-          title: Date
-        site_uid:
-          type: string
-          title: Site Uid
-        device_uid:
-          type: string
-          title: Device Uid
-        dp_daily_keogram:
-          anyOf:
-          - $ref: '#/components/schemas/ARCTICSKeogramRecord'
-          - type: 'null'
-        dp_hourly_keograms:
+        loc:
           items:
-            $ref: '#/components/schemas/ARCTICSKeogramRecord'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Dp Hourly Keograms
-          default: []
-        dp_daily_montage:
-          anyOf:
-          - $ref: '#/components/schemas/ARCTICSMontageRecord'
-          - type: 'null'
-        dp_hourly_montages:
-          items:
-            $ref: '#/components/schemas/ARCTICSMontageRecord'
-          type: array
-          title: Dp Hourly Montages
-          default: []
-        dp_daily_movie_lowres:
-          anyOf:
-          - $ref: '#/components/schemas/ARCTICSMovieRecord'
-          - type: 'null'
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - date
-      - site_uid
-      - device_uid
-      title: ARCTICSDataProductsResponse
-    ARCTICSKeogramRecord:
-      properties:
-        url:
-          type: string
-          title: Url
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        modified_time:
-          type: string
-          format: date-time
-          title: Modified Time
-        filesize_bytes:
-          type: integer
-          title: Filesize Bytes
-        filesize_str:
-          type: string
-          title: Filesize Str
-      type: object
-      required:
-      - url
-      - timestamp
-      - modified_time
-      - filesize_bytes
-      - filesize_str
-      title: ARCTICSKeogramRecord
-    ARCTICSMovieRecord:
-      properties:
-        url:
-          type: string
-          title: Url
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        modified_time:
-          type: string
-          format: date-time
-          title: Modified Time
-        filesize_bytes:
-          type: integer
-          title: Filesize Bytes
-        filesize_str:
-          type: string
-          title: Filesize Str
-        duration_seconds:
-          type: number
-          title: Duration Seconds
-        duration_str:
-          type: string
-          title: Duration Str
-      type: object
-      required:
-      - url
-      - timestamp
-      - modified_time
-      - filesize_bytes
-      - filesize_str
-      - duration_seconds
-      - duration_str
-      title: ARCTICSMovieRecord
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     HTTPBearer:
       type: http

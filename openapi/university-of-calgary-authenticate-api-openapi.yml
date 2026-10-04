@@ -79,6 +79,44 @@ paths:
       - AccessToken: []
 components:
   schemas:
+    AuthenticationRequest:
+      required:
+      - email_address
+      - password
+      type: object
+      properties:
+        email_address:
+          type: string
+          description: The email address of the user. An email will be sent to this address requesting confirmation of ownership.
+        password:
+          type: string
+          description: This users password
+      description: A container for authenticating a user by email address and password
+    ErrorDocument:
+      type: object
+      properties:
+        error_message:
+          type: string
+          description: If an error code exists, this will have contextual information for debugging
+        error_code:
+          type: string
+          description: The error code
+          enum:
+          - Nil
+          - Ok
+          - NotPermitted
+          - NotAuthorized
+          - Duplicate
+          - AssertionError
+          - NotFound
+          - ApplicationError
+          - NotImplemented
+          - ToManyRequests
+          - Other
+          - Conflict
+          - NotAuthenticated
+          - Unavailable
+      description: This model provides additional details about error conditions that can be used for debugging.
     UserAccount:
       type: object
       properties:
@@ -113,44 +151,6 @@ components:
           format: date-time
         disabled:
           type: boolean
-    ErrorDocument:
-      type: object
-      properties:
-        error_message:
-          type: string
-          description: If an error code exists, this will have contextual information for debugging
-        error_code:
-          type: string
-          description: The error code
-          enum:
-          - Nil
-          - Ok
-          - NotPermitted
-          - NotAuthorized
-          - Duplicate
-          - AssertionError
-          - NotFound
-          - ApplicationError
-          - NotImplemented
-          - ToManyRequests
-          - Other
-          - Conflict
-          - NotAuthenticated
-          - Unavailable
-      description: This model provides additional details about error conditions that can be used for debugging.
-    AuthenticationRequest:
-      required:
-      - email_address
-      - password
-      type: object
-      properties:
-        email_address:
-          type: string
-          description: The email address of the user. An email will be sent to this address requesting confirmation of ownership.
-        password:
-          type: string
-          description: This users password
-      description: A container for authenticating a user by email address and password
   securitySchemes:
     AccessToken:
       type: http

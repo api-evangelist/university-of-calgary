@@ -344,20 +344,9 @@ paths:
                 $ref: '#/components/schemas/ErrorDocument'
 components:
   schemas:
-    Location:
-      type: object
-      properties:
-        lat:
-          maximum: 90
-          minimum: -90
-          type: number
-        lon:
-          maximum: 180
-          minimum: -180
-          type: number
-      description: A list of latitude and longitude locations of your choice
-    DeleteDataProductSpecification:
+    LoadEphemerisSpecification:
       required:
+      - epoch
       - instrument_type
       - platform
       - program
@@ -369,10 +358,19 @@ components:
           type: string
         instrument_type:
           type: string
-        urls:
-          type: array
-          items:
-            type: string
+        epoch:
+          type: string
+          format: date-time
+        location_geo:
+          $ref: '#/components/schemas/Location'
+        location_gsm:
+          $ref: '#/components/schemas/Location'
+        nbtrace:
+          $ref: '#/components/schemas/Location'
+        sbtrace:
+          $ref: '#/components/schemas/Location'
+        metadata:
+          $ref: '#/components/schemas/JsonNode'
     LoadDataProductSpecification:
       required:
       - data_product_type
@@ -433,9 +431,8 @@ components:
           - NotAuthenticated
           - Unavailable
       description: This model provides additional details about error conditions that can be used for debugging.
-    LoadEphemerisSpecification:
+    DeleteDataProductSpecification:
       required:
-      - epoch
       - instrument_type
       - platform
       - program
@@ -447,19 +444,22 @@ components:
           type: string
         instrument_type:
           type: string
-        epoch:
-          type: string
-          format: date-time
-        location_geo:
-          $ref: '#/components/schemas/Location'
-        location_gsm:
-          $ref: '#/components/schemas/Location'
-        nbtrace:
-          $ref: '#/components/schemas/Location'
-        sbtrace:
-          $ref: '#/components/schemas/Location'
-        metadata:
-          $ref: '#/components/schemas/JsonNode'
+        urls:
+          type: array
+          items:
+            type: string
+    Location:
+      type: object
+      properties:
+        lat:
+          maximum: 90
+          minimum: -90
+          type: number
+        lon:
+          maximum: 180
+          minimum: -180
+          type: number
+      description: A list of latitude and longitude locations of your choice
     DeleteEphemerisSpecification:
       required:
       - end
