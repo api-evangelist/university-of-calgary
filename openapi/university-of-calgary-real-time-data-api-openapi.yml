@@ -152,35 +152,24 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    RTStreamListItem:
+    ErrorMessage:
       properties:
-        name:
+        detail:
           type: string
-          title: Name
-        id:
-          type: string
-          title: Id
-        description:
-          type: string
-          title: Description
-        site_uid:
-          type: string
-          title: Site Uid
-        network:
-          type: string
-          title: Network
-        mimetype:
-          type: string
-          title: Mimetype
+          title: Detail
       type: object
       required:
-      - name
-      - id
-      - description
-      - site_uid
-      - network
-      - mimetype
-      title: RTStreamListItem
+      - detail
+      title: ErrorMessage
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     RTStreamListing:
       properties:
         streams:
@@ -228,24 +217,35 @@ components:
       - binary_format
       - json_format
       title: RTWebSocketInfo
-    HTTPValidationError:
+    RTStreamListItem:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ErrorMessage:
-      properties:
-        detail:
+        name:
           type: string
-          title: Detail
+          title: Name
+        id:
+          type: string
+          title: Id
+        description:
+          type: string
+          title: Description
+        site_uid:
+          type: string
+          title: Site Uid
+        network:
+          type: string
+          title: Network
+        mimetype:
+          type: string
+          title: Mimetype
       type: object
       required:
-      - detail
-      title: ErrorMessage
+      - name
+      - id
+      - description
+      - site_uid
+      - network
+      - mimetype
+      title: RTStreamListItem
     ValidationError:
       properties:
         loc:

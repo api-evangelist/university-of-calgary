@@ -371,6 +371,44 @@ components:
           $ref: '#/components/schemas/Location'
         metadata:
           $ref: '#/components/schemas/JsonNode'
+    DeleteDataProductSpecification:
+      required:
+      - instrument_type
+      - platform
+      - program
+      type: object
+      properties:
+        program:
+          type: string
+        platform:
+          type: string
+        instrument_type:
+          type: string
+        urls:
+          type: array
+          items:
+            type: string
+    DeleteEphemerisSpecification:
+      required:
+      - end
+      - instrument_type
+      - platform
+      - program
+      - start
+      type: object
+      properties:
+        program:
+          type: string
+        platform:
+          type: string
+        instrument_type:
+          type: string
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
     LoadDataProductSpecification:
       required:
       - data_product_type
@@ -431,23 +469,8 @@ components:
           - NotAuthenticated
           - Unavailable
       description: This model provides additional details about error conditions that can be used for debugging.
-    DeleteDataProductSpecification:
-      required:
-      - instrument_type
-      - platform
-      - program
+    JsonNode:
       type: object
-      properties:
-        program:
-          type: string
-        platform:
-          type: string
-        instrument_type:
-          type: string
-        urls:
-          type: array
-          items:
-            type: string
     Location:
       type: object
       properties:
@@ -460,29 +483,6 @@ components:
           minimum: -180
           type: number
       description: A list of latitude and longitude locations of your choice
-    DeleteEphemerisSpecification:
-      required:
-      - end
-      - instrument_type
-      - platform
-      - program
-      - start
-      type: object
-      properties:
-        program:
-          type: string
-        platform:
-          type: string
-        instrument_type:
-          type: string
-        start:
-          type: string
-          format: date-time
-        end:
-          type: string
-          format: date-time
-    JsonNode:
-      type: object
   securitySchemes:
     AccessToken:
       type: http

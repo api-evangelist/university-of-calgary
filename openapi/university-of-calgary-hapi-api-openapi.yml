@@ -260,34 +260,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HAPIAbout:
-      properties:
-        HAPI:
-          type: string
-          title: Hapi
-        id:
-          type: string
-          title: Id
-        title:
-          type: string
-          title: Title
-        description:
-          type: string
-          title: Description
-        contact:
-          type: string
-          title: Contact
-        status:
-          $ref: '#/components/schemas/HAPIStatus'
-      type: object
-      required:
-      - HAPI
-      - id
-      - title
-      - description
-      - contact
-      - status
-      title: HAPIAbout
     HAPIInfo:
       properties:
         HAPI:
@@ -398,24 +370,58 @@ components:
       - code
       - message
       title: HAPIStatus
-    HAPICatalog:
+    HAPIAbout:
       properties:
         HAPI:
           type: string
           title: Hapi
-        catalog:
-          items:
-            $ref: '#/components/schemas/HAPICatalogDataset'
-          type: array
-          title: Catalog
+        id:
+          type: string
+          title: Id
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+        contact:
+          type: string
+          title: Contact
         status:
           $ref: '#/components/schemas/HAPIStatus'
       type: object
       required:
       - HAPI
-      - catalog
+      - id
+      - title
+      - description
+      - contact
       - status
-      title: HAPICatalog
+      title: HAPIAbout
+    HAPICapabilities:
+      properties:
+        HAPI:
+          type: string
+          title: Hapi
+        outputFormats:
+          items:
+            type: string
+          type: array
+          title: Outputformats
+        catalogDepthOptions:
+          items:
+            type: string
+          type: array
+          title: Catalogdepthoptions
+        status:
+          $ref: '#/components/schemas/HAPIStatus'
+      type: object
+      required:
+      - HAPI
+      - outputFormats
+      - catalogDepthOptions
+      - status
+      title: HAPICapabilities
     HTTPValidationError:
       properties:
         detail:
@@ -444,30 +450,24 @@ components:
       - id
       - title
       title: HAPICatalogDataset
-    HAPICapabilities:
+    HAPICatalog:
       properties:
         HAPI:
           type: string
           title: Hapi
-        outputFormats:
+        catalog:
           items:
-            type: string
+            $ref: '#/components/schemas/HAPICatalogDataset'
           type: array
-          title: Outputformats
-        catalogDepthOptions:
-          items:
-            type: string
-          type: array
-          title: Catalogdepthoptions
+          title: Catalog
         status:
           $ref: '#/components/schemas/HAPIStatus'
       type: object
       required:
       - HAPI
-      - outputFormats
-      - catalogDepthOptions
+      - catalog
       - status
-      title: HAPICapabilities
+      title: HAPICatalog
     ValidationError:
       properties:
         loc:

@@ -161,15 +161,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    ErrorMessage:
       properties:
         detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
+          type: string
           title: Detail
       type: object
-      title: HTTPValidationError
+      required:
+      - detail
+      title: ErrorMessage
     Terminator:
       properties:
         timestamp:
@@ -185,22 +185,15 @@ components:
       - timestamp
       - coords
       title: Terminator
-    MagneticGrid:
+    HTTPValidationError:
       properties:
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        north:
-          $ref: '#/components/schemas/MagneticGridHemisphere'
-        south:
-          $ref: '#/components/schemas/MagneticGridHemisphere'
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - timestamp
-      - north
-      - south
-      title: MagneticGrid
+      title: HTTPValidationError
     MagneticGridHemisphere:
       properties:
         vertical:
@@ -226,15 +219,22 @@ components:
       - vertical
       - horizontal
       title: MagneticGridHemisphere
-    ErrorMessage:
+    MagneticGrid:
       properties:
-        detail:
+        timestamp:
           type: string
-          title: Detail
+          format: date-time
+          title: Timestamp
+        north:
+          $ref: '#/components/schemas/MagneticGridHemisphere'
+        south:
+          $ref: '#/components/schemas/MagneticGridHemisphere'
       type: object
       required:
-      - detail
-      title: ErrorMessage
+      - timestamp
+      - north
+      - south
+      title: MagneticGrid
     ValidationError:
       properties:
         loc:

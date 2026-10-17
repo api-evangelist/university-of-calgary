@@ -215,17 +215,41 @@ paths:
                 $ref: '#/components/schemas/ErrorDocument'
 components:
   schemas:
-    DataProduct_Availability:
+    Ephemeris_Availability:
       type: object
       properties:
         data_source:
           $ref: '#/components/schemas/Data_Source'
-        available_data_products:
+        available_ephemeris:
           type: object
           additionalProperties:
             type: integer
             format: int32
-      description: DataProduct data availability by Data Source by Data_Product_Type by day.
+      description: Ephemeris data availability by Data Source by day.
+    DataSourceStats:
+      type: object
+      properties:
+        data_source:
+          $ref: '#/components/schemas/Data_Source'
+        earliest_ephemeris_loaded:
+          type: string
+          format: date-time
+        latest_ephemeris_loaded:
+          type: string
+          format: date-time
+        ephemeris_count:
+          type: integer
+          format: int32
+        earliest_data_product_loaded:
+          type: string
+          format: date-time
+        latest_data_product_loaded:
+          type: string
+          format: date-time
+        data_product_count:
+          type: integer
+          format: int32
+      description: Some basic stats about this data_source, like number of ephemeris records. Read only.
     MetadataSchema:
       type: object
       properties:
@@ -251,6 +275,33 @@ components:
           type: boolean
           description: Used by UI's to include it in metadata fields exposed as searchable through the conjunction interface. The API allows for all fields to be searchable but some applications may chose to hide any fields marked searchable=false
       description: Describes the metadata fields found on Ephemeris data.
+    JsonNode:
+      type: object
+    ErrorDocument:
+      type: object
+      properties:
+        error_message:
+          type: string
+          description: If an error code exists, this will have contextual information for debugging
+        error_code:
+          type: string
+          description: The error code
+          enum:
+          - Nil
+          - Ok
+          - NotPermitted
+          - NotAuthorized
+          - Duplicate
+          - AssertionError
+          - NotFound
+          - ApplicationError
+          - NotImplemented
+          - ToManyRequests
+          - Other
+          - Conflict
+          - NotAuthenticated
+          - Unavailable
+      description: This model provides additional details about error conditions that can be used for debugging.
     Data_Source:
       required:
       - display_name
@@ -310,68 +361,17 @@ components:
         metadata:
           $ref: '#/components/schemas/JsonNode'
       description: Things that produce data, like satellites, ground stations/instruments, platforms
-    ErrorDocument:
-      type: object
-      properties:
-        error_message:
-          type: string
-          description: If an error code exists, this will have contextual information for debugging
-        error_code:
-          type: string
-          description: The error code
-          enum:
-          - Nil
-          - Ok
-          - NotPermitted
-          - NotAuthorized
-          - Duplicate
-          - AssertionError
-          - NotFound
-          - ApplicationError
-          - NotImplemented
-          - ToManyRequests
-          - Other
-          - Conflict
-          - NotAuthenticated
-          - Unavailable
-      description: This model provides additional details about error conditions that can be used for debugging.
-    Ephemeris_Availability:
+    DataProduct_Availability:
       type: object
       properties:
         data_source:
           $ref: '#/components/schemas/Data_Source'
-        available_ephemeris:
+        available_data_products:
           type: object
           additionalProperties:
             type: integer
             format: int32
-      description: Ephemeris data availability by Data Source by day.
-    JsonNode:
-      type: object
-    DataSourceStats:
-      type: object
-      properties:
-        data_source:
-          $ref: '#/components/schemas/Data_Source'
-        earliest_ephemeris_loaded:
-          type: string
-          format: date-time
-        latest_ephemeris_loaded:
-          type: string
-          format: date-time
-        ephemeris_count:
-          type: integer
-          format: int32
-        earliest_data_product_loaded:
-          type: string
-          format: date-time
-        latest_data_product_loaded:
-          type: string
-          format: date-time
-        data_product_count:
-          type: integer
-          format: int32
-      description: Some basic stats about this data_source, like number of ephemeris records. Read only.
+      description: DataProduct data availability by Data Source by Data_Product_Type by day.
   securitySchemes:
     AccessToken:
       type: http

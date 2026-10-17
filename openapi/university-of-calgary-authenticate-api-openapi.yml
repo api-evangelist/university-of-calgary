@@ -79,19 +79,6 @@ paths:
       - AccessToken: []
 components:
   schemas:
-    AuthenticationRequest:
-      required:
-      - email_address
-      - password
-      type: object
-      properties:
-        email_address:
-          type: string
-          description: The email address of the user. An email will be sent to this address requesting confirmation of ownership.
-        password:
-          type: string
-          description: This users password
-      description: A container for authenticating a user by email address and password
     ErrorDocument:
       type: object
       properties:
@@ -151,6 +138,19 @@ components:
           format: date-time
         disabled:
           type: boolean
+    AuthenticationRequest:
+      required:
+      - email_address
+      - password
+      type: object
+      properties:
+        email_address:
+          type: string
+          description: The email address of the user. An email will be sent to this address requesting confirmation of ownership.
+        password:
+          type: string
+          description: This users password
+      description: A container for authenticating a user by email address and password
   securitySchemes:
     AccessToken:
       type: http
